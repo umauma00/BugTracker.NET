@@ -1,0 +1,857 @@
+category	file	line	symbol	construct
+CATCH	src/BugTracker.Web/Mail/email.cs	256	Email.send_email	(Exception e)
+CATCH	src/BugTracker.Web/Mail/email.cs	303	Email.threadproc_delete_stuff	(System.Threading.ThreadAbortException)
+CATCH	src/BugTracker.Web/Search/BugSearch.cs	44	BugSearch.IndexAll	(Exception e)
+CATCH	src/BugTracker.Web/Search/BugSearch.cs	154	BugSearch.IndexBug	(Exception e)
+CATCH	src/BugTracker.Web/Security/Authenticate.cs	195	Authenticate.check_password_with_ldap	(Exception e)
+CATCH	src/BugTracker.Web/add_attachment.aspx.cs	137	add_attachment.on_update	(Exception ex)
+CATCH	src/BugTracker.Web/add_customfield.aspx.cs	258	add_customfield.on_update	(Exception e2)
+CATCH	src/BugTracker.Web/ajax2.aspx	49	__Page.Page_Load	(Exception)
+CATCH	src/BugTracker.Web/btnet/bug.cs	418	Bug.insert_post_attachment_impl	(Exception ex)
+CATCH	src/BugTracker.Web/btnet/bug.cs	1246	Bug.actually_send_the_emails	(Exception e)
+CATCH	src/BugTracker.Web/btnet/bug.cs	1285	Bug.threadproc_notifications	(System.Threading.ThreadAbortException)
+CATCH	src/BugTracker.Web/btnet/bug_list.cs	205	BugList.sort_and_filter_buglist_dataview	(Exception)
+CATCH	src/BugTracker.Web/btnet/bug_list.cs	227	BugList.sort_and_filter_buglist_dataview	(Exception)
+CATCH	src/BugTracker.Web/btnet/bug_list.cs	273	BugList.sort_and_filter_buglist_dataview	(Exception)
+CATCH	src/BugTracker.Web/btnet/print_bug.cs	72	PrintBug.print_bug	(Exception e)
+CATCH	src/BugTracker.Web/btnet/tags.cs	68	Tags.threadproc_votes	(Exception ex)
+CATCH	src/BugTracker.Web/btnet/tags.cs	110	Tags.threadproc_tags	(Exception ex)
+CATCH	src/BugTracker.Web/btnet/user.cs	137	User.set_from_db	(Exception ex)
+CATCH	src/BugTracker.Web/btnet/util.cs	58	Util.set_context	(Exception e)
+CATCH	src/BugTracker.Web/btnet/util.cs	151	Util.is_int	(Exception)
+CATCH	src/BugTracker.Web/btnet/util.cs	198	Util.is_datetime	(Exception)
+CATCH	src/BugTracker.Web/btnet/util.cs	362	Util.format_local_date_into_db_format	(FormatException)
+CATCH	src/BugTracker.Web/default.aspx.cs	41	@default.Page_Load	(SqlException e1)
+CATCH	src/BugTracker.Web/default.aspx.cs	50	@default.Page_Load	(SqlException e2)
+CATCH	src/BugTracker.Web/install.aspx	46	__Page.Page_Load	(Exception ex)
+CATCH	src/BugTracker.Web/loginnt.aspx	121	__Page.Page_Load	(Exception e2)
+CATCH	src/BugTracker.Web/search_text.aspx.cs	24	search_text.Page_Load	(Exception e3)
+CATCH	src/BugTracker.Web/view_report.aspx	257	__Page.create_line_chart	(Exception)
+CATCH	src/btnet_service/POP3Main.cs	427	POP3Main.get_settings	(Exception e)
+CATCH	src/btnet_service/POP3Main.cs	468	POP3Main.fetch_messages_for_projects	(Exception e)
+CATCH	src/btnet_service/POP3Main.cs	542	POP3Main.fetch_messages	(Exception e)
+CATCH	src/btnet_service/POP3Main.cs	573	POP3Main.fetch_messages	(Exception exception)
+CATCH	src/btnet_service/POP3Main.cs	678	POP3Main.fetch_messages	(Exception e)
+CATCH	src/btnet_service/POP3Main.cs	732	POP3Main.fetch_messages	(Exception e)
+CONTROL_FLOW	src/BugTracker.Web/BasePage.cs	16	BasePage.OnPreInit	Response.Redirect(string.Format("default.aspx?returnUrl={0}", HttpUtility.UrlEncode(Request.RawUrl)))
+CONTROL_FLOW	src/BugTracker.Web/UpdatePassword.aspx.cs	42	UpdatePassword.ProcessReset	Response.Redirect("/default.aspx")
+CONTROL_FLOW	src/BugTracker.Web/add_attachment.aspx.cs	32	add_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/add_attachment.aspx.cs	43	add_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/add_attachment.aspx.cs	79	add_attachment.write_msg	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/add_customfield.aspx.cs	286	add_customfield.on_update	Server.Transfer("customfields.aspx")
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1109	Util.redirect	Response.Redirect("bugs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1112	Util.redirect	Response.Redirect("mbugs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1117	Util.redirect	Response.Redirect(remove_line_breaks(url) + "?" + remove_line_breaks(HttpUtility.UrlDecode(qs)))
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1127	Util.redirect	Response.Redirect(url + "&url=" + remove_line_breaks(Request.QueryString["url"]) + "&qs=" + remove_line_breaks(Request.QueryString["qs"]))
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1134	Util.redirect	Response.Redirect(url + "?url=" + remove_line_breaks(Request.QueryString["url"]) + "&qs=" + remove_line_breaks(Request.QueryString["qs"]))
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1236	Util.print_as_excel	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1353	Util.display_bug_not_found	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/btnet/util.cs	1367	Util.display_you_dont_have_permission	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/btnet/version_control.cs	63	VersionControl.run_and_capture	HttpContext.Current.Response.End()
+CONTROL_FLOW	src/BugTracker.Web/btnet/version_control.cs	155	VersionControl.run_svn	HttpContext.Current.Response.End()
+CONTROL_FLOW	src/BugTracker.Web/change_password.aspx.cs	50	change_password.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/dashboard.aspx	25	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_attachment.aspx.cs	34	delete_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_attachment.aspx.cs	44	delete_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_attachment.aspx.cs	79	delete_attachment.Page_Load	Response.Redirect("edit_bug.aspx?id=" + bug_id_string)
+CONTROL_FLOW	src/BugTracker.Web/delete_bug.aspx.cs	29	delete_bug.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_bug.aspx.cs	38	delete_bug.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_bug.aspx.cs	45	delete_bug.Page_Load	Server.Transfer("bugs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_category.aspx.cs	28	delete_category.Page_Load	Server.Transfer("categories.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_category.aspx.cs	49	delete_category.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_comment.aspx.cs	33	delete_comment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_comment.aspx.cs	43	delete_comment.Page_Load	Response.Redirect("edit_bug.aspx?id=" + Util.sanitize_integer(redirect_bugid.Value))
+CONTROL_FLOW	src/BugTracker.Web/delete_comment.aspx.cs	55	delete_comment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_org.aspx.cs	33	delete_org.Page_Load	Server.Transfer("orgs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_org.aspx.cs	57	delete_org.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_priority.aspx.cs	31	delete_priority.Page_Load	Server.Transfer("priorities.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_priority.aspx.cs	54	delete_priority.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_project.aspx.cs	29	delete_project.Page_Load	Server.Transfer("projects.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_project.aspx.cs	50	delete_project.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_report.aspx.cs	31	delete_report.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_report.aspx.cs	42	delete_report.Page_Load	Server.Transfer("reports.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_status.aspx.cs	31	delete_status.Page_Load	Server.Transfer("statuses.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_status.aspx.cs	52	delete_status.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_subscriber.aspx.cs	22	delete_subscriber.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_subscriber.aspx.cs	30	delete_subscriber.Page_Load	Response.Redirect("view_subscribers.aspx?id=" + Util.sanitize_integer(Request["bg_id"]))
+CONTROL_FLOW	src/BugTracker.Web/delete_task.aspx.cs	27	delete_task.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_task.aspx.cs	38	delete_task.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_task.aspx.cs	52	delete_task.Page_Load	Response.Redirect("tasks.aspx?bugid=" + string_bugid)
+CONTROL_FLOW	src/BugTracker.Web/delete_udf.aspx.cs	32	delete_udf.Page_Load	Server.Transfer("udfs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_udf.aspx.cs	53	delete_udf.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_user.aspx.cs	33	delete_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_user.aspx.cs	38	delete_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/delete_user.aspx.cs	57	delete_user.Page_Load	Server.Transfer("users.aspx")
+CONTROL_FLOW	src/BugTracker.Web/delete_user.aspx.cs	82	delete_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/download_file.aspx	19	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/download_file.aspx	34	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_attachment.aspx.cs	36	edit_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_attachment.aspx.cs	55	edit_attachment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_attachment.aspx.cs	122	edit_attachment.on_update	Response.Redirect("edit_bug.aspx?id=" + Convert.ToString(bugid))
+CONTROL_FLOW	src/BugTracker.Web/edit_bug.aspx.cs	622	edit_bug.display_bugid_must_be_integer	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_bug.aspx.cs	705	edit_bug.do_insert	Response.Redirect("edit_bug.aspx?id=" + Convert.ToString(id))
+CONTROL_FLOW	src/BugTracker.Web/edit_category.aspx.cs	139	edit_category.on_update	Server.Transfer("categories.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_comment.aspx.cs	38	edit_comment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_comment.aspx.cs	75	edit_comment.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_comment.aspx.cs	178	edit_comment.on_update	Response.Redirect("edit_bug.aspx?id=" + Convert.ToString(bugid))
+CONTROL_FLOW	src/BugTracker.Web/edit_custom_html.aspx.cs	46	edit_custom_html.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_custom_html.aspx.cs	52	edit_custom_html.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_dashboard.aspx.cs	31	edit_dashboard.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_org.aspx.cs	296	edit_org.on_update	Server.Transfer("orgs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_priority.aspx.cs	164	edit_priority.on_update	Server.Transfer("priorities.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_project.aspx.cs	286	edit_project.on_update	Server.Transfer("projects.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_queued_notifications.aspx	21	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_queued_notifications.aspx	42	__Page.Page_Load	Response.Redirect("notifications.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_report.aspx.cs	33	edit_report.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_report.aspx.cs	174	edit_report.on_update	Server.Transfer("reports.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_status.aspx.cs	140	edit_status.on_update	Server.Transfer("statuses.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_task.aspx.cs	39	edit_task.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_task.aspx.cs	49	edit_task.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_task.aspx.cs	601	edit_task.on_update	Response.Redirect("tasks.aspx?bugid=" + Convert.ToString(bugid))
+CONTROL_FLOW	src/BugTracker.Web/edit_udf.aspx.cs	140	edit_udf.on_update	Server.Transfer("udfs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_user.aspx.cs	45	edit_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_user.aspx.cs	278	edit_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_user.aspx.cs	283	edit_user.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/edit_user.aspx.cs	598	edit_user.on_update	Server.Transfer("users.aspx")
+CONTROL_FLOW	src/BugTracker.Web/edit_user.aspx.cs	659	edit_user.on_update	Server.Transfer("users.aspx")
+CONTROL_FLOW	src/BugTracker.Web/flag.aspx	25	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/forgot.aspx.cs	23	forgot.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_blame.aspx	35	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_diff.aspx	41	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_diff.aspx	87	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_hook.aspx	30	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_hook.aspx	38	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_hook.aspx	46	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_hook.aspx	57	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_hook.aspx	138	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_log.aspx	43	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_view.aspx	32	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/git_view_revisions.aspx	25	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_blame.aspx	34	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_diff.aspx	42	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_diff.aspx	64	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_diff.aspx	99	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_hook.aspx	30	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_hook.aspx	38	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_hook.aspx	46	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_hook.aspx	57	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_hook.aspx	175	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_log.aspx	45	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_view.aspx	32	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/hg_view_revisions.aspx	25	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/install.aspx	32	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/loginnt.aspx	191	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/logoff.aspx.cs	16	logoff.Page_Load	Response.Redirect("default.aspx?msg=logged+off")
+CONTROL_FLOW	src/BugTracker.Web/massedit.aspx.cs	28	massedit.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/massedit.aspx.cs	164	massedit.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/massedit.aspx.cs	190	massedit.Page_Load	Response.Redirect("search.aspx")
+CONTROL_FLOW	src/BugTracker.Web/mbug.aspx	35	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/mbug.aspx	68	__Page.Page_Load	Response.Redirect("mbugs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/mbug.aspx	186	__Page.Page_Load	Response.Redirect("mbugs.aspx")
+CONTROL_FLOW	src/BugTracker.Web/mbugs.aspx	22	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/merge_bug.aspx.cs	29	merge_bug.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/merge_bug.aspx.cs	274	merge_bug.on_update	Response.Redirect("edit_bug.aspx?id=" + prev_into_bug.Value)
+CONTROL_FLOW	src/BugTracker.Web/print_bugs2.aspx	81	__Page.__body	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/register.aspx.cs	21	register.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/relationships.aspx	50	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/relationships.aspx	61	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/relationships.aspx	67	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/relationships.aspx	75	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/reports.aspx.cs	24	reports.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/search.aspx.cs	48	search.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/search_text.aspx.cs	59	search_text.display_exception	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/seen.aspx	24	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/select_report.aspx.cs	29	select_report.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/send_email.aspx.cs	97	send_email.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/send_email.aspx.cs	105	send_email.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/send_email.aspx.cs	272	send_email.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/send_email.aspx.cs	606	send_email.on_update	Response.Redirect("edit_bug.aspx?id=" + bg_id.Value)
+CONTROL_FLOW	src/BugTracker.Web/subscribe.aspx	22	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/subscribe.aspx	28	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_blame.aspx	41	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_blame.aspx	63	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_blame.aspx	71	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_diff.aspx	83	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_diff.aspx	155	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_diff.aspx	167	__Page.examine_diff	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_diff.aspx	176	__Page.examine_diff	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_hook.aspx	30	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_hook.aspx	38	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_hook.aspx	46	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_hook.aspx	57	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_hook.aspx	102	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_log.aspx	43	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_log.aspx	59	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_view.aspx	37	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/svn_view_revisions.aspx	24	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/tasks.aspx	32	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/tasks.aspx	42	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/tasks_all.aspx	29	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/tasks_all_excel.aspx	23	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/translate.aspx	70	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/tropo_recording.aspx	105	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/update_dashboard.aspx.cs	27	update_dashboard.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/update_dashboard.aspx.cs	33	update_dashboard.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/update_dashboard.aspx.cs	118	update_dashboard.Page_Load	Response.Redirect("edit_dashboard.aspx")
+CONTROL_FLOW	src/BugTracker.Web/update_dashboard.aspx.cs	123	update_dashboard.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_attachment.aspx	16	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_attachment.aspx	35	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_attachment.aspx	42	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_memory_log.aspx	11	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_report.aspx	26	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_subscribers.aspx	29	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_subscribers.aspx	45	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/view_whatsnew.aspx	11	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/vote.aspx	27	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/whatsnew.aspx	45	__Page.Page_Load	Response.End()
+CONTROL_FLOW	src/BugTracker.Web/write_posts.aspx	20	__Page.Page_Load	Response.End()
+DELEGATE	src/BugTracker.Web/BasePage.cs	30	BasePage.IsUserAuthorized	a => a.OnAuthorize(Page.User)
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx	128	__Page.__body	c => string.Format("'{0}'", c)
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	66	BugList.GetFilterValues	p => p.Name
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	67	BugList.GetFilterValues	p => new SelectListItem { Value = p.Name, Text = p.Name }
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	79	BugList.GetFilterValues	p => p.Name
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	80	BugList.GetFilterValues	p => new SelectListItem { Value = p.Name, Text = p.Name }
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	92	BugList.GetFilterValues	p => p.Name
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	93	BugList.GetFilterValues	p => new SelectListItem { Value = p.Name, Text = p.Name }
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	105	BugList.GetFilterValues	p => p.Name
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	106	BugList.GetFilterValues	p => new SelectListItem { Value = p.Name, Text = p.Name }
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	118	BugList.GetFilterValues	p => p.Name
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	119	BugList.GetFilterValues	p => new SelectListItem { Value = p.Name, Text = p.Name }
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	131	BugList.GetFilterValues	p => p.UserName
+DELEGATE	src/BugTracker.Web/Controls/BugList.ascx.cs	132	BugList.GetFilterValues	p => new SelectListItem { Value = p.UserName, Text = p.UserName }
+DELEGATE	src/BugTracker.Web/Mail/Mime.cs	90	Mime.get_cc	c => c.Address
+DELEGATE	src/BugTracker.Web/Mail/Mime.cs	96	Mime.get_to	c => c.Address
+DELEGATE	src/BugTracker.Web/Mail/email.cs	242	Email.send_email	delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; }
+DELEGATE	src/BugTracker.Web/Models/Context.cs	46	Context.GetQueriesForUser	q => (q.User == null || q.User == userId) && (q.Org == null || q.Org == orgId)
+DELEGATE	src/BugTracker.Web/Models/Context.cs	49	Context.GetQueriesForUser	q => q.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	11	BugPostAttachmentMap.BugPostAttachmentMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	14	BugPostAttachmentMap.BugPostAttachmentMap	t => t.Content
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	19	BugPostAttachmentMap.BugPostAttachmentMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	20	BugPostAttachmentMap.BugPostAttachmentMap	t => t.PostId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	21	BugPostAttachmentMap.BugPostAttachmentMap	t => t.Content
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	11	BugPostMap.BugPostMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	14	BugPostMap.BugPostMap	t => t.Type
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	18	BugPostMap.BugPostMap	t => t.Comment
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	21	BugPostMap.BugPostMap	t => t.FromEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	24	BugPostMap.BugPostMap	t => t.ToEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	27	BugPostMap.BugPostMap	t => t.File
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	30	BugPostMap.BugPostMap	t => t.ContentType
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	33	BugPostMap.BugPostMap	t => t.CCEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	38	BugPostMap.BugPostMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	39	BugPostMap.BugPostMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	40	BugPostMap.BugPostMap	t => t.Type
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	41	BugPostMap.BugPostMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	42	BugPostMap.BugPostMap	t => t.Date
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	43	BugPostMap.BugPostMap	t => t.Comment
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	44	BugPostMap.BugPostMap	t => t.CommentSearch
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	45	BugPostMap.BugPostMap	t => t.FromEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	46	BugPostMap.BugPostMap	t => t.ToEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	47	BugPostMap.BugPostMap	t => t.File
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	48	BugPostMap.BugPostMap	t => t.Size
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	49	BugPostMap.BugPostMap	t => t.ContentType
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	50	BugPostMap.BugPostMap	t => t.ParentId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	51	BugPostMap.BugPostMap	t => t.OriginalCommentId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	52	BugPostMap.BugPostMap	t => t.HideFromExternalUsers
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	53	BugPostMap.BugPostMap	t => t.CCEmail
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	11	BugRelationShipMap.BugRelationShipMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	14	BugRelationShipMap.BugRelationShipMap	t => t.Type
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	19	BugRelationShipMap.BugRelationShipMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	20	BugRelationShipMap.BugRelationShipMap	t => t.Bug1Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	21	BugRelationShipMap.BugRelationShipMap	t => t.Bug2Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	22	BugRelationShipMap.BugRelationShipMap	t => t.Type
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	23	BugRelationShipMap.BugRelationShipMap	t => t.Direction
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	11	BugSubscriptionMap.BugSubscriptionMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	14	BugSubscriptionMap.BugSubscriptionMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	17	BugSubscriptionMap.BugSubscriptionMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	22	BugSubscriptionMap.BugSubscriptionMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	23	BugSubscriptionMap.BugSubscriptionMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	11	BugTaskMap.BugTaskMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	14	BugTaskMap.BugTaskMap	t => t.DurationUnits
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	17	BugTaskMap.BugTaskMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	22	BugTaskMap.BugTaskMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	23	BugTaskMap.BugTaskMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	24	BugTaskMap.BugTaskMap	t => t.CreatedUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	25	BugTaskMap.BugTaskMap	t => t.CreatedDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	26	BugTaskMap.BugTaskMap	t => t.LastUpdatedUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	27	BugTaskMap.BugTaskMap	t => t.LastUpdatedDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	28	BugTaskMap.BugTaskMap	t => t.AssignedToUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	29	BugTaskMap.BugTaskMap	t => t.PlannedStartDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	30	BugTaskMap.BugTaskMap	t => t.ActualStartDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	31	BugTaskMap.BugTaskMap	t => t.PlannedEndDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	32	BugTaskMap.BugTaskMap	t => t.ActualEndDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	33	BugTaskMap.BugTaskMap	t => t.PlannedDuration
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	34	BugTaskMap.BugTaskMap	t => t.ActualDuration
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	35	BugTaskMap.BugTaskMap	t => t.DurationUnits
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	36	BugTaskMap.BugTaskMap	t => t.PercentComplete
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	37	BugTaskMap.BugTaskMap	t => t.StatusId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	38	BugTaskMap.BugTaskMap	t => t.SortSequence
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	39	BugTaskMap.BugTaskMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	11	BugUserMap.BugUserMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	14	BugUserMap.BugUserMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	17	BugUserMap.BugUserMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	20	BugUserMap.BugUserMap	t => t.Flag
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	23	BugUserMap.BugUserMap	t => t.Seen
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	26	BugUserMap.BugUserMap	t => t.Vote
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	31	BugUserMap.BugUserMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	32	BugUserMap.BugUserMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	33	BugUserMap.BugUserMap	t => t.Flag
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	34	BugUserMap.BugUserMap	t => t.FlagDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	35	BugUserMap.BugUserMap	t => t.Seen
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	36	BugUserMap.BugUserMap	t => t.SeenDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	37	BugUserMap.BugUserMap	t => t.Vote
+DELEGATE	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	38	BugUserMap.BugUserMap	t => t.VoteDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	11	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.Order
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	14	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.Order
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	17	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.DropDownValues
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	21	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.DropDownType
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	26	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.Order
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	27	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.DropDownValues
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	28	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.SortSequence
+DELEGATE	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	29	CustomColumnsMetaDataMap.CustomColumnsMetaDataMap	t => t.DropDownType
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	11	DashboardItemsMap.DashboardItemsMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	14	DashboardItemsMap.DashboardItemsMap	t => t.ChartType
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	20	DashboardItemsMap.DashboardItemsMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	21	DashboardItemsMap.DashboardItemsMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	22	DashboardItemsMap.DashboardItemsMap	t => t.ReportId
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	23	DashboardItemsMap.DashboardItemsMap	t => t.ChartType
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	24	DashboardItemsMap.DashboardItemsMap	t => t.Column
+DELEGATE	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	25	DashboardItemsMap.DashboardItemsMap	t => t.Row
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	11	EmailedLinkMap.EmailedLinkMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	14	EmailedLinkMap.EmailedLinkMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	19	EmailedLinkMap.EmailedLinkMap	t => t.Email
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	23	EmailedLinkMap.EmailedLinkMap	t => t.Action
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	27	EmailedLinkMap.EmailedLinkMap	t => t.UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	30	EmailedLinkMap.EmailedLinkMap	t => t.PasswordHash
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	33	EmailedLinkMap.EmailedLinkMap	t => t.FirstName
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	36	EmailedLinkMap.EmailedLinkMap	t => t.LastName
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	41	EmailedLinkMap.EmailedLinkMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	42	EmailedLinkMap.EmailedLinkMap	t => t.Date
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	43	EmailedLinkMap.EmailedLinkMap	t => t.Email
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	44	EmailedLinkMap.EmailedLinkMap	t => t.Action
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	45	EmailedLinkMap.EmailedLinkMap	t => t.UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	46	EmailedLinkMap.EmailedLinkMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	47	EmailedLinkMap.EmailedLinkMap	t => t.Salt
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	48	EmailedLinkMap.EmailedLinkMap	t => t.PasswordHash
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	49	EmailedLinkMap.EmailedLinkMap	t => t.FirstName
+DELEGATE	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	50	EmailedLinkMap.EmailedLinkMap	t => t.LastName
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	11	OrganizationMap.OrganizationMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	14	OrganizationMap.OrganizationMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	18	OrganizationMap.OrganizationMap	t => t.Domain
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	23	OrganizationMap.OrganizationMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	24	OrganizationMap.OrganizationMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	25	OrganizationMap.OrganizationMap	t => t.Domain
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	26	OrganizationMap.OrganizationMap	t => t.NonAdminsCanUse
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	27	OrganizationMap.OrganizationMap	t => t.ExternalUser
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	28	OrganizationMap.OrganizationMap	t => t.CanBeAssignedTo
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	29	OrganizationMap.OrganizationMap	t => t.CanOnlySeeOwnReport
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	30	OrganizationMap.OrganizationMap	t => t.CanEditSQL
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	31	OrganizationMap.OrganizationMap	t => t.CanDeleteBug
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	32	OrganizationMap.OrganizationMap	t => t.CanEditPosts
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	33	OrganizationMap.OrganizationMap	t => t.CanMergeBugs
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	34	OrganizationMap.OrganizationMap	t => t.CanMassEdit
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	35	OrganizationMap.OrganizationMap	t => t.CanUseReports
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	36	OrganizationMap.OrganizationMap	t => t.CanEditReports
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	37	OrganizationMap.OrganizationMap	t => t.CanViewTasks
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	38	OrganizationMap.OrganizationMap	t => t.CanEditTasks
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	39	OrganizationMap.OrganizationMap	t => t.CanSearch
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	40	OrganizationMap.OrganizationMap	t => t.OtherOrgsPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	41	OrganizationMap.OrganizationMap	t => t.CanAssignToInternalUsers
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	42	OrganizationMap.OrganizationMap	t => t.CategoryFieldPErmissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	43	OrganizationMap.OrganizationMap	t => t.PriorityFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	44	OrganizationMap.OrganizationMap	t => t.AssignedToFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	45	OrganizationMap.OrganizationMap	t => t.StatusFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	46	OrganizationMap.OrganizationMap	t => t.ProjectFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	47	OrganizationMap.OrganizationMap	t => t.OrgFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	48	OrganizationMap.OrganizationMap	t => t.UserDefinedFieldPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	49	OrganizationMap.OrganizationMap	t => t.TagsPermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	50	OrganizationMap.OrganizationMap	t => t.Active
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	11	ProjectUserMap.ProjectUserMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	16	ProjectUserMap.ProjectUserMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	17	ProjectUserMap.ProjectUserMap	t => t.ProjectId
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	18	ProjectUserMap.ProjectUserMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	19	ProjectUserMap.ProjectUserMap	t => t.AutoSubscribe
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	20	ProjectUserMap.ProjectUserMap	t => t.PermissionLevel
+DELEGATE	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	21	ProjectUserMap.ProjectUserMap	t => t.AdminId
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	11	QueuedNotificationMap.QueuedNotificationMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	14	QueuedNotificationMap.QueuedNotificationMap	t => t.Status
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	18	QueuedNotificationMap.QueuedNotificationMap	t => t.LastException
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	22	QueuedNotificationMap.QueuedNotificationMap	t => t.To
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	26	QueuedNotificationMap.QueuedNotificationMap	t => t.From
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	30	QueuedNotificationMap.QueuedNotificationMap	t => t.Subject
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	34	QueuedNotificationMap.QueuedNotificationMap	t => t.Body
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	39	QueuedNotificationMap.QueuedNotificationMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	40	QueuedNotificationMap.QueuedNotificationMap	t => t.DateCreated
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	41	QueuedNotificationMap.QueuedNotificationMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	42	QueuedNotificationMap.QueuedNotificationMap	t => t.UserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	43	QueuedNotificationMap.QueuedNotificationMap	t => t.Status
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	44	QueuedNotificationMap.QueuedNotificationMap	t => t.Retries
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	45	QueuedNotificationMap.QueuedNotificationMap	t => t.LastException
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	46	QueuedNotificationMap.QueuedNotificationMap	t => t.To
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	47	QueuedNotificationMap.QueuedNotificationMap	t => t.From
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	48	QueuedNotificationMap.QueuedNotificationMap	t => t.Subject
+DELEGATE	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	49	QueuedNotificationMap.QueuedNotificationMap	t => t.Body
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	11	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_id
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	14	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_name
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	20	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_id
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	21	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_name
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	22	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_sort_seq
+DELEGATE	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	23	UserDefinedAttributeMap.UserDefinedAttributeMap	t => t.udf_default
+DELEGATE	src/BugTracker.Web/Models/Mapping/VotesMap.cs	11	VotesMap.VotesMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/VotesMap.cs	14	VotesMap.VotesMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/VotesMap.cs	19	VotesMap.VotesMap	t => t.BugId
+DELEGATE	src/BugTracker.Web/Models/Mapping/VotesMap.cs	20	VotesMap.VotesMap	t => t.Total
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	11	BugMap.BugMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	14	BugMap.BugMap	t => t.ShortDescription
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	18	BugMap.BugMap	t => t.CustomDropDownValue1
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	21	BugMap.BugMap	t => t.CustomDropDownValue2
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	24	BugMap.BugMap	t => t.CustomDropDownValue3
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	27	BugMap.BugMap	t => t.Tags
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	32	BugMap.BugMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	33	BugMap.BugMap	t => t.ShortDescription
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	34	BugMap.BugMap	t => t.ReportedUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	35	BugMap.BugMap	t => t.ReportedDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	36	BugMap.BugMap	t => t.StatusId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	37	BugMap.BugMap	t => t.PriorityId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	38	BugMap.BugMap	t => t.OrganizationId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	39	BugMap.BugMap	t => t.CategoryId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	40	BugMap.BugMap	t => t.ProjectId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	41	BugMap.BugMap	t => t.AssignedToUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	42	BugMap.BugMap	t => t.LastUpdatedUserId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	43	BugMap.BugMap	t => t.LastUpdatedDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	44	BugMap.BugMap	t => t.UserDefinedAttributeId
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	45	BugMap.BugMap	t => t.CustomDropDownValue1
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	46	BugMap.BugMap	t => t.CustomDropDownValue2
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	47	BugMap.BugMap	t => t.CustomDropDownValue3
+DELEGATE	src/BugTracker.Web/Models/Mapping/bugMap.cs	48	BugMap.BugMap	t => t.Tags
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	11	CategoryMap.CategoryMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	14	CategoryMap.CategoryMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	20	CategoryMap.CategoryMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	21	CategoryMap.CategoryMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	22	CategoryMap.CategoryMap	t => t.SortOrder
+DELEGATE	src/BugTracker.Web/Models/Mapping/categoryMap.cs	23	CategoryMap.CategoryMap	t => t.Default
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	11	PriorityMap.PriorityMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	14	PriorityMap.PriorityMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	18	PriorityMap.PriorityMap	t => t.BackgroundColor
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	22	PriorityMap.PriorityMap	t => t.Style
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	27	PriorityMap.PriorityMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	28	PriorityMap.PriorityMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	29	PriorityMap.PriorityMap	t => t.SortOrder
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	30	PriorityMap.PriorityMap	t => t.BackgroundColor
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	31	PriorityMap.PriorityMap	t => t.Style
+DELEGATE	src/BugTracker.Web/Models/Mapping/priorityMap.cs	32	PriorityMap.PriorityMap	t => t.Default
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	11	ProjectMap.ProjectMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	14	ProjectMap.ProjectMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	18	ProjectMap.ProjectMap	t => t.POP3UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	21	ProjectMap.ProjectMap	t => t.POP3Password
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	24	ProjectMap.ProjectMap	t => t.POP3SourceEMail
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	27	ProjectMap.ProjectMap	t => t.CustomDropDownLabel1
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	30	ProjectMap.ProjectMap	t => t.CustomDropDownLabel2
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	33	ProjectMap.ProjectMap	t => t.CustomDropDownLabel3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	36	ProjectMap.ProjectMap	t => t.CustomDropDownValue1
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	39	ProjectMap.ProjectMap	t => t.CustomDropDownValue2
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	42	ProjectMap.ProjectMap	t => t.CustomDropDownValue3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	45	ProjectMap.ProjectMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	50	ProjectMap.ProjectMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	51	ProjectMap.ProjectMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	52	ProjectMap.ProjectMap	t => t.Active
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	53	ProjectMap.ProjectMap	t => t.DefaultUser
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	54	ProjectMap.ProjectMap	t => t.AutoAssignToDefaultUser
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	55	ProjectMap.ProjectMap	t => t.AutoSubscribeDefaultUser
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	56	ProjectMap.ProjectMap	t => t.EnablePOP3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	57	ProjectMap.ProjectMap	t => t.POP3UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	58	ProjectMap.ProjectMap	t => t.POP3Password
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	59	ProjectMap.ProjectMap	t => t.POP3SourceEMail
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	60	ProjectMap.ProjectMap	t => t.EnableCustomDropDown1
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	61	ProjectMap.ProjectMap	t => t.EnableCustomDropDown2
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	62	ProjectMap.ProjectMap	t => t.EnableCustomDropDown3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	63	ProjectMap.ProjectMap	t => t.CustomDropDownLabel1
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	64	ProjectMap.ProjectMap	t => t.CustomDropDownLabel2
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	65	ProjectMap.ProjectMap	t => t.CustomDropDownLabel3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	66	ProjectMap.ProjectMap	t => t.CustomDropDownValue1
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	67	ProjectMap.ProjectMap	t => t.CustomDropDownValue2
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	68	ProjectMap.ProjectMap	t => t.CustomDropDownValue3
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	69	ProjectMap.ProjectMap	t => t.Default
+DELEGATE	src/BugTracker.Web/Models/Mapping/projectMap.cs	70	ProjectMap.ProjectMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	11	QueryMap.QueryMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	14	QueryMap.QueryMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	18	QueryMap.QueryMap	t => t.SQL
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	23	QueryMap.QueryMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	24	QueryMap.QueryMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	25	QueryMap.QueryMap	t => t.SQL
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	26	QueryMap.QueryMap	t => t.Default
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	27	QueryMap.QueryMap	t => t.User
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	28	QueryMap.QueryMap	t => t.Org
+DELEGATE	src/BugTracker.Web/Models/Mapping/queryMap.cs	29	QueryMap.QueryMap	t => t.Columns
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	11	ReportMap.ReportMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	14	ReportMap.ReportMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	18	ReportMap.ReportMap	t => t.SQL
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	21	ReportMap.ReportMap	t => t.ChartType
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	27	ReportMap.ReportMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	28	ReportMap.ReportMap	t => t.Description
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	29	ReportMap.ReportMap	t => t.SQL
+DELEGATE	src/BugTracker.Web/Models/Mapping/reportMap.cs	30	ReportMap.ReportMap	t => t.ChartType
+DELEGATE	src/BugTracker.Web/Models/Mapping/sessionMap.cs	11	sessionMap.sessionMap	t => t.se_id
+DELEGATE	src/BugTracker.Web/Models/Mapping/sessionMap.cs	14	sessionMap.sessionMap	t => t.se_id
+DELEGATE	src/BugTracker.Web/Models/Mapping/sessionMap.cs	21	sessionMap.sessionMap	t => t.se_id
+DELEGATE	src/BugTracker.Web/Models/Mapping/sessionMap.cs	22	sessionMap.sessionMap	t => t.se_date
+DELEGATE	src/BugTracker.Web/Models/Mapping/sessionMap.cs	23	sessionMap.sessionMap	t => t.se_user
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	11	StatusMap.StatusMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	14	StatusMap.StatusMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	18	StatusMap.StatusMap	t => t.Style
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	23	StatusMap.StatusMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	24	StatusMap.StatusMap	t => t.Name
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	25	StatusMap.StatusMap	t => t.SortOrder
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	26	StatusMap.StatusMap	t => t.Style
+DELEGATE	src/BugTracker.Web/Models/Mapping/statusMap.cs	27	StatusMap.StatusMap	t => t.Default
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	11	UserMap.UserMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	14	UserMap.UserMap	t => t.UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	18	UserMap.UserMap	t => t.Salt
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	21	UserMap.UserMap	t => t.Password
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	24	UserMap.UserMap	t => t.FristName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	27	UserMap.UserMap	t => t.LastName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	30	UserMap.UserMap	t => t.EMail
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	33	UserMap.UserMap	t => t.Signature
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	36	UserMap.UserMap	t => t.PasswordResetKey
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	41	UserMap.UserMap	t => t.Id
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	42	UserMap.UserMap	t => t.UserName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	43	UserMap.UserMap	t => t.Salt
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	44	UserMap.UserMap	t => t.Password
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	45	UserMap.UserMap	t => t.FristName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	46	UserMap.UserMap	t => t.LastName
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	47	UserMap.UserMap	t => t.EMail
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	48	UserMap.UserMap	t => t.AdminId
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	49	UserMap.UserMap	t => t.DefaltQueryID
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	50	UserMap.UserMap	t => t.EnableNotifications
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	51	UserMap.UserMap	t => t.AutoSubscribe
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	52	UserMap.UserMap	t => t.AutoSubscribeOwnBugs
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	53	UserMap.UserMap	t => t.AutoSubscribeReportedBugs
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	54	UserMap.UserMap	t => t.SendNotificationsToSelf
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	55	UserMap.UserMap	t => t.Active
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	56	UserMap.UserMap	t => t.BugsPerPage
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	57	UserMap.UserMap	t => t.ForcedProject
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	58	UserMap.UserMap	t => t.ReportedNotifications
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	59	UserMap.UserMap	t => t.AssignedNotifications
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	60	UserMap.UserMap	t => t.SubscribedNotifications
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	61	UserMap.UserMap	t => t.Signature
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	62	UserMap.UserMap	t => t.UseEditor
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	63	UserMap.UserMap	t => t.EnableBugListPopUps
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	64	UserMap.UserMap	t => t.CreatedUser
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	65	UserMap.UserMap	t => t.OrganizationId
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	66	UserMap.UserMap	t => t.LastLoginDate
+DELEGATE	src/BugTracker.Web/Models/Mapping/userMap.cs	67	UserMap.UserMap	t => t.PasswordResetKey
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	55	BugSearch.Search	s => s.Types("bug") .Query(q => q.QueryString(d => d.Query(searchText))) .Take(500) //Maximum of 500 results just to avoid major performance problems .Highli...
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	56	BugSearch.Search	d => d.Query(searchText)
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	56	BugSearch.Search	q => q.QueryString(d => d.Query(searchText))
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	58	BugSearch.Search	h => h.PreTags("<span class='highlighted'>") .PostTags("</span>") .OnFields(f => f.OnField("*"))
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	60	BugSearch.Search	f => f.OnField("*")
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	108	BugSearch.GetHitsFilteredBySecurity	d => Convert.ToInt32(d["bg_id"])
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	110	BugSearch.GetHitsFilteredBySecurity	h => visibleBugIds.Contains(Convert.ToInt32(h.Id))
+DELEGATE	src/BugTracker.Web/Search/BugSearch.cs	164	BugSearch.IndexBug	i => i.Type("bug") .Id(Convert.ToInt64(bugRow["bg_id"]))
+DELEGATE	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	26	PageAuthorizeAttribute.OnAuthorize	role => principal.IsInRole(role)
+DELEGATE	src/BugTracker.Web/admin.aspx.cs	43	admin.ReindexAllBugs	() => search.IndexAll()
+DELEGATE	src/BugTracker.Web/btnet/print_bug.cs	948	PrintBug.format_comment	delegate(Match m) { return "<a href=send_email.aspx?bp_id=" + Convert.ToString(post_id) + "&to=" + m.ToString() + ">" + m.ToString() + "</a>"; }
+DELEGATE	src/BugTracker.Web/bugs.aspx.cs	61	bugs.LoadQueryDropdown	q => q.Default == 1
+DELEGATE	src/BugTracker.Web/categories.aspx.cs	25	categories.Page_Load	x => x.Name
+DELEGATE	src/BugTracker.Web/notifications.aspx.cs	27	notifications.Page_Load	n => n.Id
+DELEGATE	src/BugTracker.Web/orgs.aspx.cs	30	orgs.Page_Load	o => o.Name
+DELEGATE	src/BugTracker.Web/priorities.aspx.cs	28	priorities.Page_Load	p => p.Name
+DELEGATE	src/BugTracker.Web/projects.aspx.cs	23	projects.Page_Load	p => p.Name
+DELEGATE	src/BugTracker.Web/statuses.aspx.cs	26	statuses.Page_Load	s => s.SortOrder
+DELEGATE	src/BugTracker.Web/udfs.aspx.cs	27	udfs.Page_Load	u => u.udf_name
+FORMAT	src/BugTracker.Web/BasePage.cs	16	BasePage.OnPreInit	string.Format("default.aspx?returnUrl={0}", HttpUtility.UrlEncode(Request.RawUrl))
+FORMAT	src/BugTracker.Web/Controllers/BugFromEmailController.cs	40	BugFromEmailController.Post	string.Format("{0}{1}{2}", headers, Environment.NewLine, bugFromEmail.Comment)
+FORMAT	src/BugTracker.Web/Controls/BugList.ascx	128	__Page.__body	string.Format("'{0}'", c)
+FORMAT	src/BugTracker.Web/Security/Authenticate.cs	226	Authenticate.check_password_with_db	String.Format("User {0} entered an incorrect password.", username)
+FORMAT	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	185	ClaimsIdentityExtensions.GetClaimsValue	string.Format("Identity is missing value for claim type {0}", claimType)
+FORMAT	src/BugTracker.Web/backup_db.aspx.cs	80	backup_db.on_backup	DateTime.Now.ToString("yyyyMMdd_HHmmss")
+FORMAT	src/BugTracker.Web/btnet/BugQueryExecutor.cs	43	BugQueryExecutor.ExecuteQuery	string.Format("SELECT COUNT(1) FROM ({0}) t", GetInnerSql(identity))
+FORMAT	src/BugTracker.Web/btnet/BugQueryExecutor.cs	55	BugQueryExecutor.ExecuteQuery	string.Format("SELECT t.{0} FROM ({1}) t",columnsToSelect, innerSql)
+FORMAT	src/BugTracker.Web/btnet/BugQueryExecutor.cs	60	BugQueryExecutor.ExecuteQuery	string.Format("SELECT t.id FROM ({0}) t", innerSql)
+FORMAT	src/BugTracker.Web/btnet/BugQueryExecutor.cs	103	BugQueryExecutor.BuildDynamicOrderByClause	string.Format("[{0}] {1}", orderBy, sortDirection == "ASC" ? "ASC" : "DESC")
+FORMAT	src/BugTracker.Web/btnet/BugQueryExecutor.cs	119	BugQueryExecutor.ApplyWhereClause	string.Format("[{0}] = @{1}", filter.Column, parameterName)
+FORMAT	src/BugTracker.Web/btnet/dbutil.cs	165	DbUtil.log_stopwatch_time	stopwatch.ElapsedMilliseconds.ToString("0000")
+FORMAT	src/BugTracker.Web/btnet/print_bug.cs	986	PrintBug.convert_to_email	String.Format("<a href='mailto:{0}'>{0}</a>", m.ToString())
+FORMAT	src/BugTracker.Web/btnet/print_bug.cs	1004	PrintBug.convert_to_hyperlink	String.Format("<a target=_blank href='{0}'>{0}</a>", m.ToString())
+FORMAT	src/BugTracker.Web/btnet/util.cs	99	Util.write_to_memory_log	DateTime.Now.ToString("yyy-MM-dd HH:mm:ss:fff")
+FORMAT	src/BugTracker.Web/btnet/util.cs	1166	Util.print_as_excel	DateTime.Now.ToString("yyyyMMdd_HHmmss")
+FORMAT	src/BugTracker.Web/edit_bug.aspx.cs	295	edit_bug.prepare_for_update	Convert.ToDateTime(dr_bug["snapshot_timestamp"]).ToString("yyyyMMdd HH\\:mm\\:ss\\:fff")
+FORMAT	src/BugTracker.Web/edit_bug.aspx.cs	791	edit_bug.do_update	last_update_date.ToString("yyyyMMdd HH\\:mm\\:ss\\:fff")
+FORMAT	src/BugTracker.Web/edit_task.aspx.cs	210	edit_task.load_date_hour_min	String.Format("{0:0000}-{1:00}-{2:00}", dt.Year, dt.Month, dt.Day)
+FORMAT	src/BugTracker.Web/edit_task.aspx.cs	212	edit_task.load_date_hour_min	dt.Hour.ToString("00")
+FORMAT	src/BugTracker.Web/edit_task.aspx.cs	213	edit_task.load_date_hour_min	dt.Minute.ToString("00")
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	785	edit_user.update_project_user_xref	String.Format(@" insert into project_user_xref (pu_project, pu_user, pu_auto_subscribe) select pj_id, @us, 0 from projects where pj_id in ({0}) and pj_id not...
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	819	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_auto_subscribe = 1 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	844	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_admin = 1 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	870	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_permission_level = 0 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	894	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_permission_level = 1 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	918	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_permission_level = 2 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	942	edit_user.update_project_user_xref	String.Format(@" update project_user_xref set pu_permission_level = 3 where pu_user = @us and pu_project in ({0});", projects)
+FORMAT	src/BugTracker.Web/edit_user.aspx.cs	982	edit_user.update_project_user_xref	String.Format(@" insert into bug_subscriptions (bs_bug, bs_user) select bg_id, @us from bugs where bg_project in ({0}) and bg_id not in (select bs_bug from b...
+FORMAT	src/BugTracker.Web/get_db_datetime.aspx	14	__Page.Page_Load	dt.ToString("yyyyMMdd HH\\:mm\\:ss\\:fff")
+FORMAT	src/BugTracker.Web/print_bugs.aspx.cs	63	print_bugs.BuildFilter	string.Format("filters[{0}][Column]", arrayIndex)
+FORMAT	src/BugTracker.Web/print_bugs.aspx.cs	66	print_bugs.BuildFilter	string.Format("filters[{0}][Column]", arrayIndex)
+FORMAT	src/BugTracker.Web/print_bugs.aspx.cs	67	print_bugs.BuildFilter	string.Format("filters[{0}][Value]", arrayIndex)
+FORMAT	src/BugTracker.Web/send_password_resets.aspx.cs	42	send_password_resets.SendMail	String.Format("Hi, we're resetting your password. Click <a href='{0}UpdatePassword.aspx?password_reset_key={1}&user_name={2}'>here</a>", System.Configuration...
+FORMAT	src/BugTracker.Web/view_memory_log.aspx	21	__Page.Page_Load	DateTime.Now.ToString("yyy-MM-dd HH:mm:ss:fff")
+FORMAT	src/btnet_service/POP3Main.cs	131	POP3Main.get_log_file_path	(now.Month).ToString("0#")
+FORMAT	src/btnet_service/POP3Main.cs	133	POP3Main.get_log_file_path	(now.Day).ToString("0#")
+FORMAT	src/btnet_service/POP3Main.cs	240	POP3Main.do_work	heartbeat_datetime.ToString("yyyy-MM-dd h:mm tt")
+LINQ	src/BugTracker.Web/BasePage.cs	23	BasePage.IsUserAuthorized	Attribute.GetCustomAttributes(GetType(), typeof (PageAllowAnonymous)).Any()
+LINQ	src/BugTracker.Web/BasePage.cs	30	BasePage.IsUserAuthorized	attributes.All(a => a.OnAuthorize(Page.User))
+LINQ	src/BugTracker.Web/Controls/BugList.ascx	128	__Page.__body	GetVisibleColumns().Select(c => string.Format("'{0}'", c))
+LINQ	src/BugTracker.Web/Controls/BugList.ascx	128	__Page.__body	GetVisibleColumns().Select(c => string.Format("'{0}'", c)).ToArray()
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	66	BugList.GetFilterValues	context.Projects.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	66	BugList.GetFilterValues	context.Projects.OrderBy(p => p.Name) .Select(p => new SelectListItem { Value = p.Name, Text = p.Name })
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	79	BugList.GetFilterValues	context.Organizations.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	79	BugList.GetFilterValues	context.Organizations.OrderBy(p => p.Name) .Select(p => new SelectListItem { Value = p.Name, Text = p.Name })
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	92	BugList.GetFilterValues	context.Categories.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	92	BugList.GetFilterValues	context.Categories.OrderBy(p => p.Name) .Select(p => new SelectListItem { Value = p.Name, Text = p.Name })
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	105	BugList.GetFilterValues	context.Priorities.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	105	BugList.GetFilterValues	context.Priorities.OrderBy(p => p.Name) .Select(p => new SelectListItem { Value = p.Name, Text = p.Name })
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	118	BugList.GetFilterValues	context.Statuses.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	118	BugList.GetFilterValues	context.Statuses.OrderBy(p => p.Name) .Select(p => new SelectListItem { Value = p.Name, Text = p.Name })
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	131	BugList.GetFilterValues	context.Users.OrderBy(p => p.UserName)
+LINQ	src/BugTracker.Web/Controls/BugList.ascx.cs	131	BugList.GetFilterValues	context.Users.OrderBy(p => p.UserName) .Select(p => new SelectListItem { Value = p.UserName, Text = p.UserName })
+LINQ	src/BugTracker.Web/Mail/Mime.cs	90	Mime.get_cc	message.Headers.Cc.Select(c => c.Address)
+LINQ	src/BugTracker.Web/Mail/Mime.cs	96	Mime.get_to	message.Headers.To.Select(c => c.Address)
+LINQ	src/BugTracker.Web/Models/Context.cs	46	Context.GetQueriesForUser	Queries.Where(q => (q.User == null || q.User == userId) && (q.Org == null || q.Org == orgId) )
+LINQ	src/BugTracker.Web/Models/Context.cs	46	Context.GetQueriesForUser	Queries.Where(q => (q.User == null || q.User == userId) && (q.Org == null || q.Org == orgId) ).OrderBy(q => q.Description)
+LINQ	src/BugTracker.Web/Models/Context.cs	46	Context.GetQueriesForUser	Queries.Where(q => (q.User == null || q.User == userId) && (q.Org == null || q.Org == orgId) ).OrderBy(q => q.Description).ToList()
+LINQ	src/BugTracker.Web/Models/query.cs	23	Query.VisibleColumnNames	ColumnNames.Except(new[] { "$COLOR", "$SCORE" })
+LINQ	src/BugTracker.Web/Models/query.cs	23	Query.VisibleColumnNames	ColumnNames.Except(new[] { "$COLOR", "$SCORE" }).ToArray()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	55	BugSearch.Search	s.Types("bug") .Query(q => q.QueryString(d => d.Query(searchText))) .Take(500)
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	79	BugSearch.Search	hit.Highlights.Any()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	81	BugSearch.Search	hit.Highlights.First()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	83	BugSearch.Search	highlight.Value.Highlights.FirstOrDefault()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	108	BugSearch.GetHitsFilteredBySecurity	ds.Tables[0].AsEnumerable()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	108	BugSearch.GetHitsFilteredBySecurity	ds.Tables[0].AsEnumerable().Select(d => Convert.ToInt32(d["bg_id"]))
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	108	BugSearch.GetHitsFilteredBySecurity	ds.Tables[0].AsEnumerable().Select(d => Convert.ToInt32(d["bg_id"])).ToArray()
+LINQ	src/BugTracker.Web/Search/BugSearch.cs	110	BugSearch.GetHitsFilteredBySecurity	response.Hits.Where(h => visibleBugIds.Contains(Convert.ToInt32(h.Id)))
+LINQ	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	26	PageAuthorizeAttribute.OnAuthorize	_roles.Any(role => principal.IsInRole(role))
+LINQ	src/BugTracker.Web/btnet/BugQueryExecutor.cs	40	BugQueryExecutor.ExecuteQuery	filters.Any()
+LINQ	src/BugTracker.Web/btnet/BugQueryExecutor.cs	108	BugQueryExecutor.ApplyWhereClause	filters.Any()
+LINQ	src/BugTracker.Web/btnet/dbutil.cs	28	DbUtil.execute_scalar	sql.GetParameters().ToArray()
+LINQ	src/BugTracker.Web/btnet/dbutil.cs	41	DbUtil.execute_nonquery_without_logging	sql.GetParameters().ToArray()
+LINQ	src/BugTracker.Web/btnet/dbutil.cs	60	DbUtil.execute_nonquery	sql.GetParameters().ToArray()
+LINQ	src/BugTracker.Web/btnet/dbutil.cs	100	DbUtil.execute_reader	sql.GetParameters().ToArray()
+LINQ	src/BugTracker.Web/btnet/dbutil.cs	148	DbUtil.get_dataset	sql.GetParameters().ToArray()
+LINQ	src/BugTracker.Web/btnet/version_control.cs	470	VersionControl.visual_diff	Math.Min(line.IndexOf(" ", pos1), comma_pos)
+LINQ	src/BugTracker.Web/bugs.aspx.cs	61	bugs.LoadQueryDropdown	queries.FirstOrDefault(q => q.Default == 1)
+LINQ	src/BugTracker.Web/categories.aspx.cs	25	categories.Page_Load	context.Categories.OrderBy(x => x.Name)
+LINQ	src/BugTracker.Web/categories.aspx.cs	25	categories.Page_Load	context.Categories.OrderBy(x => x.Name).ToList()
+LINQ	src/BugTracker.Web/notifications.aspx.cs	27	notifications.Page_Load	context.QueuedNotification.OrderBy(n => n.Id)
+LINQ	src/BugTracker.Web/notifications.aspx.cs	27	notifications.Page_Load	context.QueuedNotification.OrderBy(n => n.Id).ToList()
+LINQ	src/BugTracker.Web/orgs.aspx.cs	30	orgs.Page_Load	context.Organizations.OrderBy(o => o.Name)
+LINQ	src/BugTracker.Web/orgs.aspx.cs	30	orgs.Page_Load	context.Organizations.OrderBy(o => o.Name).ToList()
+LINQ	src/BugTracker.Web/print_bugs.aspx.cs	71	print_bugs.BuildFilter	filters.ToArray()
+LINQ	src/BugTracker.Web/priorities.aspx.cs	28	priorities.Page_Load	context.Priorities.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/priorities.aspx.cs	28	priorities.Page_Load	context.Priorities.OrderBy(p => p.Name).ToArray()
+LINQ	src/BugTracker.Web/projects.aspx.cs	23	projects.Page_Load	context.Projects.OrderBy(p => p.Name)
+LINQ	src/BugTracker.Web/projects.aspx.cs	23	projects.Page_Load	context.Projects.OrderBy(p => p.Name).ToArray()
+LINQ	src/BugTracker.Web/send_email.aspx.cs	668	send_email.handle_attachments	attachments.ToArray(typeof(int))
+LINQ	src/BugTracker.Web/statuses.aspx.cs	26	statuses.Page_Load	context.Statuses.OrderBy(s => s.SortOrder)
+LINQ	src/BugTracker.Web/statuses.aspx.cs	26	statuses.Page_Load	context.Statuses.OrderBy(s => s.SortOrder).ToList()
+LINQ	src/BugTracker.Web/udfs.aspx.cs	27	udfs.Page_Load	context.UserDefinedAttributes.OrderBy(u => u.udf_name)
+LINQ	src/BugTracker.Web/udfs.aspx.cs	27	udfs.Page_Load	context.UserDefinedAttributes.OrderBy(u => u.udf_name).ToList()
+LINQ	src/BugTracker.Web/view_attachment.aspx	141	__Page.Page_Load	Math.Min(dataLength - totalRead, buffer.Length)
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	115	BugFromEmailController.Post	bugFromEmail.OrganizationId ?? User.Identity.GetOrganizationId()
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	116	BugFromEmailController.Post	bugFromEmail.CategoryId ?? (int)defaults["ct"]
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	117	BugFromEmailController.Post	bugFromEmail.PriorityId ?? (int)defaults["pr"]
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	118	BugFromEmailController.Post	bugFromEmail.StatusId ?? (int)defaults["st"]
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	119	BugFromEmailController.Post	bugFromEmail.UdfId ?? (int)defaults["udf"]
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	136	BugFromEmailController.Post	bugFromEmail.AssignedTo ?? 0
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	163	BugFromEmailController.Post	bugFromEmail.AttachmentFileName ?? string.Empty
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	164	BugFromEmailController.Post	bugFromEmail.AttachmentDescription ?? string.Empty
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	165	BugFromEmailController.Post	bugFromEmail.AttachmentContentType ?? string.Empty
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	228	BugFromEmailController.Post	bugFromEmail.AttachmentFileName ?? string.Empty
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	229	BugFromEmailController.Post	bugFromEmail.AttachmentDescription ?? string.Empty
+NULLABLE	src/BugTracker.Web/Controllers/BugFromEmailController.cs	230	BugFromEmailController.Post	bugFromEmail.AttachmentContentType ?? string.Empty
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	11	BugFromEmail.ProjectId	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	25	BugFromEmail.OrganizationId	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	26	BugFromEmail.CategoryId	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	27	BugFromEmail.PriorityId	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	28	BugFromEmail.StatusId	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	29	BugFromEmail.AssignedTo	int?
+NULLABLE	src/BugTracker.Web/Models/BugFromEmail.cs	30	BugFromEmail.UdfId	int?
+PROCESS	src/BugTracker.Web/btnet/version_control.cs	32	VersionControl.run_and_capture	new System.Diagnostics.Process()
+PROCESS	src/BugTracker.Web/btnet/version_control.cs	94	VersionControl.run_svn	new System.Diagnostics.Process()
+PROCESS	src/btnet_service/POP3Main.cs	75	POP3Main.POP3Main	Process.GetCurrentProcess()
+PROCESS	src/btnet_service/btnet_service.cs	36	service.OnStart	System.Diagnostics.Process.GetCurrentProcess()
+REF_OUT	src/BugTracker.Web/Controllers/BugFromEmailController.cs	64	BugFromEmailController.Post	ref subject
+REF_OUT	src/BugTracker.Web/Mail/Mime.cs	27	Mime.get_bugid_from_subject	ref string subject
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	66	BugList.get_buglist_paging_string	ref int this_page
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	187	BugList.sort_and_filter_buglist_dataview	ref string filter_val
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	188	BugList.sort_and_filter_buglist_dataview	ref string sort_val
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	189	BugList.sort_and_filter_buglist_dataview	ref string prev_sort_val
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	190	BugList.sort_and_filter_buglist_dataview	ref string prev_dir_val
+REF_OUT	src/BugTracker.Web/btnet/bug_list.cs	474	BugList.display_bugs	ref this_page
+REF_OUT	src/BugTracker.Web/btnet/util.cs	162	Util.is_valid_decimal	out x
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	175	VersionControl.which_chars_changed	ref string part1
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	175	VersionControl.which_chars_changed	ref string part2
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	175	VersionControl.which_chars_changed	ref string part3
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	393	VersionControl.visual_diff	ref string left_out
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	393	VersionControl.visual_diff	ref string right_out
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	642	VersionControl.visual_diff	ref part1
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	642	VersionControl.visual_diff	ref part2
+REF_OUT	src/BugTracker.Web/btnet/version_control.cs	642	VersionControl.visual_diff	ref part3
+REF_OUT	src/BugTracker.Web/git_diff.aspx	64	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/git_diff.aspx	64	__Page.Page_Load	ref right_out
+REF_OUT	src/BugTracker.Web/git_diff.aspx	80	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/git_diff.aspx	80	__Page.Page_Load	ref right_out
+REF_OUT	src/BugTracker.Web/hg_diff.aspx	76	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/hg_diff.aspx	76	__Page.Page_Load	ref right_out
+REF_OUT	src/BugTracker.Web/hg_diff.aspx	92	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/hg_diff.aspx	92	__Page.Page_Load	ref right_out
+REF_OUT	src/BugTracker.Web/search.aspx.cs	1013	search.call_sort_and_filter_buglist_dataview	ref filter_val
+REF_OUT	src/BugTracker.Web/search.aspx.cs	1014	search.call_sort_and_filter_buglist_dataview	ref sort_val
+REF_OUT	src/BugTracker.Web/search.aspx.cs	1015	search.call_sort_and_filter_buglist_dataview	ref prev_sort_val
+REF_OUT	src/BugTracker.Web/search.aspx.cs	1016	search.call_sort_and_filter_buglist_dataview	ref prev_dir_val
+REF_OUT	src/BugTracker.Web/svn_diff.aspx	129	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/svn_diff.aspx	129	__Page.Page_Load	ref right_out
+REF_OUT	src/BugTracker.Web/svn_diff.aspx	148	__Page.Page_Load	ref left_out
+REF_OUT	src/BugTracker.Web/svn_diff.aspx	148	__Page.Page_Load	ref right_out
+REGEX	src/BugTracker.Web/btnet/print_bug.cs	19	PrintBug	new Regex( @"([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\." + @")|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})", RegexOptions.IgnoreCase |...
+REGEX	src/BugTracker.Web/btnet/print_bug.cs	28	PrintBug	new Regex( //@"(?<Protocol>\w+):\/\/(?<Domain>[\w.]+\/?)\S*", @"https?://[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]", RegexOptions.IgnoreCase | ...
+REGEX	src/BugTracker.Web/btnet/print_bug.cs	974	PrintBug.format_comment	new Regex(link_marker + "([0-9]+)")
+REGEX	src/BugTracker.Web/btnet/util.cs	39	Util	new Regex(",")
+REGEX	src/BugTracker.Web/btnet/util.cs	40	Util	new Regex("\\|")
+REGEX	src/BugTracker.Web/btnet/util.cs	41	Util	new Regex("^([a-zA-Z0-9_\\-\\'\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")
+REGEX	src/BugTracker.Web/btnet/util.cs	216	Util.strip_html	Regex.Replace(text_with_tags, @"<(.|\n)*?>", string.Empty)
+REGEX	src/BugTracker.Web/btnet/util.cs	228	Util.strip_dangerous_tags	Regex.Replace(text_with_tags, @"<script", "<scrSAFEipt", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	230	Util.strip_dangerous_tags	Regex.Replace(s, @"</script", "</scrSAFEipt", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	231	Util.strip_dangerous_tags	Regex.Replace(s, @"<object", "<obSAFEject", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	232	Util.strip_dangerous_tags	Regex.Replace(s, @"</object", "</obSAFEject", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	233	Util.strip_dangerous_tags	Regex.Replace(s, @"<embed", "<emSAFEbed", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	234	Util.strip_dangerous_tags	Regex.Replace(s, @"</embed", "</emSAFEbed", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	235	Util.strip_dangerous_tags	Regex.Replace(s, @"onabort", "onSAFEabort", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	236	Util.strip_dangerous_tags	Regex.Replace(s, @"onblur", "onSAFEblur", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	237	Util.strip_dangerous_tags	Regex.Replace(s, @"onchange", "onSAFEchange", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	238	Util.strip_dangerous_tags	Regex.Replace(s, @"onclick", "onSAFEclick", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	239	Util.strip_dangerous_tags	Regex.Replace(s, @"ondblclick", "onSAFEdblclick", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	240	Util.strip_dangerous_tags	Regex.Replace(s, @"onerror", "onSAFEerror", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	241	Util.strip_dangerous_tags	Regex.Replace(s, @"onfocus", "onSAFEfocus", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	243	Util.strip_dangerous_tags	Regex.Replace(s, @"onkeydown", "onSAFEkeydown", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	244	Util.strip_dangerous_tags	Regex.Replace(s, @"onkeypress", "onSAFEkeypress", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	245	Util.strip_dangerous_tags	Regex.Replace(s, @"onkeyup", "onSAFEkeyup", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	247	Util.strip_dangerous_tags	Regex.Replace(s, @"onload", "onSAFEload", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	249	Util.strip_dangerous_tags	Regex.Replace(s, @"onmousedown", "onSAFEmousedown", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	250	Util.strip_dangerous_tags	Regex.Replace(s, @"onmousemove", "onSAFEmousemove", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	251	Util.strip_dangerous_tags	Regex.Replace(s, @"onmouseout", "onSAFEmouseout", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	252	Util.strip_dangerous_tags	Regex.Replace(s, @"onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	253	Util.strip_dangerous_tags	Regex.Replace(s, @"onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	255	Util.strip_dangerous_tags	Regex.Replace(s, @"onreset", "onSAFEresetK", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	256	Util.strip_dangerous_tags	Regex.Replace(s, @"onresize", "onSAFEresize", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	257	Util.strip_dangerous_tags	Regex.Replace(s, @"onselect", "onSAFEselect", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	258	Util.strip_dangerous_tags	Regex.Replace(s, @"onsubmit", "onSAFEsubmit", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/util.cs	259	Util.strip_dangerous_tags	Regex.Replace(s, @"onunload", "onSAFEunload", RegexOptions.IgnoreCase)
+REGEX	src/BugTracker.Web/btnet/version_control.cs	395	VersionControl.visual_diff	new Regex("\n")
+REGEX	src/BugTracker.Web/edit_bug.aspx.cs	2185	edit_bug.display_bug_relationships	new Regex(link_marker + "([0-9]+)")
+REGEX	src/BugTracker.Web/git_blame.aspx	56	__Page.write_blame	new Regex("\n")
+REGEX	src/BugTracker.Web/git_hook.aspx	67	__Page.Page_Load	new Regex("\n")
+REGEX	src/BugTracker.Web/git_hook.aspx	80	__Page.Page_Load	new Regex(regex_pattern)
+REGEX	src/BugTracker.Web/git_log.aspx	110	__Page.fetch_and_write_history	new Regex("\n")
+REGEX	src/BugTracker.Web/hg_hook.aspx	182	__Page.get_bugid_from_desc	new Regex(regex_pattern)
+REGEX	src/BugTracker.Web/send_email.aspx.cs	128	send_email.Page_Load	new Regex("\n")
+REGEX	src/BugTracker.Web/send_email.aspx.cs	177	send_email.Page_Load	new Regex("\n")
+REGEX	src/BugTracker.Web/svn_blame.aspx	86	__Page.write_blame	new Regex("\n")
+REGEX	src/BugTracker.Web/svn_diff.aspx	110	__Page.Page_Load	new Regex("\n")
+REGEX	src/BugTracker.Web/svn_hook.aspx	199	__Page.get_bugids_from_msg	new Regex(regex_pattern1)
+REGEX	src/BugTracker.Web/svn_hook.aspx	209	__Page.get_bugids_from_msg	new Regex(regex_pattern2)
+REGEX	src/btnet_service/POP3Main.cs	65	POP3Main	new Regex("\\|")
+REGEX	src/btnet_service/POP3Main.cs	515	POP3Main.fetch_messages	new Regex("\r\n")
+STATE	src/BugTracker.Web/Controls/Footer.ascx	16	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/Global.asax.cs	49	Global.LoadConfiguration	Application["custom_header"]
+STATE	src/BugTracker.Web/Global.asax.cs	53	Global.LoadConfiguration	Application["custom_footer"]
+STATE	src/BugTracker.Web/Global.asax.cs	57	Global.LoadConfiguration	Application["custom_logo"]
+STATE	src/BugTracker.Web/Global.asax.cs	61	Global.LoadConfiguration	Application["custom_welcome"]
+STATE	src/BugTracker.Web/LoggedOut.Master	23	__Page.__body	Application["custom_logo"]
+STATE	src/BugTracker.Web/Security/Authenticate.cs	84	Authenticate.check_password	HttpRuntime.Cache[username]
+STATE	src/BugTracker.Web/Security/Authenticate.cs	123	Authenticate.check_password	HttpRuntime.Cache[username]
+STATE	src/BugTracker.Web/Security/Authenticate.cs	142	Authenticate.check_password	HttpRuntime.Cache[username]
+STATE	src/BugTracker.Web/Security/Authenticate.cs	157	Authenticate.check_password	HttpRuntime.Cache[username]
+STATE	src/BugTracker.Web/UpdatePassword.aspx	30	__Page.__body	Application["custom_logo"]
+STATE	src/BugTracker.Web/add_customfield.aspx.cs	285	add_customfield.on_update	Application["custom_columns_dataset"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	74	BugList.get_buglist_paging_string	HttpContext.Current.Session["page"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	78	BugList.get_buglist_paging_string	HttpContext.Current.Session["page"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	80	BugList.get_buglist_paging_string	HttpContext.Current.Session["page"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	90	BugList.get_buglist_paging_string	HttpContext.Current.Session["page"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	198	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["filter"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	200	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["filter"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	214	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["filter"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	260	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["sort"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	267	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["sort"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	271	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["sort"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	613	BugList.display_bugs	HttpContext.Current.Session["bugs_unfiltered"]
+STATE	src/BugTracker.Web/btnet/bug_list.cs	758	BugList.display_bugs	HttpContext.Current.Application[string_bugid]
+STATE	src/BugTracker.Web/btnet/util.cs	106	Util.write_to_memory_log	HttpContext.Current.Application["log"]
+STATE	src/BugTracker.Web/btnet/util.cs	111	Util.write_to_memory_log	HttpContext.Current.Application["log"]
+STATE	src/BugTracker.Web/btnet/whatsnew.cs	44	WhatsNew.add_news	HttpRuntime.Cache["Application"]
+STATE	src/BugTracker.Web/bugs.aspx.cs	26	bugs.Page_Load	Session["just_did_text_search"]
+STATE	src/BugTracker.Web/bugs.aspx.cs	32	bugs.Page_Load	Session["just_did_text_search"]
+STATE	src/BugTracker.Web/dashboard.aspx	120	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/default.aspx	72	__Page.__body	Application["custom_welcome"]
+STATE	src/BugTracker.Web/delete_subscriber.aspx.cs	19	delete_subscriber.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/delete_task.aspx.cs	24	delete_task.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/edit_bug.aspx.cs	302	edit_bug.prepare_for_update	Session["project"]
+STATE	src/BugTracker.Web/edit_bug.aspx.cs	703	edit_bug.do_insert	Session["project"]
+STATE	src/BugTracker.Web/edit_bug.aspx.cs	969	edit_bug.load_project_and_user_dropdown_for_insert	Session["project"]
+STATE	src/BugTracker.Web/edit_custom_html.aspx.cs	64	edit_custom_html.Page_Load	Application[System.IO.Path.GetFileNameWithoutExtension(file_name)]
+STATE	src/BugTracker.Web/edit_queued_notifications.aspx	18	__Page.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/edit_user_permissions2.aspx	200	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/install.aspx	23	__Page.Page_Load	Application["dbs"]
+STATE	src/BugTracker.Web/install.aspx	25	__Page.Page_Load	Application["dbs"]
+STATE	src/BugTracker.Web/install.aspx	28	__Page.Page_Load	Application["dbs"]
+STATE	src/BugTracker.Web/install.aspx	35	__Page.Page_Load	Application["dbs"]
+STATE	src/BugTracker.Web/mbug.aspx	110	__Page.Page_Load	Session["project"]
+STATE	src/BugTracker.Web/register.aspx	19	__Page.__body	Application["custom_logo"]
+STATE	src/BugTracker.Web/relationships.aspx	53	__Page.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/search.aspx.cs	155	search.Page_Load	Session["bugs"]
+STATE	src/BugTracker.Web/search.aspx.cs	620	search.do_query	Session["bugs"]
+STATE	src/BugTracker.Web/search.aspx.cs	621	search.do_query	Session["bugs_unfiltered"]
+STATE	src/BugTracker.Web/search_text.aspx.cs	32	search_text.Page_Load	Session["query"]
+STATE	src/BugTracker.Web/send_email.aspx	231	__Page.__body	Session["email_addresses"]
+STATE	src/BugTracker.Web/send_email.aspx	318	__Page.__body	Session["email_addresses"]
+STATE	src/BugTracker.Web/send_email.aspx	321	__Page.__body	Session["email_addresses"]
+STATE	src/BugTracker.Web/send_email.aspx.cs	43	send_email.Page_Load	Session["email_addresses"]
+STATE	src/BugTracker.Web/subscribe.aspx	25	__Page.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/tags.aspx	37	__Page.print_tags	Application["tags"]
+STATE	src/BugTracker.Web/tasks.aspx	46	__Page.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/tasks.aspx	183	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/tasks_all.aspx	64	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/tropo_recording.aspx	20	__Page.Page_Load	Application["tropo-" + key]
+STATE	src/BugTracker.Web/tropo_recording.aspx	32	__Page.Page_Load	Application["tropo-" + key]
+STATE	src/BugTracker.Web/users.aspx	240	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/view_memory_log.aspx	19	__Page.Page_Load	Application["log"]
+STATE	src/BugTracker.Web/view_subscribers.aspx	85	__Page.Page_Load	Session["session_cookie"]
+STATE	src/BugTracker.Web/whatsnew.aspx	69	__Page.Page_Load	Application["whatsnew"]
+STATIC_MUTABLE	src/BugTracker.Web/btnet/bug.cs	27	Bug	private static object dummy = new object();
+STATIC_MUTABLE	src/BugTracker.Web/btnet/print_bug.cs	19	PrintBug	static Regex reEmail = new Regex( @"([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\." + @")|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})", Re...
+STATIC_MUTABLE	src/BugTracker.Web/btnet/print_bug.cs	28	PrintBug	static Regex reHyperlinks = new Regex( //@"(?<Protocol>\w+):\/\/(?<Domain>[\w.]+\/?)\S*", @"https?://[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]"...
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	32	Util	public static HttpContext context = null;
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	33	Util	private static HttpRequest Request = null;
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	37	Util	static object dummy = new object();
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	39	Util	public static Regex reCommas = new Regex(",");
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	40	Util	public static Regex rePipes = new Regex("\\|");
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	41	Util	static Regex reEmail = new Regex("^([a-zA-Z0-9_\\-\\'\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
+STATIC_MUTABLE	src/BugTracker.Web/btnet/util.cs	532	Util	private static Random _random = new Random();
+STATIC_MUTABLE	src/BugTracker.Web/btnet/whatsnew.cs	17	WhatsNew	static object mylock = new Object();
+STATIC_MUTABLE	src/BugTracker.Web/btnet/whatsnew.cs	18	WhatsNew	static long prev_seconds = 0;
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	28	POP3Main	public static bool verbose = true;
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	29	POP3Main	public static string LogFileFolder;
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	30	POP3Main	public static int LogEnabled = 1;
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	33	POP3Main	static object dummy = new object();
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	65	POP3Main	static Regex rePipes = new Regex("\\|");
+STATIC_MUTABLE	src/btnet_service/POP3Main.cs	70	POP3Main	public static DateTime heartbeat_datetime = DateTime.Now;
+STATIC_MUTABLE	src/btnet_service/btnet_service.cs	16	service	protected static POP3Main pop3;
+THREADING	src/BugTracker.Web/Mail/email.cs	273	Email.delete_stuff	new System.Threading.Thread(threadproc_delete_stuff)
+THREADING	src/BugTracker.Web/btnet/bug.cs	1201	Bug.send_notifications	new System.Threading.Thread(threadproc_notifications)
+THREADING	src/BugTracker.Web/btnet/bug.cs	1276	Bug.threadproc_notifications	lock(dummy)
+THREADING	src/BugTracker.Web/btnet/tags.cs	119	Tags.count_votes	new System.Threading.Thread(threadproc_votes)
+THREADING	src/BugTracker.Web/btnet/tags.cs	125	Tags.build_tag_index	new System.Threading.Thread(threadproc_tags)
+THREADING	src/BugTracker.Web/btnet/whatsnew.cs	42	WhatsNew.add_news	lock(mylock)
+THREADING	src/BugTracker.Web/edit_queued_notifications.aspx	37	__Page.Page_Load	new System.Threading.Thread(btnet.Bug.threadproc_notifications)
+THREADING	src/btnet_service/POP3Main.cs	86	POP3Main.POP3Main	new Thread(new ThreadStart(fetching_thread_proc))
+THREADING	src/btnet_service/POP3Main.cs	91	POP3Main.POP3Main	new Thread(new ThreadStart(watchdog_thread_proc))
+THREADING	src/btnet_service/POP3Main.cs	151	POP3Main.write_to_log	lock(dummy)
+THREADING	src/btnet_service/POP3Main.cs	223	POP3Main.watchdog_thread_proc	new Thread(new ThreadStart(fetching_thread_proc))
+THREADING	src/btnet_service/POP3Main.cs	306	POP3Main.resume	new Timer()
