@@ -64,8 +64,8 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/Controllers/BugQueryController.cs:9-27", why = "GET api/BugQuery; body {recordsTotal, recordsFiltered, data}")
-    @SourceRef(value = "src/BugTracker.Web/App_Start/WebApiConfig.cs:203-207", why = "route api/{controller}/{id}")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:71,85,118-127", why = "SELECT t.* -> every query column is a JSON property")
+    @SourceRef(value = "src/BugTracker.Web/App_Start/WebApiConfig.cs:14-18", why = "route api/{controller}/{id}")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:41,55", why = "SELECT t.* -> every query column is a JSON property")
     @SourceRef(value = "src/BugTracker.Database/Script.PostDeployment.sql:12-28", why = "all bugs SQL and column list (aliases = JSON names)")
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:400-404,463-467", why = "admin: project-permission predicate only, no org restriction (og_other_orgs_permission_level 2)")
     @SourceRef(value = "src/BugTracker.Web/setup.sql:125-126,170,174,178,244-246,279-280,463-467,483-485", why = "seed names joined into the rows")
@@ -84,7 +84,7 @@ class S2_BugListTest extends Scenario {
     @Test
     @SourceRef(value = "src/BugTracker.Database/Script.PostDeployment.sql:31-48", why = "open bugs = bg_status <> 5")
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:467-475", why = "permission predicate ANDed into the existing WHERE")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:73,118", why = "recordsTotal counts the query's own rows")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:43,45,88", why = "recordsTotal counts the query's own rows")
     void apiOpenBugsQueryExcludesClosed() throws Exception {
         seed();
         JsonNode r = api(q("queryId", "2", "sortBy", "id", "sortOrder", "ASC", "start", "0", "length", "10", "idOnly", "false"));
@@ -94,7 +94,7 @@ class S2_BugListTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:105-115,131-134", why = "ORDER BY [sortBy] ASC|DESC, OFFSET start FETCH length decides which rows form the page")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:75-79,103", why = "ORDER BY [sortBy] ASC|DESC, OFFSET start FETCH length decides which rows form the page")
     void apiSortByColumnSelectsThePage() {
         seed();
         // desc values: 1=charlie, 2=alpha, 3=bravo
@@ -106,7 +106,7 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @Inherited("Sort direction is compared case-sensitively with \"ASC\"; the page's DataTables client sends lowercase \"asc\", so the list can never sort ascending")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:133", why = "sortDirection == \"ASC\" ? \"ASC\" : \"DESC\"")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:103", why = "sortDirection == \"ASC\" ? \"ASC\" : \"DESC\"")
     @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx:162-166", why = "client sends data.order[0].dir (DataTables: lowercase)")
     void apiLowercaseAscSortsDescending() {
         seed();
@@ -115,8 +115,8 @@ class S2_BugListTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:49,109,114-115", why = "OFFSET @offset, FETCH @page_size; length <= 0 -> 5000")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:118-119", why = "counts ignore paging")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:79,84", why = "OFFSET @offset, FETCH @page_size; length <= 0 -> 5000")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:43,88-89", why = "counts ignore paging")
     void apiPaging() {
         seed();
         JsonNode r = api(q("queryId", "1", "sortBy", "id", "sortOrder", "ASC", "start", "1", "length", "1", "idOnly", "false"));
@@ -132,8 +132,8 @@ class S2_BugListTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:70,78-83,93-103,119", why = "filters: [col] = @col joined with AND; recordsFiltered from the filtered count")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:161-166", why = "parameter name = column with spaces -> _")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:48-53,63,66-73,106-122,89", why = "filters: [col] = @col joined with AND; recordsFiltered from the filtered count")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:70,131-137", why = "parameter name = column with spaces -> _")
     @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx:140-151,163-173", why = "client sends filters as [{Column, Value}] via $.param")
     @SourceRef(value = "src/BugTracker.Web/print_bugs.aspx.cs:62-75", why = "the same filters[i][Column]/[Value] key format, read explicitly")
     void apiFilters() {
@@ -154,8 +154,8 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Database/Script.PostDeployment.sql:13,18", why = "isnull(bu_flag,0) [$FLAG] from bug_user for @ME")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:113", why = "@ME = current user id")
-    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:224,237-242", why = "$FLAG is a filterable column with values 0/1/2")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:82-83", why = "@ME = current user id")
+    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:38,51-56", why = "$FLAG is a filterable column with values 0/1/2")
     void apiFlagColumnIsPerUserAndFilterable() {
         seed();
         Db.exec("insert into bug_user (bu_bug, bu_user, bu_flag, bu_seen, bu_vote) values (1, 1, 1, 0, 0)");
@@ -172,7 +172,7 @@ class S2_BugListTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:71,85", why = "idOnly -> SELECT t.id")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:41,55", why = "idOnly -> SELECT t.id")
     void apiIdOnlyReturnsOnlyIds() {
         seed();
         JsonNode r = api(q("queryId", "1", "sortBy", "id", "sortOrder", "DESC", "start", "0", "length", "2", "idOnly", "true"));
@@ -184,7 +184,7 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/Controllers/BugQueryController.cs:14-16,27", why = "unknown query id -> NotFound()")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:65-68", why = "sortBy not in the query's columns -> ArgumentException (unhandled -> 500)")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:35-38", why = "sortBy not in the query's columns -> ArgumentException (unhandled -> 500)")
     void apiErrors() {
         seed();
         loginIfNeeded();
@@ -207,10 +207,10 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/bugs.aspx:22", why = "DropDownList ID=query")
-    @SourceRef(value = "src/BugTracker.Web/bugs.aspx.cs:149-172", why = "options = queries for user, text=desc, value=id; default (qu_default=1) selected, or ?queryId")
+    @SourceRef(value = "src/BugTracker.Web/bugs.aspx.cs:54-77", why = "options = queries for user, text=desc, value=id; default (qu_default=1) selected, or ?queryId")
     @SourceRef(value = "src/BugTracker.Web/Models/Context.cs:42-50", why = "user/org null-or-match, ordered by description")
     @SourceRef(value = "src/BugTracker.Web/setup.sql:747-910", why = "the ten seeded queries, ids 1..10 in insert order, all bugs is the default")
-    @SourceRef(value = "src/BugTracker.Web/bugs.aspx.cs:114-115", why = "title AppTitle - PluralBugLabel")
+    @SourceRef(value = "src/BugTracker.Web/bugs.aspx.cs:19-20", why = "title AppTitle - PluralBugLabel")
     void bugsPageQueryDropdown() {
         seed();
         loginAdmin(web);
@@ -233,9 +233,9 @@ class S2_BugListTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx:3-30", why = "table#bug-table: header row of visible columns, filter row of select.table-filter[data-column-name]")
-    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:204-222", why = "display names: $FLAG->flag; $COLOR hidden")
+    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:18-31", why = "display names: $FLAG->flag, $SEEN->new, $VOTE->votes")
     @SourceRef(value = "src/BugTracker.Web/Models/query.cs:17-24", why = "columns from qu_columns, minus $COLOR/$SCORE")
-    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:224-327", why = "filterable columns and their option lists (names ordered by name)")
+    @SourceRef(value = "src/BugTracker.Web/Controls/BugList.ascx.cs:38-43,45-141", why = "filterable columns and their option lists (names ordered by name)")
     @SourceRef(value = "src/BugTracker.Database/Script.PostDeployment.sql:27,105", why = "qu_columns of all bugs and days in status")
     void bugsPageRendersColumnsAndFilterOptions() {
         seed();

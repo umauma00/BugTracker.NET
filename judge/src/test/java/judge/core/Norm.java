@@ -79,12 +79,15 @@ public final class Norm {
     /**
      * N3: path relative to the base URL, lower-cased, query dropped. The original
      * runs on case-insensitive IIS; "Bugs.aspx" and "bugs.aspx" are one page.
+     * Paths outside the base path are returned with a leading '/'.
      */
     public static String relPath(URI u) {
         String base = JudgeConfig.baseUrl().getPath();
         String p = u.getPath() == null ? "" : u.getPath();
         if (p.startsWith(base)) p = p.substring(base.length());
-        else if (p.startsWith("/")) p = p.substring(1);
+        else if (!p.startsWith("/")) p = "/" + p;
+        // A path outside the base keeps its leading '/', so a link to the wrong
+        // root shows up as "/bugs.aspx" instead of silently matching "bugs.aspx".
         return p.toLowerCase();
     }
 

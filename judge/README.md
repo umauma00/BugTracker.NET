@@ -41,6 +41,14 @@ mvn -B test
 | `src/test/java/judge/JudgeSelfCheckTest.java` | Fails if any scenario test lacks a `@SourceRef` |
 | `specs/` | Each scenario in plain words, with the source lines that justify every expectation and the inherited quirks it pins |
 
+## Fixtures (`judge.core.Scenario`)
+
+| Fixture | What |
+|---|---|
+| `loginAdmin(web)` | Logs in as admin/admin and asserts it worked (up to two attempts; see its javadoc and S1 for the inherited password rewrite) |
+| `primeAspNetSession(web)` | Makes the ASP.NET session non-empty with one search postback (`Session["bugs"]`, search.aspx.cs:620). Call it after login and **before the first postback** to any page that sets `ViewStateUserKey = Session.SessionID` (edit_bug.aspx.cs:32, add_attachment.aspx.cs:15, the admin edit/delete pages). ASP.NET InProc issues a new SessionID per request until something is stored in Session, so an unprimed postback fails view-state MAC (500) on the original. Harmless on the port. Not needed after a GET of an existing `edit_bug.aspx?id=N` (stores `Session["project"]`, edit_bug.aspx.cs:302) |
+| `newSession()` | Fresh logged-out session on the same database |
+
 ## Judge contract (binding on the port — goes into RULEBOOK.md in Step 1)
 
 The UI is redesigned, so the judge cannot compare markup. It compares data

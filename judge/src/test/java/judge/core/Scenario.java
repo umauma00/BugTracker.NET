@@ -64,6 +64,26 @@ public abstract class Scenario {
         return p;
     }
 
+    /**
+     * Makes the ASP.NET session non-empty. Fixture, not a scenario. Call it after
+     * login and before the first postback to any page that sets
+     * {@code ViewStateUserKey = Session.SessionID} (add_attachment.aspx.cs:15,
+     * edit_bug.aspx.cs:32, edit_user.aspx.cs:20, ...). An empty InProc session is
+     * issued a new SessionID on every request until something is stored in it, so
+     * the postback would be validated against a different key than the page was
+     * rendered with and fail the view-state MAC (HTTP 500 on the original).
+     * search.aspx stores {@code Session["bugs"]} on a search postback
+     * (search.aspx.cs:620), which makes the session id stick. Read-only; harmless
+     * for the port. (Reading of ASP.NET session-cookie mechanics - to be confirmed
+     * when the original runs.)
+     */
+    protected void primeAspNetSession(Web session) {
+        Form f = Form.containing(session, session.get("search.aspx"), "like");
+        if (f.has("hit_submit_button")) f.set("hit_submit_button", "1");
+        Web.Page p = f.submit(null);
+        assertEquals(200, p.status(), "session priming search");
+    }
+
     /** Fresh session (logged out), same database. */
     protected Web newSession() { return new Web(); }
 }

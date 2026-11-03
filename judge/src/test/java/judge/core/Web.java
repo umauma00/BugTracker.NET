@@ -54,6 +54,9 @@ public final class Web {
 
     public Page get(String path) { return send(HttpRequest.newBuilder(resolve(path)).GET(), true); }
 
+    /** GET an absolute URI (e.g. a GET form's action plus query string), following redirects. */
+    public Page get(URI uri) { return send(HttpRequest.newBuilder(uri).GET(), true); }
+
     /** GET without following redirects — for asserting the redirect itself. */
     public Page getNoFollow(String path) { return send(HttpRequest.newBuilder(resolve(path)).GET(), false); }
 
@@ -79,9 +82,17 @@ public final class Web {
         return send(HttpRequest.newBuilder(resolve(path)).header("Accept", "application/json").GET(), true);
     }
 
-    /** multipart/form-data POST (file uploads). {@code files}: field -> (filename, bytes). */
+    /** multipart/form-data POST (file uploads). {@code files}: field -> (filename, bytes); part type application/octet-stream. */
     public Page postMultipart(URI action, List<Map.Entry<String, String>> fields,
                               Map<String, Map.Entry<String, byte[]>> files) {
+        Map<String, String> types = new java.util.HashMap<>();
+        for (String k : files.keySet()) types.put(k, "application/octet-stream");
+        return postMultipart(action, fields, files, types);
+    }
+
+    /** As above, with an explicit part Content-Type per file field (default application/octet-stream). */
+    public Page postMultipart(URI action, List<Map.Entry<String, String>> fields,
+                              Map<String, Map.Entry<String, byte[]>> files, Map<String, String> contentTypes) {
         String boundary = "----judge" + UUID.randomUUID();
         List<byte[]> parts = new ArrayList<>();
         for (var f : fields) {
@@ -91,7 +102,8 @@ public final class Web {
         for (var e : files.entrySet()) {
             parts.add(("--" + boundary + "\r\nContent-Disposition: form-data; name=\"" + e.getKey()
                     + "\"; filename=\"" + e.getValue().getKey()
-                    + "\"\r\nContent-Type: application/octet-stream\r\n\r\n").getBytes(StandardCharsets.UTF_8));
+                    + "\"\r\nContent-Type: " + contentTypes.getOrDefault(e.getKey(), "application/octet-stream")
+                    + "\r\n\r\n").getBytes(StandardCharsets.UTF_8));
             parts.add(e.getValue().getValue());
             parts.add("\r\n".getBytes(StandardCharsets.UTF_8));
         }

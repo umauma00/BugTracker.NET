@@ -43,8 +43,8 @@ class S1_LoginTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/default.aspx:28,37,41,42", why = "fields user, pw, unnamed submit, message span msg")
-    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:111", why = "msg cleared on every load")
-    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:94", why = "[PageAllowAnonymous]: no redirect for anonymous")
+    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:27", why = "msg cleared on every load")
+    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:10", why = "[PageAllowAnonymous]: no redirect for anonymous")
     void loginPageIsAnonymousAndHasLoginForm() {
         Web.Page p = web.getNoFollow("default.aspx");
         assertEquals(200, p.status());
@@ -54,28 +54,28 @@ class S1_LoginTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:211-215", why = "success -> Util.redirect(Request, Response)")
+    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:127-132", why = "success -> Util.redirect(Request, Response)")
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:1097-1113", why = "no url param, no mobile param -> Response.Redirect(\"bugs.aspx\")")
     @SourceRef(value = "src/BugTracker.Web/Security/Authenticate.cs:145", why = "us_most_recent_login_datetime = getdate() on success")
     @SourceRef(value = "src/BugTracker.Web/setup.sql:168", why = "seeded us_most_recent_login_datetime 2015-01-13 22:05:16.973")
     void adminLoginLandsOnBugsAndStampsLoginTime() {
         primeAdminPassword(web);
+        java.sql.Timestamp before = S3_EditBugTest.dbNow();
         Web.Page p = submitLogin(web, "admin", "admin");
+        java.sql.Timestamp after = S3_EditBugTest.dbNow();
         assertEquals(1, p.redirects().size(), "exactly one redirect hop: " + p.redirects());
         assertEquals("bugs.aspx", Norm.relPath(p.redirects().get(0)));
         assertEquals("bugs.aspx", p.path());
         assertEquals(200, p.status());
         Object stamp = Db.scalar("select us_most_recent_login_datetime from users where us_id = 1");
-        assertNotNull(stamp);
-        assertNotEquals("2015-01-13 22:05:16.973", stamp.toString().replace('T', ' '),
-                "login time must have been rewritten by the successful login");
+        S3_EditBugTest.between(before, after, stamp, "us_most_recent_login_datetime (getdate() on success)");
         assertTrue(loggedIn(web));
     }
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/Security/Authenticate.cs:44-48", why = "check_password false -> \"Invalid User or Password.\"")
     @SourceRef(value = "src/BugTracker.Web/Security/Authenticate.cs:220-228", why = "hash mismatch -> false")
-    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:217-220", why = "msg.InnerText = ErrorMessage, no redirect")
+    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:133-136", why = "msg.InnerText = ErrorMessage, no redirect")
     void wrongPasswordShowsMessageAndStaysOnLoginPage() {
         Web.Page p = submitLogin(web, "admin", "definitely-not-the-password");
         assertEquals(200, p.status());
@@ -117,7 +117,7 @@ class S1_LoginTest extends Scenario {
     @Inherited("Every login attempt that reaches the password comparison rewrites user 1's password to 'admin' with a new random salt")
     @SourceRef(value = "src/BugTracker.Web/Security/Authenticate.cs:213-217", why = "Util.update_user_password(1, \"admin\") before comparing")
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:502-515", why = "new random salt + hash written to us_salt/us_password")
-    @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:533-542", why = "salt length: loop bound re-drawn each pass, always >= 10 and <= 99")
+    @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:532-542", why = "salt length: loop bound re-drawn each pass, always >= 10 and <= 99; alphabet A-Z a-z (no 's') 1-9 (last char '0' never drawn)")
     @SourceRef(value = "src/BugTracker.Web/setup.sql:168", why = "seeded salt PmafvZSWFYML3")
     void failedAdminAttemptRewritesAdminPassword() {
         Map<String, Object> before = adminCredentials();
@@ -128,7 +128,7 @@ class S1_LoginTest extends Scenario {
         String salt = (String) after.get("us_salt");
         assertNotEquals(SEED_ADMIN_SALT, salt, "salt rewritten");
         assertTrue(salt.length() >= 10 && salt.length() <= 99, "salt length " + salt.length());
-        assertTrue(salt.matches("[A-Za-z0-9]+"), "salt alphabet: " + salt);
+        assertTrue(salt.matches("[A-Za-rt-z1-9]+"), "salt alphabet (util.cs:535-536 list lacks 's' and the last char '0' is never drawn): " + salt);
         assertNotEquals(before.get("us_password"), after.get("us_password"));
         // ... and 'admin' is now the admin password, on the very next attempt.
         Web s2 = newSession();
@@ -220,7 +220,7 @@ class S1_LoginTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/logoff.aspx.cs:12-17", why = "SignOut then Redirect(default.aspx?msg=logged+off)")
-    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:111,169-176", why = "msg 'logged off' shows nothing")
+    @SourceRef(value = "src/BugTracker.Web/default.aspx.cs:27,69,87-91", why = "msg 'logged off' shows nothing: cleared at :27 and the non-'logged off' branch that sets it is skipped")
     void logoffSignsOutAndRedirectsWithMessageParameter() {
         loginAdmin(web);
         assertTrue(loggedIn(web));
@@ -352,10 +352,14 @@ class S1_LoginTest extends Scenario {
                 + "select ?, us_salt, us_password, ?, 1, 1 from users where us_id = 1", username, admin);
     }
 
-    /** True iff a protected page answers 200 without redirecting to the login page. */
+    /** True iff a protected page answers 200; otherwise asserts the 302 to default.aspx (BasePage.cs:16). */
     private static boolean loggedIn(Web s) {
         Web.Page p = s.getNoFollow("bugs.aspx");
-        return p.status() == 200;
+        if (p.status() == 200) return true;
+        // BasePage.cs:16: anything else must be exactly the redirect to default.aspx
+        assertEquals(302, p.status(), "logged-out probe must be a 302, was " + p.status());
+        assertEquals("default.aspx", Norm.relPath(location(p)), "logged-out probe must redirect to default.aspx");
+        return false;
     }
 
     private static void assertLoginRedirect(Web.Page p, String expectedReturnUrl) {

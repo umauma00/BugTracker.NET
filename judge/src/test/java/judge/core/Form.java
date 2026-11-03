@@ -29,6 +29,7 @@ public final class Form {
     private final Web web;
     private final URI action;
     private final String enctype;
+    private final boolean getMethod;
     /** Real field name -> value, in document order. Multi-valued fields keep a list. */
     private final Map<String, List<String>> values = new LinkedHashMap<>();
     /** Logical name -> real name. */
@@ -36,12 +37,16 @@ public final class Form {
     /** Submit buttons by logical name -> (real name, value). */
     private final Map<String, Map.Entry<String, String>> buttons = new LinkedHashMap<>();
     private final Map<String, Map.Entry<String, byte[]>> files = new LinkedHashMap<>();
+    private final Map<String, String> fileTypes = new LinkedHashMap<>();
+    /** Image buttons submit name.x / name.y instead of name=value. */
+    private final java.util.Set<String> imageButtons = new java.util.HashSet<>();
 
     private Form(Web web, Element form, URI pageUri) {
         this.web = web;
         String a = form.attr("action");
         this.action = a.isBlank() ? pageUri : pageUri.resolve(a);
         this.enctype = form.attr("enctype").toLowerCase();
+        this.getMethod = form.attr("method").equalsIgnoreCase("get");
         for (Element el : form.select("input, select, textarea, button")) {
             String name = el.attr("name");
             if (name.isBlank() || el.hasAttr("disabled")) continue;
@@ -51,6 +56,7 @@ public final class Form {
             if (tag.equals("button") || type.equals("submit") || type.equals("image")) {
                 String v = tag.equals("button") ? el.attr("value") : el.val();
                 buttons.putIfAbsent(logicalName(name), new SimpleEntry<>(name, v));
+                if (type.equals("image")) imageButtons.add(name);
                 continue;
             }
             if (type.equals("file") || type.equals("reset")) continue;
@@ -127,6 +133,14 @@ public final class Form {
 
     public Form file(String logicalField, String filename, byte[] content) {
         files.put(real(logicalField), new SimpleEntry<>(filename, content));
+        fileTypes.remove(real(logicalField));
+        return this;
+    }
+
+    /** As {@link #file(String, String, byte[])} with an explicit multipart part Content-Type. */
+    public Form file(String logicalField, String filename, byte[] content, String contentType) {
+        file(logicalField, filename, content);
+        fileTypes.put(real(logicalField), contentType);
         return this;
     }
 
@@ -137,9 +151,28 @@ public final class Form {
         if (logicalButton != null) {
             var b = buttons.get(logicalButton);
             if (b == null) throw new AssertionError("No submit button '" + logicalButton + "'; have " + buttons.keySet());
-            fields.add(new SimpleEntry<>(b.getKey(), b.getValue()));
+            if (imageButtons.contains(b.getKey())) {
+                fields.add(new SimpleEntry<>(b.getKey() + ".x", "0"));
+                fields.add(new SimpleEntry<>(b.getKey() + ".y", "0"));
+            } else {
+                fields.add(new SimpleEntry<>(b.getKey(), b.getValue()));
+            }
         }
-        if (!files.isEmpty() || enctype.contains("multipart")) return web.postMultipart(action, fields, files);
+        if (getMethod) {
+            StringBuilder q = new StringBuilder();
+            for (var f : fields) {
+                q.append(q.length() == 0 ? "" : "&")
+                        .append(java.net.URLEncoder.encode(f.getKey(), java.nio.charset.StandardCharsets.UTF_8)).append('=')
+                        .append(java.net.URLEncoder.encode(f.getValue() == null ? "" : f.getValue(), java.nio.charset.StandardCharsets.UTF_8));
+            }
+            String base = action.toString();
+            int h = base.indexOf('#');
+            if (h >= 0) base = base.substring(0, h);
+            int qm = base.indexOf('?');
+            if (qm >= 0) base = base.substring(0, qm); // browsers replace the action's query on GET submit
+            return web.get(URI.create(q.length() == 0 ? base : base + "?" + q));
+        }
+        if (!files.isEmpty() || enctype.contains("multipart")) return web.postMultipart(action, fields, files, fileTypes);
         return web.postForm(action, fields);
     }
 

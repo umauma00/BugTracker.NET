@@ -78,7 +78,7 @@ class S7_PrintExportTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/print_bugs.aspx.cs:36,62-75", why = "filters read from filters[i][Column]/filters[i][Value]")
-    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:105-115,136-152", why = "filter + sort + page")
+    @SourceRef(value = "src/BugTracker.Web/btnet/BugQueryExecutor.cs:48-53,63,75-79,84,101-104,106-122", why = "filter + sort + page")
     void printListHonorsFilterSortAndPaging() {
         S2_BugListTest.seed();
         loginAdmin(web);
@@ -157,7 +157,7 @@ class S7_PrintExportTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/print_bugs2.aspx:20-43", why = "one print_bug per row of the query result (id = column 1)")
-    @SourceRef(value = "src/BugTracker.Web/print_bugs2.aspx.cs:283-305", why = "title, same query params as print_bugs")
+    @SourceRef(value = "src/BugTracker.Web/print_bugs2.aspx.cs:27-46", why = "title, same query params as print_bugs")
     @SourceRef(value = "src/BugTracker.Web/btnet/print_bug.cs:87-204", why = "bug id / short desc links and the field rows")
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:538-545", why = "EnableSeen: each fetched bug is marked seen for the viewer")
     @SourceRef(value = "src/BugTracker.Web/Web.config:766", why = "EnableSeen = 1")

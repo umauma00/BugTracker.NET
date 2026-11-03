@@ -58,7 +58,9 @@
 - **M-S6-2** Blank password on edit overwrites the password (hash of "") → `editUserUpdatesRowAndKeepsPasswordWhenBlank` fails.
 - **M-S6-3** Port "fixes" the discarded level-3 permission update → `savingReporterUserDowngradesReporterPermission` fails.
 - **M-S6-4** `delete_user` deletes the users row but not `project_user_xref` rows, or deletes despite bug references → `deleteUserRemovesUserAndProjectRows`, `deleteUserReferencedByBugIsRefused` fail.
-- **M-S6-5** Admin pages authorise any authenticated user / skip auth on POST → `anonymousAdminPagesRedirectToLogin`, `anonymousDeletePostDeletesNothing` fail.
+- **M-S6-5** Admin pages authorise any authenticated user / skip auth on POST.
+  - "skip auth on POST" → `anonymousAdminPagesRedirectToLogin`, `anonymousDeletePostDeletesNothing` fail.
+  - "authorise any authenticated user": unverifiable until non-admin login works (inherited defect). No non-admin can log in on the original: `GetIdentity` reads `dr["project_admin"]`, a column its query never selects (`Security.cs:117`, query :21-35), so the request fails with HTTP 500 (S1 `nonAdminWithCorrectPasswordFailsWithServerError`). No scenario can present an authenticated non-admin.
 
 ### S9 — search
 - **M-S9-1** Description criterion built without escaping `%`/`_` (or with a bound parameter that still treats them as wildcards) → `likeEscapesSqlWildcards` fails.

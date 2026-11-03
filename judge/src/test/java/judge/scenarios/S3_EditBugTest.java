@@ -106,6 +106,7 @@ class S3_EditBugTest extends Scenario {
     @Inherited("submitting a new bug inserts a bug_user 'seen' row for bug id 0 (get_bug_datarow(0) runs before the insert); comment text is HTML-decoded before storage")
     void createBugRedirectsToItAndWritesRows() {
         loginAdmin(web);
+        primeAspNetSession(web); // edit_bug.aspx.cs:32 ViewStateUserKey = Session.SessionID
         int admin = id("admin");
         int developer = id("developer");
         Web.Page p = web.get("edit_bug.aspx?id=0");
@@ -164,6 +165,7 @@ class S3_EditBugTest extends Scenario {
     @Inherited("a rejected new bug still inserts a bug_user 'seen' row for bug id 0")
     void missingShortDescriptionIsRejected() {
         loginAdmin(web);
+        primeAspNetSession(web); // edit_bug.aspx.cs:32 ViewStateUserKey = Session.SessionID
         Web.Page p = web.get("edit_bug.aspx?id=0");
         Web.Page r = bugForm(p, true).set("short_desc", "").set("comment", "").submit(null);
 
@@ -185,6 +187,7 @@ class S3_EditBugTest extends Scenario {
     @Inherited("the Create/Update button as shipped never saves: no element named user_hit_submit exists, so every browser POST is treated as a project-dropdown autopostback")
     void browserPostWithoutUserHitSubmitSavesNothing() {
         loginAdmin(web);
+        primeAspNetSession(web); // edit_bug.aspx.cs:32 ViewStateUserKey = Session.SessionID
         Web.Page p = web.get("edit_bug.aspx?id=0");
         Web.Page r = bugForm(p, false).set("short_desc", "Never saved").set("project", "1").set("comment", "").submit(null);
 
@@ -231,7 +234,9 @@ class S3_EditBugTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:710-787", why = "do_update: bugs row rewritten (same values, tags '' , last-updated user/date)")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:709-787", why = "do_update: bugs row rewritten (same values, tags '' , last-updated user/date)")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:758-770", why = "update list: bg_project, bg_org, bg_category, bg_assigned_to_user, bg_user_defined_attribute come from the form")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:30-147", why = "auto_subscribe: nobody qualifies in seed data -> no bug_subscriptions, no queued_notifications")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1684-1704", why = "a non-empty comment alone counts as a change")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1760-1890", why = "record_changes: no field changed -> no AddChange, no exception")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:813-834", why = "insert_comment, msg 'Bug was updated.', comment box cleared")
@@ -254,16 +259,25 @@ class S3_EditBugTest extends Scenario {
         assertEquals("", Norm.text(Form.containing(web, r, "short_desc").get("comment")), "comment box cleared");
 
         Map<String, Object> bug = Db.one("select * from bugs where bg_id = 1");
+        // do_update rewrites project/org/category/assignee/udf from the form (edit_bug.aspx.cs:758-770);
+        // with an untouched form they must come back as seeded (see seedBug), not reset to defaults.
         expect(bug, "bg_short_desc", "Seeded bug", "bg_status", 1, "bg_priority", 3, "bg_tags", "",
+                "bg_project", 1, "bg_org", 1, "bg_category", 1, "bg_assigned_to_user", 0,
+                "bg_user_defined_attribute", 0,
+                "bg_reported_user", admin, "bg_reported_date", SEED_DATE,
                 "bg_last_updated_user", admin);
         between(before, after, bug.get("bg_last_updated_date"), "bg_last_updated_date");
 
         Map<String, Object> post = Db.one("select * from bug_posts");
         expect(post, "bp_bug", 1, "bp_type", "comment", "bp_user", admin, "bp_comment", "Judge comment <b> ok",
-                "bp_comment_search", "Judge comment <b> ok", "bp_email_from", null, "bp_email_cc", "",
+                "bp_comment_search", "Judge comment <b> ok", "bp_email_from", null, "bp_email_to", null, "bp_email_cc", "",
+                "bp_file", null, "bp_size", null,
                 "bp_content_type", "text/plain", "bp_hidden_from_external_users", 0, "bp_parent", null);
         between(before, after, post.get("bp_date"), "bp_date");
         assertEquals(0, Db.count("select count(*) from bug_posts where bp_type = 'update'"));
+        assertEquals(1, Db.count("select count(*) from bug_posts"));
+        assertEquals(0, Db.count("select count(*) from bug_subscriptions"), "auto_subscribe: nobody qualifies in seed data");
+        assertEquals(0, Db.count("select count(*) from queued_notifications"));
     }
 
     // ---------------------------------------------------------------- permissions

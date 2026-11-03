@@ -100,7 +100,7 @@ class S8_NotificationQueueTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1075,1079", why = "us_email not null and <> ''")
-    @SourceRef(value = "src/BugTracker.Web/setup.sql:174-176", why = "developer seeded without e-mail")
+    @SourceRef(value = "src/BugTracker.Web/setup.sql:170-172", why = "developer seeded without e-mail")
     void subscriberWithoutEmailGetsNothing() {
         seedBug();
         Db.exec("insert into bug_subscriptions (bs_bug, bs_user) values (1, 2)");
@@ -138,8 +138,8 @@ class S8_NotificationQueueTest extends Scenario {
     // ------------------------------------------------------------------ notifications.aspx
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/notifications.aspx:97-124", why = "table#notifications-table columns and cells (<%= %>, unencoded)")
-    @SourceRef(value = "src/BugTracker.Web/notifications.aspx.cs:163-166", why = "all rows ordered by qn_id")
+    @SourceRef(value = "src/BugTracker.Web/notifications.aspx:36-63", why = "table#notifications-table columns and cells (<%= %>, unencoded)")
+    @SourceRef(value = "src/BugTracker.Web/notifications.aspx.cs:27", why = "all rows ordered by qn_id")
     void queuePageListsRows() {
         seedQueueRow("2024-05-02T11:00:00", 7, 3, "held", 3, "smtp down", "tester@example.com", "s2");
         seedQueueRow("2024-05-01T10:00:00", 5, 2, "not sent", 0, "", "developer@example.com", "s1");
@@ -182,7 +182,7 @@ class S8_NotificationQueueTest extends Scenario {
 
     @Test
     @Inherited("The 'Delete unsent notifications' link carries a stray ' %>' in actn, so following it deletes nothing")
-    @SourceRef(value = "src/BugTracker.Web/notifications.aspx:82", why = "href=\"edit_queued_notifications.aspx?actn=delete %>\"")
+    @SourceRef(value = "src/BugTracker.Web/notifications.aspx:21", why = "href=\"edit_queued_notifications.aspx?actn=delete %>\"")
     @SourceRef(value = "src/BugTracker.Web/edit_queued_notifications.aspx:24,42", why = "actn must equal 'delete'; otherwise just redirect")
     void renderedDeleteLinkDeletesNothing() {
         seedQueueRow("2024-05-01T10:00:00", 5, 2, "not sent", 3, "x", "developer@example.com", "s1");

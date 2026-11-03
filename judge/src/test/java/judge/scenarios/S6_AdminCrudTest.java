@@ -97,7 +97,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/btnet/sortable_html_table.cs:82,191-240", why = "table#mytable, empty cell -> &nbsp;")
     void createUserWritesRowAndShowsItInList() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
         assertEquals("10", f.get("bugs_per_page"));
         f.set("username", "judge1").set("pw", "Secret99").set("confirm_pw", "Secret99")
@@ -148,7 +148,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_category.aspx.cs:139", why = "Server.Transfer(\"categories.aspx\")")
     void saveRendersListWithoutRedirect() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Web.Page p = Form.containing(web, web.get("edit_category.aspx"), "name")
                 .set("name", "judgecat").set("sort_seq", "1").submit("sub");
         assertTrue(p.redirects().isEmpty(), "no redirect: " + p.redirects());
@@ -163,7 +163,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:498,507-508", why = "values written")
     void createUserIgnoresUncheckedDefaultFlags() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
         f.set("username", "judge2").set("pw", "Secret99").set("confirm_pw", "Secret99")
                 .set("org", "1").set("query", "1").set("signature", "")
@@ -184,7 +184,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:1097-1108", why = "lands on bugs.aspx")
     void createdAdminUserCanLogInWithChosenPassword() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
         f.set("username", "judgeadm").set("pw", "Secret99").set("confirm_pw", "Secret99")
                 .set("org", "1").set("query", "1").set("signature", "").check("admin", true);
@@ -206,7 +206,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_user.aspx:64-106,434", why = "error cells username_err, pw_err, confirm_pw_err, org_err; span msg")
     void createUserValidationErrors() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
         assertEquals("0", f.get("org"), "[select org] preselected");
         Web.Page p = f.set("username", "").set("pw", "").set("confirm_pw", "").set("signature", "").submit("sub");
@@ -225,7 +225,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:541-545,600-604", why = "existing username -> username_err + msg")
     void createUserDuplicateUsername() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
         Web.Page p = f.set("username", "admin").set("pw", "x").set("confirm_pw", "x").set("org", "1")
                 .set("query", "1").set("signature", "").submit("sub");
@@ -241,7 +241,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/setup.sql:170-172", why = "developer: Al Kaline, org 2, default query 2, us_password 'admin', no salt")
     void editUserUpdatesRowAndKeepsPasswordWhenBlank() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx?id=2"), "username");
         assertEquals("developer", f.get("username"));
         assertEquals("Al", f.get("firstname"));
@@ -292,7 +292,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:926-947", why = "level 3 statement discarded")
     void savingReporterUserDowngradesReporterPermission() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_user.aspx?id=8"), "username");
         assertEquals("reporter", f.get("username"));
         assertEquals("3", f.get("permissions"), "first grid row (project 1) shows reporter");
@@ -310,7 +310,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/users.aspx:59-61,128-135", why = "list includes inactive users, ordered by username")
     void deleteUserRemovesUserAndProjectRows() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Web.Page confirm = web.get("delete_user.aspx?id=7");
         assertEquals(200, confirm.status());
         assertEquals("confirm delete of \"viewer\"", S1_LoginTest.logicalText(confirm.html(), "confirm_href"));
@@ -345,7 +345,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_project.aspx.cs:202-290", why = "insert with every column from the form")
     void createProjectWritesRow() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Form f = Form.containing(web, web.get("edit_project.aspx"), "name");
         assertEquals("0", f.get("default_user"));
         f.set("name", "judgeproj").set("default_user", "2").set("desc", "judge desc")
@@ -394,7 +394,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/categories.aspx:17-33", why = "table#categories-table")
     void createCategoryWritesRowAndListsIt() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Web.Page p = Form.containing(web, web.get("edit_category.aspx"), "name")
                 .set("name", "judgecat").set("sort_seq", "7").submit("sub");
         Map<String, Object> r = Db.one("select * from categories where ct_name = 'judgecat'");
@@ -413,7 +413,7 @@ class S6_AdminCrudTest extends Scenario {
     @SourceRef(value = "src/BugTracker.Web/edit_category.aspx:19,32,44", why = "name_err, sort_seq_err, msg")
     void categoryValidationErrors() {
         loginAdmin(web);
-        primeAspNetSession();
+        primeAspNetSession(web);
         Web.Page p = Form.containing(web, web.get("edit_category.aspx"), "name")
                 .set("name", "").set("sort_seq", "").submit("sub");
         Document d = p.html();
@@ -424,20 +424,6 @@ class S6_AdminCrudTest extends Scenario {
     }
 
     // ---------------------------------------------------------------- helpers
-
-    /**
-     * Makes the ASP.NET session non-empty before any page that sets
-     * ViewStateUserKey = Session.SessionID (edit_user.aspx.cs:20 etc.). An empty
-     * InProc session gets a fresh id on each request, which would fail the
-     * postback's view-state check. search.aspx stores Session["bugs"] on a
-     * search postback (search.aspx.cs:620). Read-only; harmless for the port.
-     */
-    private void primeAspNetSession() {
-        Form f = Form.containing(web, web.get("search.aspx"), "like");
-        if (f.has("hit_submit_button")) f.set("hit_submit_button", "1");
-        Web.Page p = f.submit(null);
-        assertEquals(200, p.status(), "session priming search");
-    }
 
     private static void assertNum(long expected, Object actual) {
         assertNotNull(actual, "expected " + expected + " but was NULL");

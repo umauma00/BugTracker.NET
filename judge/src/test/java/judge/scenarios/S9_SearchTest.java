@@ -137,7 +137,7 @@ class S9_SearchTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/search.aspx:426-433", why = "empty result -> '<p>No ' + PluralBugLabel")
+    @SourceRef(value = "src/BugTracker.Web/search.aspx:429-433", why = "empty result -> '<p>No ' + PluralBugLabel")
     @SourceRef(value = "src/BugTracker.Web/Web.config:462", why = "PluralBugLabel = bugs")
     void noMatchSaysNoBugs() {
         seedBugs();
@@ -145,7 +145,9 @@ class S9_SearchTest extends Scenario {
         Web.Page p = search(Map.of("like", "zzz-nothing"), Map.of());
         assertEquals(200, p.status());
         assertEquals(List.of(), resultIds(p.html()));
-        assertTrue(Norm.text(p.html().text()).contains("No bugs"));
+        // search.aspx:430-432 writes "<p>No " + PluralBugLabel + "<p>": a bare <p> whose own text is exactly "No bugs"
+        assertTrue(p.html().select("p").stream().anyMatch(e -> Norm.text(e.ownText()).equals("No bugs")),
+                "no <p> reading exactly 'No bugs'");
         assertFalse(Norm.text(p.html().text()).contains("returned by query"));
     }
 

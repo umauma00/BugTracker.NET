@@ -44,32 +44,37 @@ class S4_AttachmentTest extends Scenario {
 
     @Test
     @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx:35-74", why = "multipart form: desc, attached_file, submit 'sub'")
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:162-240", why = "checks, insert_post_attachment(parent -1, notify), success message text")
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:142-159", why = "message delivered as parent.set_msg('...')")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:83-159", why = "on_update: checks, insert_post_attachment(parent -1, notify), success message text")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:129,149", why = "file.ContentType is stored and echoed as the browser sent it")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:15", why = "ViewStateUserKey = Session.SessionID -> session must be primed before the postback")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:62-78", why = "message delivered as parent.set_msg('...')")
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:254-372", why = "bugs last-updated = @now; bug_posts 'file' row; blob into bug_post_attachments")
     @SourceRef(value = "src/BugTracker.Web/Web.config", why = "StoreAttachmentsInDatabase=1, MaxUploadSize=5000000, EnableInternalOnlyPosts=0")
     @SourceRef(value = "src/BugTracker.Web/Global.asax.cs:88-92", why = "App_Data\\uploads created at startup, so get_upload_folder() does not throw")
     void uploadStoresFilePostAndBlob() {
         loginAdmin(web);
+        primeAspNetSession(web);
         int admin = id("admin");
         seedBug(1);
         byte[] content = payload();
         Web.Page p = web.get("add_attachment.aspx?id=1");
         assertEquals(200, p.status());
+        // .txt name + invented part type: a port that sniffs content or maps the
+        // extension (text/plain) instead of storing file.ContentType fails.
         Form f = Form.containing(web, p, "attached_file")
                 .set("desc", "judge attachment")
-                .file("attached_file", "judge.bin", content);
+                .file("attached_file", "judge.txt", content, "application/x-judge");
         Timestamp before = dbNow();
         Web.Page r = f.submit("sub");
         Timestamp after = dbNow();
 
         assertEquals(200, r.status());
-        assertTrue(r.text().contains("judge.bin was successfully upload (application/octet-stream), 261 bytes"), r.text());
+        assertTrue(r.text().contains("judge.txt was successfully upload (application/x-judge), 261 bytes"), r.text());
 
         Map<String, Object> post = Db.one("select * from bug_posts");
-        expect(post, "bp_bug", 1, "bp_type", "file", "bp_user", admin, "bp_file", "judge.bin",
+        expect(post, "bp_bug", 1, "bp_type", "file", "bp_user", admin, "bp_file", "judge.txt",
                 "bp_comment", "judge attachment", "bp_comment_search", null, "bp_size", 261,
-                "bp_content_type", "application/octet-stream", "bp_parent", null,
+                "bp_content_type", "application/x-judge", "bp_parent", null,
                 "bp_hidden_from_external_users", 0, "bp_email_from", null, "bp_email_to", null, "bp_email_cc", null,
                 "bp_original_comment_id", null);
         between(before, after, post.get("bp_date"), "bp_date");
@@ -84,26 +89,50 @@ class S4_AttachmentTest extends Scenario {
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:191-195", why = "zero-length file -> 'No data was uploaded.'")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:102-104", why = "limit check is content_length > max_upload_size, so exactly MaxUploadSize passes")
+    @SourceRef(value = "src/BugTracker.Web/Web.config:681", why = "MaxUploadSize=5000000; maxRequestLength=51200 KB lets the request through")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:146-152", why = "success message with size 5000000")
+    void fileOfExactlyMaxUploadSizeIsAccepted() {
+        loginAdmin(web);
+        primeAspNetSession(web);
+        int admin = id("admin");
+        seedBug(1);
+        byte[] content = new byte[5_000_000];
+        for (int i = 0; i < content.length; i++) content[i] = (byte) (i * 31 + 7);
+        Web.Page p = web.get("add_attachment.aspx?id=1");
+        assertEquals(200, p.status());
+        Web.Page r = Form.containing(web, p, "attached_file").set("desc", "at the limit")
+                .file("attached_file", "limit.bin", content).submit("sub");
+        assertEquals(200, r.status());
+        assertTrue(r.text().contains("limit.bin was successfully upload (application/octet-stream), 5000000 bytes"), r.text());
+        assertEquals(1, Db.count("select count(*) from bug_posts"));
+        Map<String, Object> post = Db.one("select * from bug_posts");
+        expect(post, "bp_bug", 1, "bp_type", "file", "bp_user", admin, "bp_file", "limit.bin", "bp_size", 5_000_000);
+        assertEquals(1, Db.count("select count(*) from bug_post_attachments"));
+        assertArrayEquals(content, (byte[]) Db.one("select * from bug_post_attachments").get("bpa_content"), "stored bytes");
+    }
+
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:112-116", why = "zero-length file -> 'No data was uploaded.'")
     void emptyFileIsRejected() {
         assertRejected("empty.bin", new byte[0], "No data was uploaded.");
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:164-179", why = "browser sends filename=\"\" when no file chosen -> 'Please select file'")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:85-100", why = "browser sends filename=\"\" when no file chosen -> 'Please select file'")
     void noFileChosenIsRejected() {
         assertRejected("", new byte[0], "Please select file");
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:181-189", why = "size > MaxUploadSize -> exact message")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:102-110", why = "size > MaxUploadSize -> exact message")
     @SourceRef(value = "src/BugTracker.Web/Web.config", why = "MaxUploadSize=5000000; maxRequestLength=51200 KB lets the request through")
     void oversizeFileIsRejected() {
         assertRejected("big.bin", new byte[5_000_001], "File exceeds maximum allowed length of 5000000.");
     }
 
     @Test
-    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:106-125", why = "ReadOnly/None on the bug's project -> 'You are not allowed to edit this item'; no id -> 'Invalid id.'")
+    @SourceRef(value = "src/BugTracker.Web/add_attachment.aspx.cs:27-45", why = "ReadOnly/None on the bug's project -> 'You are not allowed to edit this item'; no id -> 'Invalid id.'")
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:740-794", why = "get_bug_permission_level from project_user_xref")
     @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:557-572", why = "sanitize_integer(null) returns null")
     void readOnlyUserAndMissingIdCannotUpload() {
@@ -211,6 +240,7 @@ class S4_AttachmentTest extends Scenario {
 
     private void assertRejected(String filename, byte[] content, String message) {
         loginAdmin(web);
+        primeAspNetSession(web);
         seedBug(1);
         Web.Page p = web.get("add_attachment.aspx?id=1");
         Web.Page r = Form.containing(web, p, "attached_file").set("desc", "x")
