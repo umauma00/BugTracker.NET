@@ -207,3 +207,59 @@ Ordered by blast radius × severity. "Rule text" is the proposed replacement or 
 **Regeneration note (standing rule 6).**
 - Amendments 1, 3, 4 and 7 change rules that every unit may touch.
 - After they are applied, re-run the bakeoff on POP3Main (1), and grep translated units for `Convert.ToString(`/`.ToString()` over float columns (3), `DataType() ==` (4) and `getMessage()` in user-visible output (7).
+
+## Applied (round 1)
+
+Applied on 2026-11-04 under the standing mandate (`migration/PROGRESS.md`), together with the pilot gaps of `pilot-r1.md`. Tags `[S1-1]`…`[S1-48]` are in `migration/RULEBOOK.md` and in the evidence column of `migration/inventory.tsv`. Human decisions (all "preserve the original"): amendment 2 / D38 keep the defect (S1-3); amendment 6 / D40 reproduce the crash (S1-2); amendment 9 / D43 trust-all kept (S1-4); amendment 10 / D44 100 s + HTTP/1.1 (S1-5). D39, D47 and D48 were adopted as native-right.
+
+**Sections changed. The re-round should be weighted toward these:**
+
+| Section | What changed | Tags |
+|---|---|---|
+| §0 | UI posture: `.ascx`, masters and includes are plain classes, not `@Controller`s; gate log entry "stress-test round-1 amendments applied 2026-11-04 (S1-*)" | S1-26 |
+| §1 | DB access (the service runs unpooled), HTTP client (`HttpClients`/`HttpRequests`), async row (`Threads.startTask`, unhandled-exception policy) | S1-2, S1-4, S1-5, S1-9 |
+| §2A General conventions | local `const`, ternary diamond, `GetType()==typeof`, Dictionary null key / `ContainsKey` / `Add` / initializers / `IDictionary` / `Contains`, accepted lazy-`Where` ordering | S1-28, S1-29, S1-39, S1-40, S1-44, S1-45 |
+| §2A Strings | concat rule vs "unchanged" rows, `Split(string[])`, `Strings.ToUpper/ToLower`, `StringComparison`, `GetPreamble`, `Console.WriteLine`, decimal `ToString` | S1-8, S1-15, S1-16, S1-20, S1-21, S1-46 |
+| §2A Conversions | `Convert.ToString(Double)` = G15 / Float G7; `DateTime.Parse` pattern list pinned | S1-6, S1-11 |
+| §2A Dates, numbers, culture | `InvariantCulture`, `NumberFormatInfo`, TimeSpan constructors and components, numeric `G` | S1-6, S1-15, S1-18 |
+| §2A Exceptions | `Exceptions.Message(e)` replaces `e.getMessage()`; wrap re-sets interrupt; new exception classes | S1-3, S1-5, S1-10, S1-22 |
+| §2A Database | tinyint `DataType` = `ClrTypes.Byte`; the service gets per-website unpooled connections plus a Cleaner | S1-7, S1-9 |
+| §2A DataSet / EF6 | `typeof` token table, DataRow/DataColumn/Tables members, JSON in every context, J-C11 TODO has no site marker, EF projection accepted | S1-7, S1-12, S1-19, S1-38, S1-42, S1-43 |
+| §2A Web intrinsics | `Request.Url()` returns runtime `Uri`; `AppDomain…ConfigurationFile` | S1-17, S1-21 |
+| §2A Logging/mail/search/POP3 | OpenPop contract and BUG sites, NEST conditionless accepted, J-C2 HttpClient row (request built before the release, `LoginUrl` BUG, ALWAYS redirect), new `ServicePointManager` row | S1-1, S1-3, S1-4, S1-5, S1-13, S1-29, S1-48 |
+| §2A Threads, timers, async | `Threads.create/start/startTask`, J-C25 citations, C17 int interval + `Timers.Interval/task`, J-C1 release point at every await, async-void crash | S1-1, S1-2, S1-14, S1-47 |
+| §2B B1, B5, B6 | fluent setters, declared `style`, undeclared user-control attributes, non-field `<%= %>` regions, decoded `<%:` attribute values, nested-region naming and `__scriptN` numbering, `.ascx` constructor | S1-26, S1-27, S1-31, S1-32, S1-33, S1-35, S1-37 |
+| §3 | package table; `Threads` bullets; new block "Exact semantics of the members added at stress-test round 1"; template marker forms | S1-2…S1-34 (runtime parts) |
+| §4 | a second top-level type becomes a nested static class | S1-4 |
+| §5 | element-content regions numbered by J-U3 alone; the list of round-1 inventory corrections | S1-23, S1-36 |
+| §6 | 1 header path, 2/3 `(source TODO)`, 5 `// inventory: <file> L<line>` | S1-24, S1-25, S1-41 |
+| §7 | D-006: accepted latent divergences | S1-13, S1-18, S1-42, S1-44 |
+
+**Inventory changes.**
+- Rows rewritten to the rule:
+  - `POP3Main.cs`: L86, L91, L223, L306, L403, L707, L732
+  - `util.cs`: L32, L1117
+  - `admin.aspx.cs`: L43
+  - `BugList.ascx`: L128 (×2)
+  - `Mime.cs`: L90 note
+- 10 rows changed `e.getMessage()` to `Exceptions.Message(e)`.
+- New `POP3Main.cs` rows: L81, L173, L278 (BUG, D38), L566 (BUG, D41), L589, L704, L718 (BUG), L768.
+
+**Deliberate departures from the proposed rule text.**
+- `Split(string[])`: the separator chosen at each position is the first one in argument order, as .NET documents. Longest-first, as F1 proposed, is not what .NET does.
+- G15 fixed-point range: fixed iff −5 < e < 15, so `0.00001` → `1E-05`. Amendment 3 had the lower bound wrong.
+- AppDomain: F5's literal `AppPaths.ConfigurationFile()` won over the pilot's `MapPath(null)`.
+- `ContainsKey(null)`: reproduces the .NET throw, per the decision, instead of the pilot's "accept".
+- The D40 crash policy covers every `new Thread` thread too (.NET 2.0+ semantics), with `Task.Run` → `Threads.startTask`, which drops the exception. This goes beyond the decision, which named only async void.
+
+**Not applied (not rulebook items).**
+- Pilot P1–P3 and BugSearch G9 are pipeline-prompt fixes. They were already made in `migration/pipeline/`.
+
+**Regeneration (standing rule 6).**
+- Re-run the bakeoff on POP3Main (S1-1, S1-2, S1-3, S1-4, S1-5, S1-9, S1-14).
+- Grep translated units for:
+  - `Convert.ToString(`/`.ToString()` over float columns (S1-6)
+  - `DataType() ==` / `typeof` (S1-7)
+  - `getMessage()` (S1-10)
+  - `toUpperCase`/`toLowerCase` (S1-8)
+  - `Threads.start(` for `Task.Run` (S1-2)
