@@ -31,3 +31,10 @@ pilot = `/tmp/claude-0/-home-user/9c6707b8-af5b-57fb-b9d4-be71e6af9275/scratchpa
 - Workspace A (worktree `st-A`, branch `stress-A-throwaway`) deleted: `git worktree remove --force` + `git branch -D` — confirmed, 0 remaining.
 - Workspace B (`st-B`) deleted: `rm -rf` — confirmed.
 - Pilot workspace `st-pilot` kept until the re-round reads its review files, then deleted.
+
+## Re-round (round 2) selection — weighted toward the sections amended in round 1
+Changed sections (bakeoff-r1.md "Applied (round 1)"): §2A strings/conversions/dates-culture/exceptions/database/DataSet/web intrinsics/threads, §2B B1/B5/B6, §3, §6.
+Fresh files (not used in round 1), chosen from the score ranking (selection table above, ranks 6–8) because they exercise exactly those sections:
+- bakeoff + pilot: `btnet/print_bug.cs` (DataSet, formatting, regex, Response writer), `btnet/bug_list.cs` (DataView sort/filter, Session, conversions), `btnet/version_control.cs` (Process, IndexOf, strings)
+- pilot only (UI, D-004): `search.aspx` (script/text regions, Session — §2B B5), `edit_user.aspx` (DataGrid template radios J-U1, B6)
+Pilot workspace round 1 (`st-pilot`) deleted 2026-11-04 (confirmed). Round-2 workspaces: `st-A2` (worktree, branch stress-A2-throwaway), `st-B2`, `st-pilot2`.
