@@ -181,3 +181,36 @@
 - 読んだ：`migration-kit/README.md`, `migration-kit/CLAUDE.md`, `migration-kit/prompts/00-feasibility.md`, `migration-kit/skill/SKILL.md`, `README.md`, `Blog 2 - Evaluating the Code.md`（冒頭）, `src/BugTracker.Web/packages.config`, `src/btnet_service/packages.config`, `src/BugTracker.Web/Web.config`（接続・検索設定）, `src/BugTracker.Web/btnet/dbutil.cs`（冒頭）, `src/BugTracker.Web/Controllers/*.cs`（シグネチャ）
 - 抜き取りで済ませたもの：個々の `.aspx` / `.aspx.cs` は全文を読んでいない（`grep` による構文の集計のみ）。`screen_capture/`, `firefox/`, `source_control_hooks/` は範囲外として中身を読んでいない。
 - 実行した：`find` / `wc -l` / `grep -c` / `git log`、`docker info`（デーモンなし）、`which java javac mvn gradle dotnet mono msbuild`（Java 系のみあり）。**ビルド・テストは実行していない（できない）。**
+
+---
+
+## 9. ゲートでの決定（2026-11-03、人が承認）
+
+この節は上の提案より優先します。
+
+| # | 質問 | 決定 | 影響 |
+|---|---|---|---|
+| 1 | 元アプリを動かせる Windows 環境 | **なし** | 下記「判定器への影響」 |
+| 2 | モデル計画 | **推奨どおり**：ルールブック・互換設計・レビュアー×2・裁定 = Opus 5.5／実装者・修正者 = Sonnet 5.5。**全サブエージェントのエフォートは「中」(medium)** | 01〜06 の `[model]` はこの割り当てで固定。既定値のまま動かしたら逸脱ログへ |
+| 3 | 移行先の構成 | **Java 21 + Spring Boot 4 + Thymeleaf**（§4 の Servlet + JSP / Java 25 案は不採用） | 下記「構成変更の影響」 |
+| 4 | `screen_capture/`（WinForms）を範囲外にする | **範囲外で確定** | 移行ユニット 217 は変わらない（元から含めていない） |
+
+### 構成変更の影響（判断1の改訂）
+
+- 確認した事実（2026-11-03）：Spring Boot 4.0 は Java 17 以上・Servlet 6.1 前提（[System Requirements](https://docs.spring.io/spring-boot/4.0/system-requirements.html)、[Migration Guide](https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-4.0-Migration-Guide)）。Maven Central の `spring-boot-starter-thymeleaf` の最新は 4.1.2。この環境の JDK は 21.0.12 なので、**新しい側はここでビルドできる**。
+- **コア層（92 ファイル）は構造維持のまま**：`DbUtil`/`SQLString` → `JdbcTemplate` か素の JDBC、`DataSet` 系 → 互換クラス。1ファイル = 1ユニット。bakeoff は有効。
+- **UI 層（117 ページ + ascx 3 + Master 2）は再設計扱いになる**：WebForms のページ（マークアップ＋code-behind）は「Spring MVC の `@Controller` 1つ + Thymeleaf テンプレート1つ」に写す。`Response.Write`（719か所）はテンプレートに渡すモデル値に、`LoggedIn.Master` は Thymeleaf のレイアウト断片に、ポストバックは POST ハンドラーに変える。キットの README「If you're redesigning」に従い、この層では次のように扱う：
+  - ルールブックの UI の章は**設計文書**（ページ→コントローラー/テンプレートの対応、フォームの結び付け方、レイアウト、認証）として書く
+  - UI ユニットには **bakeoff を使わない**。代わりに、設計文書を対立的にレビューし、少数ページで使い捨ての通し実行をする
+  - 作業単位は 1ページ（= コントローラー + テンプレート + そのページ専用の SQL）
+- Web API の3コントローラー（`Controllers/*.cs`）は `@RestController` にほぼそのまま写す。
+- 認証（OWIN Cookie）は Spring Security に置き換える。パスワードハッシュは旧 DB と互換にする。
+
+### 判定器への影響（判断3の改訂）と逸脱
+
+- 00b の手順3「判定器を**元のコード**に当てて全件パスさせ、壊した元コードで失敗を確かめる」は**実行できない**。旧コードを動かせる環境がないため。
+- **逸脱 D-001（記録）**：キットの常設ルール7「旧コードが仕様」のうち、旧コードを*実行*する部分が満たせない。代わりの扱い：
+  1. 判定器は **HTTP + DB の外部シナリオ**として作る（§3 の9シナリオ）。期待値は、旧ソース（`.aspx` / `.aspx.cs` / SQL）を読んで書き起こした「ソース由来の期待値」とし、各期待値に根拠のファイル・行を付ける。
+  2. 判定器の検証は、新アプリができた後（Step 5 以降）に、**新アプリへの意図的な改変**で失敗を確かめる形に置き換える。
+  3. Step 6 の完了条件は「判定器が全件パス」に加え、**「旧アプリとの実測パリティは未検証」と明記して引き継ぐ**。後で Windows 環境が手に入れば、同じ判定器を旧アプリにも当てて検証し直せるように作る（URL・DB 接続先を差し替え可能にする）。
+- 詳細は Step 1 で作る `migration/RULEBOOK.md` の Deviation log に転記する。

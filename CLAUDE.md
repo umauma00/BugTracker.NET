@@ -10,5 +10,6 @@ kit's operating manual:
 - Kit path: `migration-kit/` (fill `[kit path]` in prompts with this).
 - Target language: Java.
 - Migration artifacts live in `migration/`. Current gate: see
-  `migration/feasibility.md` (Step 00 verdict) — do not start prompt 00b or
-  01 until the human signs off on it.
+  `migration/feasibility.md` §9 (gate decisions signed off 2026-11-03:
+  Java 21 + Spring Boot 4 + Thymeleaf; models Opus 5.5 / Sonnet 5.5 at
+  medium effort; old app cannot run — deviation D-001).
