@@ -25,3 +25,11 @@ Applied at the 02 gate under the standing mandate (PROGRESS.md), recorded in RUL
 - C15 (inherited quirk, keep) `Cache[username]` shares namespace with `Cache["Application"]` — preserved; noted BUG(port).
 - C16 (inherited, keep) `Session["session_cookie"]` never written — preserved.
 - Sweep gaps → fixed in gap_sweep.py (aliased state roots, Cache.Add/Insert/Remove, bare catch).
+
+## From classifier REF_OUT/STATIC/THREADING/NULLABLE/PROCESS
+- C17 (UNKNOWN → decided under mandate) `POP3Main.cs:306` `System.Timers.Timer` — Amend: `java.util.Timer` with `scheduleAtFixedRate` (non-daemon), allowed as the one sanctioned scheduler in port/service.
+- C18 (UNKNOWN → decided) `POP3Main.cs:75`, `btnet_service.cs:36` `Process.GetCurrentProcess().MainModule.FileName` — Amend: runtime `AppPaths.executable()` = system property `btnet.service.home` (default `user.dir`) + `/btnet_service.exe`, so `<exe>.config` and log paths resolve beside it; config file name kept.
+- C19 (gap) `Thread.Abort` (`POP3Main.cs:222`) — Amend: `thread.interrupt()` + `TODO(port): Abort semantics` (loop checks `Thread.interrupted()`).
+- C20 (gap) no rows for `ProcessStartInfo`, `System.Random`, `DateTime.Ticks`, `TimeSpan.TotalSeconds`, `SortedDictionary`. Amend: ProcessStartInfo → ProcessBuilder (args, working dir, redirect stdout/stderr, UTF-8); `Random` → `java.util.Random` (sequence differs — never compared); `Ticks` → `DateTimes.ticks(dt)` (100 ns since 0001-01-01); `TotalSeconds` → `Duration.toNanos()/1e9`; `SortedDictionary<K,V>` → `TreeMap` with ordinal comparator for strings (`String.compareTo` ≈ .NET ordinal; NOTE .NET default string comparer is culture-sensitive → runtime `Strings.CULTURE_COMPARER` en-US).
+- C21 (gap) RegexOptions `IgnorePatternWhitespace`/`CultureInvariant`/`Compiled` — Amend: Compiled/CultureInvariant → no flag; IgnorePatternWhitespace → `Pattern.COMMENTS` only after `DotNetRegex` escapes `#` and whitespace inside character classes (`print_bug.cs:28`).
+- C22 §1 threads — Tomcat threads are daemon; .NET `new Thread` is foreground. Amend: request-spawned threads `setDaemon(false)`.
