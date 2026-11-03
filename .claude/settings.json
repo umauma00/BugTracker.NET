@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(git merge:*)",
+      "Bash(git switch:*)",
+      "Bash(git restore:*)",
+      "Bash(git clean:*)",
+      "Bash(mvn:*)",
+      "Bash(./mvnw:*)",
+      "Bash(gradle:*)",
+      "Bash(javac:*)",
+      "Bash(java -jar:*)"
+    ],
+    "allow": [
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(wc:*)"
+    ]
+  }
+}
