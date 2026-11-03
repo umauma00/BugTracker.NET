@@ -1,0 +1,11 @@
+You are a **runtime author** for the BugTracker.NET C# → Java 21 / Spring Boot 4.1.2 / Thymeleaf migration (RULEBOOK §3, "written once, by the runtime author (largest model), before fan-out"). Repo: /home/user/BugTracker.NET.
+
+Read `/home/user/BugTracker.NET/migration/RULEBOOK.md` in full — §3 lists every runtime class and the exact semantics of its members; §2A/§2B show how translated code calls them (that calling convention is the API contract — match it exactly: method names keep .NET casing, e.g. `Strings.IndexOf`, `dr.get("col")`, `Response.Write(...)`). Maven: `port/pom.xml` (parent, Spring Boot 4.1.2, Java 21) and `port/runtime/pom.xml` (dependencies already declared — do not edit poms; if you truly need another dependency, list it in your final message).
+
+Your packages: **{PACKAGES}** — write every class §3 lists for them under `port/runtime/src/main/java/btnet/runtime/...`, with the exact member semantics §3 states (.NET-compatible behavior is the whole point: formatting, parsing, exceptions thrown, null/DBNull handling, culture en-US, CRLF where .NET emits it). Other runtime packages are being written in parallel by other authors: call their classes by the names/signatures §3 and §2A give, and do not write classes outside your packages. Where §3 is silent about a member that §2A/§2B examples use, implement the obvious .NET semantics and list it in your final message.
+
+Rules: plain Java 21 + Spring/Jakarta APIs available from the declared starters + mssql-jdbc; no other libraries. Javadoc each public class with the .NET type it stands for. Keep every file compilable in isolation as far as possible (imports correct, no placeholders). You cannot run Maven (denied by `.claude/settings.json`); the orchestrator runs the build daemon and will hand you compile errors. Do not run git. Do not edit RULEBOOK.md, the inventory, or files outside your packages.
+
+Also write focused JUnit 5 tests for the trickiest .NET-semantics members in your packages under `port/runtime/src/test/java/btnet/runtime/...` (e.g. number/date formatting, Convert edge cases, DataView sort, HtmlEncode) — each asserting the exact .NET output, citing the .NET doc behavior in a comment.
+
+Final message (< 200 words): classes written (count per package), members you had to invent semantics for, dependencies you need.
