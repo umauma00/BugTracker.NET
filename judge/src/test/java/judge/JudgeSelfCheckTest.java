@@ -32,14 +32,28 @@ class JudgeSelfCheckTest {
                 SourceRef[] refs = m.getAnnotationsByType(SourceRef.class);
                 if (refs.length == 0) missing.add(c.getSimpleName() + "." + m.getName());
                 for (SourceRef r : refs) {
-                    String file = r.value().replaceAll(":[0-9,\\-]+$", "");
-                    if (!Files.isRegularFile(repo.resolve(file))) badPath.add(c.getSimpleName() + "." + m.getName() + " -> " + r.value());
+                    String file = r.value().replaceAll(":[0-9,\\- ]+$", "");
+                    Path f = repo.resolve(file);
+                    if (!Files.isRegularFile(f)) {
+                        badPath.add(c.getSimpleName() + "." + m.getName() + " -> " + r.value());
+                        continue;
+                    }
+                    // every cited line must exist in the cited file
+                    long lines;
+                    try (Stream<String> ls = Files.lines(f, java.nio.charset.StandardCharsets.ISO_8859_1)) { lines = ls.count(); }
+                    var mm = java.util.regex.Pattern.compile("\\d+").matcher(r.value().substring(file.length()));
+                    while (mm.find()) {
+                        if (Long.parseLong(mm.group()) > lines) {
+                            badPath.add(c.getSimpleName() + "." + m.getName() + " -> " + r.value() + " (file has " + lines + " lines)");
+                            break;
+                        }
+                    }
                 }
             }
         }
         assertTrue(tests > 0, "no scenario tests found");
         assertTrue(missing.isEmpty(), "scenario tests without @SourceRef: " + missing);
-        assertTrue(badPath.isEmpty(), "@SourceRef to files that do not exist: " + badPath);
+        assertTrue(badPath.isEmpty(), "@SourceRef to missing files or past end of file: " + badPath);
     }
 
     private static List<Class<?>> scenarioClasses() throws IOException, URISyntaxException, ClassNotFoundException {
