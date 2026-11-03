@@ -41,12 +41,23 @@ CONTROL = {"Server.Transfer", "Server.Execute", "Response.End", "Response.Redire
            "HttpContext.Current.Server.Transfer", "ApplicationInstance.CompleteRequest"}
 
 
+# Locals/fields that alias an application/session/cache object, found by
+# `<name> = <...>.Application|Session|Cache` assignments; filled per file.
+STATE_ALIASES = {}
+
+
 def t(n, src):
     return src[n.start_byte:n.end_byte].decode("utf-8", errors="replace")
 
 
 def sweep(src: bytes, rel: str, lmap, out):
     tree = d.PARSER.parse(src)
+    import re as _re
+    for m in _re.finditer(rb"\b([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(?:\([A-Za-z.]+\)\s*)?[A-Za-z_.]*\b(Application|Session|Cache)\b\s*;", src):
+        STATE_ALIASES.setdefault(rel, set()).add(m.group(1).decode())
+    # locals/params/fields declared with a state type: HttpApplicationState app, ...
+    for m in _re.finditer(rb"\b(?:HttpApplicationState|HttpSessionState(?:Base)?|HttpApplicationStateBase|Caching\.Cache)\s+([A-Za-z_][A-Za-z0-9_]*)", src):
+        STATE_ALIASES.setdefault(rel, set()).add(m.group(1).decode())
 
     def line(n):
         ln = n.start_point[0] + 1
@@ -82,7 +93,11 @@ def sweep(src: bytes, rel: str, lmap, out):
                 add("REF_OUT", n, t(n, src))
         elif ty == "element_access_expression":
             e = n.child_by_field_name("expression")
-            if e is not None and t(e, src) in STATE_ROOTS:
+            et = t(e, src) if e is not None else ""
+            # direct roots, plus aliases reached through a member (context.Application,
+            # HttpContext.Current.Cache, ...) and locals bound to them (app = ...Application)
+            if et in STATE_ROOTS or et.rsplit(".", 1)[-1] in ("Application", "Session", "Cache") \
+                    or et in STATE_ALIASES.get(rel, ()):
                 add("STATE", n, t(n, src))
         elif ty == "field_declaration":
             mods = [t(c, src) for c in n.children if c.type == "modifier"]
@@ -94,7 +109,10 @@ def sweep(src: bytes, rel: str, lmap, out):
             name = ft.rsplit(".", 1)[-1]
             args = n.child_by_field_name("arguments")
             at = t(args, src) if args is not None else ""
-            if ft in CONTROL:
+            if ft.rsplit(".", 1)[-1] in ("Add", "Insert", "Remove", "Get") and \
+                    ft.rsplit(".", 1)[0].rsplit(".", 1)[-1] in ("Cache", "Application", "Session"):
+                add("STATE", n, t(n, src))
+            elif ft in CONTROL:
                 add("CONTROL_FLOW", n, t(n, src))
             elif name == "ToString" and at.strip("() ").startswith(("\"", "@\"")):
                 add("FORMAT", n, t(n, src))
@@ -117,8 +135,9 @@ def sweep(src: bytes, rel: str, lmap, out):
                 add("PROCESS", n, t(n, src))
             elif base in ("Thread", "Timer"):
                 add("THREADING", n, t(n, src))
-        elif ty == "catch_declaration":
-            add("CATCH", n, t(n, src))
+        elif ty == "catch_clause":
+            decl = next((c for c in n.children if c.type == "catch_declaration"), None)
+            add("CATCH", n, t(decl, src) if decl is not None else "catch (bare)")
         elif ty == "query_expression":
             add("LINQ", n, t(n, src))
         elif ty in ("delegate_declaration", "event_field_declaration", "event_declaration",

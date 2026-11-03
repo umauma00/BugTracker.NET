@@ -7,12 +7,16 @@ CATCH	src/BugTracker.Web/Security/Authenticate.cs	195	Authenticate.check_passwor
 CATCH	src/BugTracker.Web/add_attachment.aspx.cs	137	add_attachment.on_update	(Exception ex)
 CATCH	src/BugTracker.Web/add_customfield.aspx.cs	258	add_customfield.on_update	(Exception e2)
 CATCH	src/BugTracker.Web/ajax2.aspx	49	__Page.Page_Load	(Exception)
+CATCH	src/BugTracker.Web/btnet/bug.cs	400	Bug.insert_post_attachment_impl	catch (bare)
 CATCH	src/BugTracker.Web/btnet/bug.cs	418	Bug.insert_post_attachment_impl	(Exception ex)
+CATCH	src/BugTracker.Web/btnet/bug.cs	522	Bug.get_bug_post_attachment	catch (bare)
 CATCH	src/BugTracker.Web/btnet/bug.cs	1246	Bug.actually_send_the_emails	(Exception e)
 CATCH	src/BugTracker.Web/btnet/bug.cs	1285	Bug.threadproc_notifications	(System.Threading.ThreadAbortException)
 CATCH	src/BugTracker.Web/btnet/bug_list.cs	205	BugList.sort_and_filter_buglist_dataview	(Exception)
 CATCH	src/BugTracker.Web/btnet/bug_list.cs	227	BugList.sort_and_filter_buglist_dataview	(Exception)
 CATCH	src/BugTracker.Web/btnet/bug_list.cs	273	BugList.sort_and_filter_buglist_dataview	(Exception)
+CATCH	src/BugTracker.Web/btnet/dbutil.cs	104	DbUtil.execute_reader	catch (bare)
+CATCH	src/BugTracker.Web/btnet/dbutil.cs	122	DbUtil.execute_reader	catch (bare)
 CATCH	src/BugTracker.Web/btnet/print_bug.cs	72	PrintBug.print_bug	(Exception e)
 CATCH	src/BugTracker.Web/btnet/tags.cs	68	Tags.threadproc_votes	(Exception ex)
 CATCH	src/BugTracker.Web/btnet/tags.cs	110	Tags.threadproc_tags	(Exception ex)
@@ -21,11 +25,14 @@ CATCH	src/BugTracker.Web/btnet/util.cs	58	Util.set_context	(Exception e)
 CATCH	src/BugTracker.Web/btnet/util.cs	151	Util.is_int	(Exception)
 CATCH	src/BugTracker.Web/btnet/util.cs	198	Util.is_datetime	(Exception)
 CATCH	src/BugTracker.Web/btnet/util.cs	362	Util.format_local_date_into_db_format	(FormatException)
+CATCH	src/BugTracker.Web/btnet/util.cs	566	Util.sanitize_integer	catch (bare)
 CATCH	src/BugTracker.Web/default.aspx.cs	41	@default.Page_Load	(SqlException e1)
 CATCH	src/BugTracker.Web/default.aspx.cs	50	@default.Page_Load	(SqlException e2)
 CATCH	src/BugTracker.Web/install.aspx	46	__Page.Page_Load	(Exception ex)
 CATCH	src/BugTracker.Web/loginnt.aspx	121	__Page.Page_Load	(Exception e2)
 CATCH	src/BugTracker.Web/search_text.aspx.cs	24	search_text.Page_Load	(Exception e3)
+CATCH	src/BugTracker.Web/send_email.aspx.cs	425	send_email.validate	catch (bare)
+CATCH	src/BugTracker.Web/send_email.aspx.cs	441	send_email.validate	catch (bare)
 CATCH	src/BugTracker.Web/view_report.aspx	257	__Page.create_line_chart	(Exception)
 CATCH	src/btnet_service/POP3Main.cs	427	POP3Main.get_settings	(Exception e)
 CATCH	src/btnet_service/POP3Main.cs	468	POP3Main.fetch_messages_for_projects	(Exception e)
@@ -760,10 +767,14 @@ REGEX	src/BugTracker.Web/svn_hook.aspx	209	__Page.get_bugids_from_msg	new Regex(
 REGEX	src/btnet_service/POP3Main.cs	65	POP3Main	new Regex("\\|")
 REGEX	src/btnet_service/POP3Main.cs	515	POP3Main.fetch_messages	new Regex("\r\n")
 STATE	src/BugTracker.Web/Controls/Footer.ascx	16	__Page.__body	Application["custom_footer"]
+STATE	src/BugTracker.Web/Controls/MainMenu.ascx	4	__Page.__body	Util.context.Application["custom_header"]
+STATE	src/BugTracker.Web/Controls/MainMenu.ascx	15	__Page.__body	Util.context.Application["custom_logo"]
+STATE	src/BugTracker.Web/Global.asax.cs	30	Global.Application_OnStart	HttpRuntime.Cache.Add("Application", Application, null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null)
 STATE	src/BugTracker.Web/Global.asax.cs	49	Global.LoadConfiguration	Application["custom_header"]
 STATE	src/BugTracker.Web/Global.asax.cs	53	Global.LoadConfiguration	Application["custom_footer"]
 STATE	src/BugTracker.Web/Global.asax.cs	57	Global.LoadConfiguration	Application["custom_logo"]
 STATE	src/BugTracker.Web/Global.asax.cs	61	Global.LoadConfiguration	Application["custom_welcome"]
+STATE	src/BugTracker.Web/Global.asax.cs	96	Global.ConfigureCache	HttpRuntime.Cache.Add("Application", Application, null, Cache.NoAbsoluteExpiration, Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null)
 STATE	src/BugTracker.Web/LoggedOut.Master	23	__Page.__body	Application["custom_logo"]
 STATE	src/BugTracker.Web/Security/Authenticate.cs	84	Authenticate.check_password	HttpRuntime.Cache[username]
 STATE	src/BugTracker.Web/Security/Authenticate.cs	123	Authenticate.check_password	HttpRuntime.Cache[username]
@@ -783,9 +794,16 @@ STATE	src/BugTracker.Web/btnet/bug_list.cs	267	BugList.sort_and_filter_buglist_d
 STATE	src/BugTracker.Web/btnet/bug_list.cs	271	BugList.sort_and_filter_buglist_dataview	HttpContext.Current.Session["sort"]
 STATE	src/BugTracker.Web/btnet/bug_list.cs	613	BugList.display_bugs	HttpContext.Current.Session["bugs_unfiltered"]
 STATE	src/BugTracker.Web/btnet/bug_list.cs	758	BugList.display_bugs	HttpContext.Current.Application[string_bugid]
+STATE	src/BugTracker.Web/btnet/tags.cs	65	Tags.threadproc_votes	app[ Convert.ToString(dr[0])]
+STATE	src/BugTracker.Web/btnet/tags.cs	108	Tags.threadproc_tags	app["tags"]
+STATE	src/BugTracker.Web/btnet/tags.cs	133	Tags.build_filter_clause	app["tags"]
 STATE	src/BugTracker.Web/btnet/util.cs	106	Util.write_to_memory_log	HttpContext.Current.Application["log"]
 STATE	src/BugTracker.Web/btnet/util.cs	111	Util.write_to_memory_log	HttpContext.Current.Application["log"]
+STATE	src/BugTracker.Web/btnet/util.cs	918	Util.get_custom_columns	context.Application["custom_columns_dataset"]
+STATE	src/BugTracker.Web/btnet/util.cs	964	Util.get_custom_columns	context.Application["custom_columns_dataset"]
 STATE	src/BugTracker.Web/btnet/whatsnew.cs	44	WhatsNew.add_news	HttpRuntime.Cache["Application"]
+STATE	src/BugTracker.Web/btnet/whatsnew.cs	45	WhatsNew.add_news	app["whatsnew"]
+STATE	src/BugTracker.Web/btnet/whatsnew.cs	51	WhatsNew.add_news	app["whatsnew"]
 STATE	src/BugTracker.Web/bugs.aspx.cs	26	bugs.Page_Load	Session["just_did_text_search"]
 STATE	src/BugTracker.Web/bugs.aspx.cs	32	bugs.Page_Load	Session["just_did_text_search"]
 STATE	src/BugTracker.Web/dashboard.aspx	120	__Page.__body	Application["custom_footer"]
