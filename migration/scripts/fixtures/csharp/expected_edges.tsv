@@ -1,0 +1,6 @@
+from	to
+src/BugTracker.Web/page.aspx	src/BugTracker.Web/Controls/Menu.ascx
+src/BugTracker.Web/page.aspx	src/BugTracker.Web/Lib/Ext.cs
+src/BugTracker.Web/page.aspx	src/BugTracker.Web/Lib/User.cs
+src/BugTracker.Web/page.aspx	src/BugTracker.Web/Lib/Util.cs
+src/BugTracker.Web/page.aspx	src/BugTracker.Web/inc.aspx
