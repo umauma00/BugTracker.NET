@@ -38,6 +38,11 @@ separately) on 2026-11-03.
 - **The old code is the spec, quirks included.** A translator who believes the
   source is wrong marks the site `BUG(port):` and reproduces the behavior.
   The only exceptions are the five fixes below.
+- **Gate log.** 2026-11-03, gate 02: amendments C1–C35 from
+  `migration/inventory/rulebook-conflicts.md` applied under the standing
+  mandate (D-002; applied by the orchestrator, D-005). Each amended rule cites
+  its amendment id `[Cn]`; C13 = C7, C23 = C21, C31 refines C20, and C17 is
+  applied in its CORRECTED form (one-shot timer re-armed in `do_work`).
 
 ### 0.1 Sanctioned behavior fixes (option (b), gate 00b — the complete list)
 
@@ -75,7 +80,7 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | Processes | `java.lang.ProcessBuilder` | `version_control.cs` shell-outs |
 | XML | JDK StAX (`javax.xml.stream`) | `POP3Main.cs` XmlTextReader |
 | HTTP client | `java.net.http.HttpClient` | `POP3Main.cs` HttpWebRequest; ES |
-| Async/concurrency | BANNED: `@Async`, executors, `CompletableFuture`, virtual threads. `new Thread(proc).Start()` → `new Thread(proc).start()` (platform thread, same structure) | 3 thread sites (`bug.cs:1201`, `tags.cs:119,125`, `email.cs:273`) |
+| Async/concurrency | BANNED: `@Async`, executors, `CompletableFuture`, virtual threads, Spring `@Scheduled`. `new Thread(proc).Start()` → `new Thread(proc)` + `setDaemon(false)` + `start()` (platform, **non-daemon**: .NET threads are foreground, Tomcat-spawned Java threads inherit daemon=true [C22]); written via `Threads.start(proc)` (runtime, does exactly that). `Task.Run(() => x())` → same rule: `Threads.start(() -> x())` [C2]. `async void` → `Threads.runAsync` (§2A "Threads, timers, async") [C33]. The **one** sanctioned scheduler is `java.util.Timer` (non-daemon) in `port/service` `POP3Main` (§2A) [C17] | 4 thread sites (`bug.cs:1201`, `tags.cs:119,125`, `email.cs:273`, `admin.aspx.cs:43` [C2]) + `POP3Main.cs:306,511` |
 | String policy | `java.lang.String` everywhere; text I/O UTF-8; `Environment.NewLine` = `"\r\n"` (judge S5 asserts `\n\r\n`) | |
 | Third-party deps | NONE beyond: Spring Boot starters (webmvc, thymeleaf, security, jdbc, mail, validation), mssql-jdbc, angus-mail, Jackson, SLF4J/Logback. Apache Commons, Guava etc. BANNED — use runtime helpers. Exact starter artifact ids are fixed by the runtime author in `port/pom.xml`; translators never edit poms | |
 | Error model | see §2A "Exceptions" | |
@@ -103,7 +108,9 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | Extension method `x.M(a)` (31, all in `ClaimsIdentityExtensions`) | class-qualified static call `ClaimsIdentityExtensions.M(x, a)`; no static imports | `User.Identity.GetUserId()` → `ClaimsIdentityExtensions.GetUserId(User.Identity())` |
 | `var` (149) | Java `var` allowed for locals with an initializer | |
 | `params T[]` (1) | varargs `T...` | `PageAuthorizeAttribute` |
-| Attribute class + usage (`[PageAuthorize]`, `[PageAllowAnonymous]`) | Java annotation with `@Retention(RUNTIME) @Target(TYPE)`; logic of the C# attribute moves to a nested `public static final class Logic` in the same file. `PageAuthorizeAttribute`: `String[] value() default {}`, `@Repeatable` container `PageAuthorizeAttributes`. Usage `[PageAuthorize(BtnetRoles.Admin)]` → `@PageAuthorizeAttribute(BtnetRoles.Admin)` | `BasePage.cs:7-30` |
+| Attribute class + usage (`[PageAuthorize]`, `[PageAllowAnonymous]`) | Java annotation with `@Retention(RUNTIME) @Target(TYPE)`; logic of the C# attribute moves to a nested `public static final class Logic` in the same file. `PageAuthorizeAttribute`: `String[] value() default {}`, `@Repeatable` container `PageAuthorizeAttributes`. Usage `[PageAuthorize(BtnetRoles.Admin)]` → `@PageAuthorizeAttribute(BtnetRoles.Admin)`. **`Logic` signature [C28]:** `public Logic(String... roles)` and `public boolean OnAuthorize(ClaimsPrincipal user)`; `BasePage` builds one `Logic` per annotation (`new PageAuthorizeAttribute.Logic(a.value())`) | `BasePage.cs:7-30` |
+| Object initializer `new T { A = x, B = y }` [C6] | construct, then assign each member **in the source's textual order**, as a block lambda/local: `p -> { var i = new SelectListItem(); i.Value = p.Name; i.Text = p.Name; return i; }`. ASP.NET MVC `SelectListItem` → runtime `btnet.runtime.web.SelectListItem` (§3) | `Controls/BugList.ascx.cs:67-132` |
+| Declared type `IEnumerable<T>` / `ICollection<T>` / `IList<T>` [C1] | `java.util.List<T>`; a LINQ result assigned to it is materialized with `.collect(Collectors.toCollection(ArrayList::new))` (EF6: `.ToList()`). A Java array is used **only** where the C# declared type is `T[]` | `priorities.aspx.cs:28` `IEnumerable<Priority> Priorities = ….ToArray()` → `Priorities = context.Priorities.OrderBy("Name").ToList();` |
 | `Attribute.GetCustomAttributes(GetType(), typeof(A))` (inherit=true) | walk `getClass()` and every superclass, collecting `getDeclaredAnnotationsByType(A.class)` (Java `@Inherited` drops the superclass annotation when the subclass has one; C# returns both — admin pages need User **and** Admin) | `BasePage.cs:23,29-30` |
 | `ref`/`out` parameter (43 sites/13 files) | runtime `btnet.runtime.Ref<T>` (public field `value`); caller: `Ref<String> sv = new Ref<>(sort_val); f(sv); sort_val = sv.value;` — write back immediately after the call | `bug_list.cs:187-190`, `Mime.cs:27`, `version_control.cs:175,393` |
 | `T?` / `Nullable<T>` (7) | boxed type (`Integer`, `LocalDateTime`); `.HasValue` → `!= null`; `.Value` → unboxing | `Models/BugFromEmail.cs:11-30` |
@@ -121,7 +128,8 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `Dictionary` read indexer `d[k]` | `btnet.runtime.Collections2.indexer(d, k)` — throws `KeyNotFoundException` when absent (C# semantics); `TryGetValue` → `containsKey`+`get` | |
 | `Hashtable` / `ArrayList` (non-generic) | `HashMap<Object,Object>` (`get` returns null when absent, like C#) / `ArrayList<Object>` | iteration order of Hashtable differs: if output depends on it, mark `BUG(port):` |
 | `NameValueCollection` / `StringDictionary` | runtime `NameValueCollection` (case-insensitive keys, multi-value, comma-joined `get`) / `HashMap` with lower-cased keys | |
-| LINQ-to-objects (33/15) | `java.util.stream`: `Where`→`filter`, `Select`→`map`, `Any`→`anyMatch`, `ToList`→`collect(toCollection(ArrayList::new))`, `First()`→`findFirst().orElseThrow()` (throws like C#), `FirstOrDefault()`→`findFirst().orElse(null)`, `OrderBy(k)`→`sorted(comparing(k))` stable; **string keys** use `btnet.runtime.Strings.CURRENT_CULTURE` comparator (en-US collation), never natural order | `query.cs:24` `Except` → filter preserving order, distinct |
+| `SortedDictionary<K,V>` [C20, C31] | `TreeMap<K,V>`; **string keys** → `new TreeMap<>(Strings.CULTURE_COMPARER)` (.NET `Comparer<string>.Default` is culture-sensitive, not ordinal); other keys → natural order | `tags.cs:108` `new SortedDictionary<string, List<int>>()` → `new TreeMap<String, List<Integer>>(Strings.CULTURE_COMPARER)` |
+| LINQ-to-objects (33/15) | `java.util.stream`: `Where`→`filter`, `Select`→`map`, `Any`→`anyMatch`, `All(p)`→`allMatch(p)` (empty → true, as .NET) [C4], `ToList`→`collect(toCollection(ArrayList::new))`, `First()`→`findFirst().orElseThrow()` (throws like C#), `FirstOrDefault()`→`findFirst().orElse(null)`, `OrderBy(k)`→`sorted(comparing(k))` stable; **string keys** use `btnet.runtime.Strings.CULTURE_COMPARER` (en-US collation; the single culture comparer — the earlier name `CURRENT_CULTURE` is withdrawn), never natural order | `query.cs:24` `Except` → filter preserving order, distinct; `BasePage.cs:30` `attributes.All(a => a.OnAuthorize(Page.User))` → `attributes.stream().allMatch(a -> a.OnAuthorize(Page.User))` |
 
 **Strings**
 
@@ -139,7 +147,9 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `s.Trim()`/`TrimStart`/`TrimEnd` | `Strings.Trim(s)` etc. (.NET `Char.IsWhiteSpace` set, includes U+00A0) | `String.trim()` BANNED |
 | `ToLower()`/`ToUpper()` | `toLowerCase(Locale.US)` / `toUpperCase(Locale.US)` | |
 | `IndexOf(string)`/`StartsWith`/`EndsWith`/`Contains` | Java ordinal equivalents; `IndexOf(s, StringComparison.X)` → `Strings.IndexOf` | .NET culture-sensitive variants differ only on ignorable chars — accepted |
-| `@"verbatim"` (238/57) | Java text block `"""` only if the content has no trailing-space or `\` hazards; otherwise ordinary literal with `\n` escapes. **SQL text must be byte-identical** (except §0.1); `""` inside verbatim → `"` | `bug.cs:1178-1183` |
+| `s.IndexOf(v, start)` (string or char `v`) [C27] | `Strings.IndexOf(s, v, start)` — throws `ArgumentOutOfRangeException` when `start < 0` or `start > s.length()` (.NET); otherwise = `s.indexOf(v, start)`. Bare `indexOf(v, start)` is BANNED (Java clamps) | `version_control.cs:470` `line.IndexOf(" ", pos1)` → `Strings.IndexOf(line, " ", pos1)` (pos1 = -1 must throw) |
+| `string.Join(sep, xs)` [C3] | `Strings.join(sep, xs)` — accepts `String[]`, `Object[]`, `Iterable<?>`; each element → `Convert.ToString` semantics with **`null` → `""`** (.NET), never `"null"`. One form for every element type: `java.lang.String.join` is not used (it prints `"null"`), and non-string elements need no `map(String::valueOf)` | `Controls/BugList.ascx:128`, `Mime.cs:90,96`: `string.Join(", ", cols.Select(c => string.Format("'{0}'", c)).ToArray())` → `Strings.join(", ", cols.stream().map(c -> Strings.Format("'{0}'", c)).toList())` |
+| `@"verbatim"` (238/57) [C24] | **always** an ordinary string literal: newlines → `\n` (or `\r\n` where the source file has CRLF line ends inside the literal — copy the bytes), tabs → `\t`, `\` → `\\`, `""` → `\"`; long literals may be split by `+` at line ends. **Java text blocks `"""` are BANNED** (they strip common indentation and trailing spaces, so SQL is not byte-identical). **SQL text must be byte-identical** (except §0.1) | `edit_user.aspx.cs:35` `@"select pu_project` + tab-indented lines → `"select pu_project\n\t\t\t\tfrom ..."`; `bug.cs:1178-1183` |
 | `Environment.NewLine` | `Environment.NewLine` (runtime constant `"\r\n"`) | |
 | `Encoding.UTF8.GetBytes/GetString` | `Encoding.UTF8.GetBytes/GetString` (runtime; lossy decode like .NET, §3) | `util.cs:496-498` |
 
@@ -164,7 +174,16 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `CultureInfo.CurrentCulture` → `CultureInfo.EN_US` (runtime).
 - `DateTime` → `LocalDateTime` (no zone). `DateTime.Now` (12/5) →
   `LocalDateTime.now()`. `AddHours/AddMinutes/AddDays` → `plusHours/...`.
-  `.Year/.Hour` → `getYear()/getHour()`.
+  `.Year/.Hour` → `getYear()/getHour()`; `.Month` → `getMonthValue()`,
+  `.Day` → `getDayOfMonth()` [C26] (never `getMonth()`, an enum).
+- `dt.Ticks` [C20] → `DateTimes.ticks(dt)` (runtime: `long` count of 100 ns
+  intervals since 0001-01-01T00:00, proleptic Gregorian, = .NET `Ticks`):
+  `DateTime.Now.Ticks` → `DateTimes.ticks(LocalDateTime.now())`.
+- `ts.TotalSeconds` (`TimeSpan`) [C20] → `d.toNanos() / 1e9` (a `double`, as
+  .NET); `(dt2 - dt1)` → `Duration.between(dt1, dt2)`.
+- `new Random()` / `r.Next(a, b)` [C20] → `new java.util.Random()` /
+  `a + r.nextInt(b - a)`. The sequence differs from .NET and is **never
+  compared** (judge must not pin random output).
 - `dt.ToString(fmt[, culture])`, `n.ToString("00")`, `{0:...}` →
   `DotNetFormat.Format(value, fmt, culture)` implementing .NET standard
   (`g`,`G`,`d`,`D`,`t`,`T`,`s`) and custom specifiers (`yyyy yyy yy MM M dd d
@@ -183,6 +202,21 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `MatchEvaluator` results. `Split` keeps trailing empties and captured groups.
   Direct `java.util.regex` use and `String.replaceAll/split` are BANNED.
   Evidence: `util.cs:216` `<(.|\n)*?>`; `util.cs:228-253`; `print_bug.cs:948`.
+- `RegexOptions` [C21, C23]: `Compiled`, `CultureInvariant` → no flag (dropped
+  silently; the options argument keeps the remaining flags).
+  `IgnorePatternWhitespace` → `DotNetRegex` adds `Pattern.COMMENTS`, after first
+  rewriting the pattern so that, **inside character classes**, `#` and
+  whitespace are escaped (.NET keeps them literal there; Java COMMENTS does
+  not). Translators pass the option through unchanged:
+  `new Regex(p, RegexOptions.IgnorePatternWhitespace | RegexOptions.Compiled)`
+  → `new DotNetRegex(p, RegexOptions.IgnorePatternWhitespace)` (`print_bug.cs:28`).
+- `regex.Matches(s)` [C26] → `List<Match>` (iterate with `for (Match m : …)`);
+  `m.ToString()` → `m.Value()` (runtime property convention, §2A).
+- **Sanctioned pattern rewrite (the only one)** [C25]: `<(.|\n)*?>`
+  (`util.cs:216`) → `<[^>]*>` — equivalent (lazy any-char to the first `>`),
+  and avoids `StackOverflowError` from java.util.regex's recursive
+  alternation on long input. Comment the site `// sanctioned regex rewrite — RULEBOOK §2A C25` (plain comment, not a marker).
+  Any other pattern rewrite needs an inventory row.
 
 **Exceptions**
 
@@ -193,18 +227,68 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 - .NET exception types used in `catch`/`throw` map to runtime classes of the
   same name in `btnet.runtime` (`FormatException`, `OverflowException`,
   `InvalidCastException extends ClassCastException`, `ArgumentException`,
-  `ArgumentNullException`, `KeyNotFoundException`, `HttpException`,
-  `ConfigurationErrorsException`, `NullReferenceException` → use
-  `NullPointerException`). `catch (Exception e)` stays `catch (Exception e)`.
+  `ArgumentNullException`, `ArgumentOutOfRangeException` [C27],
+  `IndexOutOfRangeException` [C14], `KeyNotFoundException`, `HttpException`,
+  `ConfigurationErrorsException`, `SecurityException` [C26], `NullReferenceException` → use
+  `NullPointerException`); all extend `RuntimeException` (via
+  `DotNetException` where they have no JDK parent).
+- **`System.Exception` [C11] (replaces "`catch (Exception e)` stays").**
+  As a thrown/constructed type → runtime `btnet.runtime.DotNetException
+  extends RuntimeException` (constructors `(String)`, `(String, Throwable)`);
+  as a declared variable/parameter/catch type → `RuntimeException`. Never
+  `java.lang.Exception` (checked). Every checked JDK exception is already
+  wrapped unchecked at its call (`Exceptions.wrap`), so `catch
+  (RuntimeException e)` catches everything a C# `catch (Exception e)` does
+  except the control-flow `Error`s below.
+  `bug.cs:391` `throw new Exception("x")` → `throw new DotNetException("x");`;
+  `catch (Exception ex) { … throw ex; }` (`bug.cs:420`) → `catch (RuntimeException ex) { … throw ex; }`.
 - `throw;` → `throw e;` (same variable). `e.Message` → `e.getMessage()`;
   `e.StackTrace` → `Exceptions.StackTrace(e)`; `e.InnerException` →
-  `e.getCause()`.
+  `e.getCause()`; `e.GetBaseException()` → `Exceptions.baseOf(e)` (innermost
+  cause, `e` itself if none) [C14]; `e.ToString()` / `"" + e` →
+  `Exceptions.dotNetToString(e)` (`"<.NET type name>: <message>"` + stack
+  text; the type name maps runtime/JDK classes to the .NET FQN where known —
+  `DotNetException` → `System.Exception`, `SqlException` →
+  `System.Data.SqlClient.SqlException`, `NullPointerException` →
+  `System.NullReferenceException` — else the Java FQN; stack-trace text is
+  never compared) [C14].
+- Bare `catch { … }` [C30] → `catch (Throwable t) { Exceptions.rethrowIfEnd(t); … }`
+  (`rethrowIfEnd` rethrows any `ResponseEndException`, incl. its Redirect/
+  Transfer subclasses, so a bare catch never swallows page control flow); a
+  bare catch whose body is or ends with `throw;` → `throw t;` (precise rethrow
+  compiles: translated try bodies throw no checked exceptions). If the try
+  lexically contains `Response.End/Redirect`/`Server.Transfer`, the C7 clause
+  below precedes it.
+- `catch (ThreadAbortException …) { … }` [C12] (`email.cs:303`,
+  `bug.cs:1285`): no Java equivalent — the catch clause is dropped and replaced
+  by the comment `// ThreadAbortException catch removed (RULEBOOK §2A)`; the
+  guarded `try` body (and any `finally`) is kept unchanged. A `try` left with
+  no catch/finally becomes a plain block.
 - `Response.End()`, `Response.Redirect(url)` and `Server.Transfer(p)` throw
-  runtime `ResponseEndException`/`TransferException`, which **extend
-  `java.lang.Error`** (ThreadAbortException analogue) so `catch (Exception)`
-  does not swallow them. Where C# code puts statements in a `catch` that would
-  have run before the ThreadAbort re-throw, mark `TODO(port): catch body
-  skipped on Response.End`.
+  runtime `ResponseEndException extends java.lang.Error` (ThreadAbortException
+  analogue) or its subclasses `RedirectException` (Redirect) and
+  `TransferException` (Transfer), so `catch (RuntimeException)` does not
+  swallow them and one `catch (ResponseEndException ex)` covers all three.
+- **Catch bodies that .NET runs on ThreadAbort [C7, C13] (replaces the old
+  "`TODO(port): catch body skipped`" text).** .NET runs a `catch (Exception
+  ex)` body with `ex.Message == "Thread was being aborted."` and re-throws
+  the abort at its end. So every `catch (Exception ex)` (or bare catch) whose
+  `try` **lexically** contains `Response.End()`, `Response.Redirect(url)` /
+  `Redirect(url, true)` or `Server.Transfer` gets, immediately before the
+  general clause, a generated clause running the same body with `ex` bound to
+  the abort, then re-throwing it:
+  ```java
+  } catch (ResponseEndException ex) {   // .NET runs this body on ThreadAbort (RULEBOOK §2A C7)
+      try { Response.Write("<font color=red><b>" + Strings.cs(ex.getMessage()) + "</b></font>"); }
+      finally { throw ex; }
+  } catch (RuntimeException ex) { /* original body */ }
+  ```
+  (`install.aspx:32` End inside the try, catch at `:46`.) The runtime gives
+  `ResponseEndException`/`TransferException` the message
+  `"Thread was being aborted."`. The `finally { throw ex; }` is required: in
+  .NET the abort is re-raised at the end of the catch even if the body
+  returns or throws. End reached only through a callee is not handled
+  (`TODO(port)` only if the inventory flags the site).
 
 **Database (`DbUtil`, `SQLString`, ADO.NET)**
 
@@ -271,7 +355,10 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 - Column lookup is case-insensitive (exact match first). Unknown column →
   `ArgumentException("Column 'x' does not belong to table T.")`.
   `DataView.Find` without a `Sort` → `ArgumentException` (inherited quirk at
-  `edit_user.aspx.cs:233`). `RowFilter` supports only the expression forms
+  `edit_user.aspx.cs:233`). `dv.Sort(s)` naming an unknown column →
+  `IndexOutOfRangeException("Cannot find column <x>.")` (.NET
+  `DataTable.ParseSortString`); a malformed sort direction →
+  `FormatException` [C14]. `RowFilter` supports only the expression forms
   found in source; anything else → runtime throws
   `UnsupportedOperationException("TODO(port) RowFilter")`.
 - `typeof(T)` → `T.class`; `Util.is_numeric_datatype(Type)` takes `Class<?>`.
@@ -300,25 +387,32 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   (explicit column list, so a missing column fails exactly as EF did — seed
   patch P2); `OrderBy(x => x.Name).ToList()` → `.OrderBy("Name").ToList()`
   (ORDER BY the mapped column — collation ordering, never in-memory);
-  `.ToArray()` → `.ToList().toArray(...)`; `Where(lambda)` → `.Where(String
+  `.ToArray()` [C1] → `.ToList()` when the C# target's declared type is
+  `IEnumerable<T>`/`ICollection<T>`/`IList<T>` (`priorities.aspx.cs:28`), and
+  `.ToList().toArray(new T[0])` **only** when it is `T[]`; `Where(lambda)` → `.Where(String
   sqlPredicate, SqlParameter...)` written over mapped column names with EF6
   null semantics (`q.User == null || q.User == userId` →
   `"(qu_user is null or qu_user = @userId)"`) — `Context.cs:46-49` is the
-  only site.
+  only site. Chains compose on the runtime query object in source order
+  [C26]: `db.Queries.Where(q => …).OrderBy(q => q.Name).ToList()` →
+  `db.Queries.Where("(qu_user is null or qu_user = @userId)", p).OrderBy("Name").ToList()`
+  (one SELECT: WHERE then ORDER BY).
 
 **Web intrinsics in core code**
 
 | C# | Java (runtime `btnet.runtime.web`) |
 |---|---|
 | `HttpContext.Current` (38/13) | `HttpContext.Current()` — ThreadLocal set by the request filter; `null` on background threads (as in .NET) |
+| Request state read inside a **static core method** [C34] (e.g. 11 rows in `btnet/bug_list.cs`) | through the method's own `HttpContext`/`Page`/`HttpRequest` parameter if it has one (`page.Session.get("k")`), else `HttpContext.Current().Session().get("k")`. A bare `Session`/`Request`/`Response` identifier exists only in page/control classes (inherited fields) — never in core statics |
+| `Util.context` (static `HttpContext`, set at `Global.asax.cs:46`) [C32] | field kept (`public static HttpContext context`, assigned the startup pseudo-context). `Util.context.Application[k]` (`MainMenu.ascx:4,15`, `util.cs:918,964`) → `ApplicationState.get().get(k)` — the `HttpApplicationState` singleton, available from startup, independent of any request; `Util.context.Server.MapPath(p)` → `AppPaths.MapPath(p)` (same result as `Server.MapPath`) |
 | `HttpResponse Response` parameter (`print_bug.cs:38,305`, `bug_list.cs:427`, `util.cs:119,1163,1343`) | keep the parameter, type `btnet.runtime.web.HttpResponse`. `new HttpResponse(stringWriter)` (`bug.cs:1159`, `send_email.aspx.cs:484`) is supported by the runtime — **do not** change signatures to `Writer` |
 | `HttpRequest Request` parameter | `btnet.runtime.web.HttpRequest` |
 | `Request["k"]` (83/31) | `Request.get("k")`: QueryString → Form → Cookies → ServerVariables, first hit, multi-values comma-joined, `null` if absent |
 | `Request.QueryString["k"]`, `Request.Form["k"]`, `.GetValues` | `Request.QueryString().get("k")`, `Request.Form().get("k")`, `.GetValues("k")` |
 | `Request.RawUrl`, `Url`, `Path`, `UserHostAddress`, `Cookies`, `Files`, `ServerVariables` | same-named methods |
-| `Session["k"]` (24/8), `Session.SessionID`, `Session.Abandon()` | `Session.get("k")` / `.set` / `.SessionID()` / `.Abandon()` over `HttpSession` (timeout 120 min, `Web.config:30`) |
-| `Application["k"]` (11/5), `Util.context.Application` | `HttpApplicationState` singleton (ConcurrentHashMap; `Lock()/UnLock()` = a ReentrantLock) |
-| `HttpRuntime.Cache[k]` (7/3) | `HttpRuntime.Cache().get/set` — ConcurrentHashMap, no expiry (`Authenticate.cs:84-157`) |
+| `Session["k"]` (24/8), `Session.SessionID`, `Session.Abandon()` | `Session.get("k")` / `.set` / `.SessionID()` / `.Abandon()` over `HttpSession` (timeout 120 min, `Web.config:30`). `Session.set(k, null)` = remove; `get` of an absent key = `null` [C10]. `Session["session_cookie"]` is read but never written in source — preserved, no fix [C16] |
+| `Application["k"]` (11/5) | `Application.get/set` on the `HttpApplicationState` singleton (= `ApplicationState.get()`, C32) (ConcurrentHashMap; `Lock()/UnLock()` = a ReentrantLock). `set(k, null)` = remove; `get` of absent = `null` [C10]: `Application["custom_columns_dataset"] = null` (`add_customfield.aspx.cs:285`) → `Application.set("custom_columns_dataset", null);` |
+| `HttpRuntime.Cache[k]` (7/3) | `HttpRuntime.Cache().get/set` — ConcurrentHashMap, no expiry (`Authenticate.cs:84-157`); `set(k, null)` = remove (C10). `Cache.Add(k, v, deps, NoAbsoluteExpiration, …)` [C14] → `Cache().addIfAbsent(k, v)` (stores only if absent; returns the existing entry, or `null` if it stored — .NET `Cache.Add`); expiry/priority/callback arguments are dropped (every site passes `NoAbsoluteExpiration`). `Cache.Insert` = `set`, `Cache.Remove` = remove. Cache keys share one namespace (`Cache[username]` vs `Cache["Application"]`) — preserved, `// BUG(port): user named "Application" collides` [C15] |
 | `Server.MapPath(p)` (4/3), `Util.GetAbsolutePath` | `Server.MapPath(p)` → path under `btnet.webroot` (default `port/web/webroot`); `MapPath(null)` → webroot |
 | `HttpUtility.HtmlEncode` (16/8), `Server.HtmlEncode` | `HttpUtility.HtmlEncode`: null→null; encodes `< > & " '`(`&#39;`) and U+00A0–U+00FF as `&#NNN;` (.NET 4.x) |
 | `HttpUtility.HtmlDecode` | HTML 4 named + numeric entities |
@@ -343,6 +437,10 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   → `btnet.mail.*` in `application.properties` (`deliveryMethod`,
   `pickupDirectory`, host/port/user/password/ssl).
 - `get_setting` keeps its own empty→default logic (`util.cs:127-141`).
+- `ConfigurationManager.AppSettings[k]` [C26] → `Settings.get(k)` (runtime
+  `btnet.runtime.config.Settings`; reads the same `NameValueCollection` as
+  `GetSection("appSettings")`, so overrides apply; absent → `null`, no
+  default logic). `btnet_service` reads its own `<exe>.config` (C18), not this.
 
 **Logging, mail, search, processes, LDAP, SOAP, POP3**
 
@@ -350,17 +448,27 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 |---|---|
 | `LogManager.GetCurrentClassLogger()` + `log.Debug/Info/Fatal(x)` | `LoggerFactory.getLogger(<EnclosingClass>.class)` + `debug/info`; `Fatal` → `error(MarkerFactory.getMarker("FATAL"), …)` |
 | `App_Start/LoggingConfig.cs` (NLog file + mail targets) | programmatic Logback in `LoggingConfig.Configure()`: rolling file `<log folder>/btnet_log.txt`, daily, level TRACE if `LogEnabled=1` else OFF. Mail target → `TODO(port): FATAL mail appender` |
-| `SmtpClient`/`MailMessage`/`Attachment` (14/3) | runtime `btnet.runtime.mail.SmtpClient/MailMessage/Attachment/MailAddress` (same members) over Jakarta Mail; `deliveryMethod=specifiedPickupDirectory` writes `<dir>/<uuid>.eml` (active setting, `Web.config:52-56`). `ServicePointManager.ServerCertificateValidationCallback = …true` (`email.cs:242`) → runtime `SmtpClient.TrustAllCertificates(true)` |
+| `SmtpClient`/`MailMessage`/`Attachment` (14/3) | runtime `btnet.runtime.mail.SmtpClient/MailMessage/Attachment/MailAddress` (same members) over Jakarta Mail; `deliveryMethod=specifiedPickupDirectory` writes `<dir>/<uuid>.eml` (active setting, `Web.config:52-56`). `ServicePointManager.ServerCertificateValidationCallback = …true` (`email.cs:242`) → runtime **static** `SmtpClient.TrustAllCertificates(true)`: process-wide and sticky for every later `SmtpClient`, like the `ServicePointManager` callback [C5] |
 | OpenPop `Message`, `MessagePart`, `Pop3Client` (`Mime.cs`, `POP3Main.cs`) | runtime `btnet.runtime.mail.pop.Message/MessagePart/Pop3Client` (OpenPop member names) over Jakarta Mail `MimeMessage` / POP3 store |
-| NEST `ElasticClient` (`Search/*`) | `BugSearchFactory` builds runtime `ElasticClient(uri, "btnet")`; `BugSearch` issues: index `PUT {uri}/btnet/bug/{id}` with the same document fields; search `POST {uri}/btnet/bug/_search` `{"size":500,"query":{"query_string":{"query":…}},"highlight":{"pre_tags":["<span class='highlighted'>"],"post_tags":["</span>"],"fields":{"*":{}}}}`. `TODO(port): verify NEST 1.0.2 wire format`. Keep `IndexBug`'s try/catch: connection failures are logged, never thrown |
-| `System.Diagnostics.Process` (`version_control.cs:30-70`) | `ProcessBuilder(filename + split args)`, working dir, read stdout then stderr fully (UTF-8), `waitFor()`. Argument splitting: runtime `Processes.SplitArgs` (Windows `CommandLineToArgvW` rules) |
+| NEST `ElasticClient` (`Search/*`) | `BugSearchFactory` builds runtime `ElasticClient(uri, "btnet")`; search call [C29] `SearchResponse Search(String index, String jsonBody)` with `SearchResponse.Hits` = `List<Hit>`, `Hit { String Id; double Score; Map<String,Object> Source; }` (public fields), body built by `BugSearch` as below (`BugSearch.cs:55`); `BugSearch` issues: index `PUT {uri}/btnet/bug/{id}` with the same document fields; search `POST {uri}/btnet/bug/_search` `{"size":500,"query":{"query_string":{"query":…}},"highlight":{"pre_tags":["<span class='highlighted'>"],"post_tags":["</span>"],"fields":{"*":{}}}}`. `TODO(port): verify NEST 1.0.2 wire format`. Keep `IndexBug`'s try/catch: connection failures are logged, never thrown |
+| `System.Diagnostics.Process` + `ProcessStartInfo` (`version_control.cs:30-70`) [C20] | `ProcessStartInfo` fields map onto one `ProcessBuilder`: `FileName` + `Arguments` → `new ProcessBuilder(Processes.command(FileName, Arguments))` (args split by `Processes.SplitArgs`, Windows `CommandLineToArgvW` rules); `WorkingDirectory` → `.directory(new java.io.File(dir))`; `RedirectStandardOutput/Error = true` → pipes (default); `UseShellExecute=false`/`CreateNoWindow` → nothing; read stdout then stderr fully as UTF-8, `waitFor()`. `Process.GetCurrentProcess().MainModule.FileName` → `AppPaths.executable()` [C18] |
 | `Stopwatch` | runtime `Stopwatch` (`Start/Stop/ElapsedMilliseconds()`) |
 | `LdapConnection.Bind` (`Authenticate.cs:176-207`) | JNDI `InitialLdapContext` per DN; `LdapAuthType=Basic` → `simple`; other values → `TODO(port)`; failure → exception → caught as in source |
 | `TranslationService` (wsdl SOAP client, `btnet/TranslationService.cs`) | same class and members; every remote call throws `UnsupportedOperationException("TODO(port): SOAP translation service")`. `translate.aspx` keeps its error path |
 | `HashAlgorithm.Create("MD5")` (`UpdatePassword.aspx.cs:64`) | `MessageDigest.getInstance("MD5")` |
 | `ServiceBase` (`btnet_service.cs`) | `service` keeps `OnStart/OnStop` and gets `public static void main`; installer/controller members → `TODO(port): Windows service install` stubs |
-| `XmlTextReader` (`POP3Main.cs:316+`) | StAX `XMLStreamReader` reading the same config file format |
-| `HttpWebRequest` (`POP3Main.cs:734-800`) | `java.net.http.HttpClient`, same URL/body/headers |
+| `XmlTextReader` (`POP3Main.cs:316+`) | runtime `btnet.runtime.io.XmlTextReader` (same members: `Read()`, `NodeType`, `Name`, `Value`, `Close()`) over StAX `XMLStreamReader`, **opened lazily** [C35]: the constructor only stores the path; the first `Read()` opens the file, so a missing config surfaces there as `FileNotFoundException` (runtime class) exactly as in .NET (`POP3Main.cs:427` catch) |
+| `HttpWebRequest` (`POP3Main.cs:734-800`) | `java.net.http.HttpClient`, same URL/body/headers; one client per `fetch_messages` built with `.cookieHandler(new CookieManager())` + `.followRedirects(HttpClient.Redirect.NORMAL)` (keeps the `CookieContainer`/redirect behaviour of `POP3Main.cs:689-694`) [C33]; an awaited `GetResponseAsync`/`GetRequestStreamAsync` → blocking `client.send(...)` on the async thread (below) |
+
+**Threads, timers, async, service paths**
+
+| C# | Java | Site |
+|---|---|---|
+| `new Thread(p).Start()`, `Task.Run(() => x())` [C2, C22] | `Threads.start(p)` / `Threads.start(() -> x())` — runtime: `new Thread(p)`, `setDaemon(false)`, `start()`, returns the `Thread` | `bug.cs:1201`, `tags.cs:119,125`, `email.cs:273`, `admin.aspx.cs:43` `Task.Run(() => search.IndexAll())` → `Threads.start(() -> search.IndexAll());` |
+| `t.Abort()` [C19] | `t.interrupt(); // TODO(port): Abort semantics` — the thread's loop checks `Thread.interrupted()` (and `Threads.Sleep` returns early) where the source loops | `POP3Main.cs:222` `fetching_thread.Abort()` |
+| `System.Timers.Timer` with `AutoReset = false`, re-armed by `resume()` from `do_work` [C17 CORRECTED] | `java.util.Timer` created **non-daemon** (`new Timer(false)`); `Start()` → `timer.schedule(new TimerTask(){ public void run(){ do_work(null, null); } }, interval)` — **one-shot**, re-armed by the translated `resume()` exactly where the source calls it; `Stop()`+`Dispose()` → `timer.cancel()`. `scheduleAtFixedRate`/`schedule(task, delay, period)` are BANNED. The only sanctioned scheduler (§1) | `POP3Main.cs:291,300-310` |
+| `async void M(...)` with `await` [C33] | `void M(...)`: statements before the first `await` run on the caller's thread; the rest of the body is wrapped in `Threads.runAsync(() -> { … })` (runtime: one new **non-daemon** platform thread, started immediately; uncaught exceptions logged via SLF4J, like an unobserved `async void` crash minus the process kill — `TODO(port)` noted in runtime). The caller continues immediately. Each `await x` inside becomes the blocking call (`client.send`) | `POP3Main.cs:511` `fetch_messages` (awaits at :704, :722) |
+| `Process.GetCurrentProcess().MainModule.FileName` [C18] | `AppPaths.executable()` = system property `btnet.service.home` (default `user.dir`) + `"/btnet_service.exe"` — a virtual path, so `<exe> + ".config"` and log paths resolve beside it; the config **file name** `btnet_service.exe.config` is kept | `POP3Main.cs:75`, `btnet_service.cs:36` |
 
 **JSON / Web API (`Controllers/*.cs`, 3)**
 
@@ -472,10 +580,17 @@ public class delete_priority extends BasePage {
 7. Save view state, render the template with model `page` (this) and
    `master`, and write: **Response buffer first, then the rendered template**
    (a `Response.Write` in `Page_Load` appears before `<!DOCTYPE>` exactly as in
-   WebForms). Default content type `text/html; charset=utf-8`.
-8. `ResponseEndException` → send only what was written so far (buffer, plus
-   partial template output if thrown during render — `TODO(port)` if Thymeleaf
-   buffering hides partial output). `RedirectException` → 302. 
+   WebForms). The template is rendered **into the same Response buffer**
+   (Thymeleaf's `Writer` is the buffer's writer, appending after what code
+   already wrote), so render regions (B5, C8) and template text interleave in
+   document order. Default content type `text/html; charset=utf-8`.
+8. `ResponseEndException` (also when thrown during render; the runtime unwraps
+   it from Thymeleaf's `TemplateProcessingException` cause chain) → send
+   exactly what the buffer holds: code output, template output so far, and
+   everything a render region wrote before `End` — .NET flushes it
+   (`print_bugs2.aspx:81`) [C8]. Runtime author verifies Thymeleaf writes
+   through without its own buffering (`TODO(port)` in the runtime only, never
+   in translated units). `RedirectException` → 302. 
    `TransferException` → forward (B3). Any other exception → `Global.Application_Error`
    then HTTP 500.
 
@@ -526,7 +641,7 @@ server form via the runtime fragment `~{runtime/form :: hidden}`.
 | `asp:DataGrid` (6 sites/3 files) | `<table id="…" bt:control="${page.MyDataGrid}"></table>`; runtime `DataGrid` renders BoundColumn/HyperLinkColumn/ButtonColumn and posts commands via `__doPostBack` |
 | `<%= expr %>` / `<% Response.Write(expr); %>` where expr is a `String` field or no-arg method of the page | `<th:block th:utext="${page.expr}"/>` |
 | `<%: expr %>` or `<% Response.Write(HttpUtility.HtmlEncode(expr)); %>`, same condition | `th:text` (decoded text is identical; markup bytes are not judged) |
-| Any other code region (`<% … %>` span from an opening `<%` to its brace-balanced end, incl. the literal markup between its blocks) **without** runat=server elements inside | one method `public String __renderN()` (N = 1-based order of the region in the source file) that writes the literal markup and `Response.Write` output into a local runtime `HttpResponse` over a `StringWriter` and returns it; template `<th:block th:utext="${page.__renderN()}"/>`. `<%= e %>` inside → raw write; `<%: e %>` → `HttpUtility.HtmlEncode` |
+| Any other code region (`<% … %>` span from an opening `<%` to its brace-balanced end, incl. the literal markup between its blocks) **without** runat=server elements inside | one method `public String __renderN()` (N = 1-based order of the region in the source file) that writes the literal markup and `Response.Write` output **directly to the page's `Response` buffer** (no local `StringWriter`) and returns `""` [C8, replaces the local-writer rule]; template `<th:block th:utext="${page.__renderN()}"/>`. A `Response.End()` inside the region therefore keeps everything written so far (B2 step 8). `<%= e %>` inside → raw write; `<%: e %>` → `HttpUtility.HtmlEncode`. Example: `<% foreach (var r in rows) { %><tr>…</tr><% } %>` → `public String __render3() { for (…) { Response.Write("<tr>…</tr>"); } return ""; }` |
 | A code region whose blocks enclose runat=server elements (`edit_bug.aspx:101-115`) | `th:if="${page.__condN()}"` / `th:each="item : ${page.__itemsN()}"` on the enclosing element; `__condN()` returns the C# condition |
 | `<%# Eval("x") %>` (8 sites/2 files) | `th:text`/`th:utext` over the bound row inside `th:each` |
 | Page with no markup besides directives/whitespace | no template; `ProcessRequest(req, res, null)` sends only the Response buffer |
@@ -597,6 +712,9 @@ method instead. Templates never contain SQL or business logic.
   `X-Requested-With: XMLHttpRequest` → 401, else 302 to absolute
   `…/default.aspx?ReturnUrl=` + `Uri.EscapeDataString(path + query)` (Katana
   default, judge S5:41).
+- Windows/NTLM auth (`loginnt.aspx`) is out of scope: `Response.StatusCode = 401; Response.End();`
+  (`loginnt.aspx:191`) translates literally and **no** `WWW-Authenticate:
+  NTLM` challenge is produced — keep `// TODO(port): NTLM challenge (Windows auth out of scope)` [C9].
 - Login lifetime: OWIN cookie (14-day sliding) becomes session-bound (120 min).
   `TODO(port): persistent auth cookie` in `SecurityConfig`; not judged.
 - Password hash (`util.cs:494-500`): runtime `Rfc2898DeriveBytes(String,
@@ -638,15 +756,82 @@ batches those between Step 3 batches. Contents (exhaustive):
 
 | Package | Classes |
 |---|---|
-| `btnet.runtime` | `Convert`, `Int32`, `Decimal`, `DateTimes`, `Strings` (`cs`, `Format`, `IsNullOrEmpty`, `Split`, `Trim*`, `IndexOf`, `CURRENT_CULTURE`), `StringSplitOptions`, `DotNetFormat`, `CultureInfo`, `NumberStyles`, `DotNetRegex` (+`RegexOptions`, `Match`, `MatchEvaluator`), `Ref<T>`, `Nulls`, `DBNull`, `Environment`, `Encoding`, `Threads`, `Stopwatch`, `Collections2`, `NameValueCollection`, `Processes`, `Exceptions`, `EventArgs`, exception classes (`FormatException`, `OverflowException`, `InvalidCastException`, `ArgumentException`, `ArgumentNullException`, `KeyNotFoundException`, `ConfigurationErrorsException`) |
+| `btnet.runtime` | `Convert`, `Int32`, `Decimal`, `DateTimes` (`Parse`, `ticks`), `Strings` (`cs`, `Format`, `IsNullOrEmpty`, `Split`, `Trim*`, `IndexOf`, `join`, `CULTURE_COMPARER`), `StringSplitOptions`, `DotNetFormat`, `CultureInfo`, `NumberStyles`, `DotNetRegex` (+`RegexOptions`, `Match`, `MatchEvaluator`), `Ref<T>`, `Nulls`, `DBNull`, `Environment`, `Encoding`, `Threads` (`Sleep`, `start`, `runAsync`), `Stopwatch`, `Collections2`, `NameValueCollection`, `Processes` (`SplitArgs`, `command`), `Exceptions` (`wrap`, `StackTrace`, `baseOf`, `dotNetToString`, `rethrowIfEnd`), `AppPaths` (`executable`, `MapPath`), `EventArgs`, `DotNetException`, exception classes (`FormatException`, `OverflowException`, `InvalidCastException`, `ArgumentException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `IndexOutOfRangeException`, `KeyNotFoundException`, `ConfigurationErrorsException`, `SecurityException`, `FileNotFoundException`) |
 | `btnet.runtime.data` | `DataSet`, `DataTable`, `DataColumn`, `DataColumnCollection`, `DataRow`, `DataRowCollection`, `DataView`, `DataRowView`, `DataTableSerializer`, `SqlConnection`, `SqlCommand`, `SqlParameter`, `SqlParameterCollection`, `SqlDataAdapter`, `SqlDataReader`, `SqlDbType`, `CommandBehavior`, `SqlException`, `SqlBatch`, `DbContext`, `DbSet<T>`, `EntityTypeConfiguration<T>`, `DbModelBuilder` |
-| `btnet.runtime.config` | `ConfigurationManager`, `WebConfigToProperties` (one-time generator), `BtnetApplication` (Spring Boot main, MVC config: case-insensitive paths, resource resolver, dialect, filters), `JsonConfig` |
-| `btnet.runtime.io` | `File`, `Directory`, `Path`, `StreamReader` |
-| `btnet.runtime.web` | `HttpContext`, `HttpRequest`, `HttpResponse`, `HttpServerUtility`, `HttpSessionState`, `HttpApplicationState`, `HttpRuntime` (`Cache()`), `HttpCookie`, `HttpPostedFile`, `HttpUtility`, `HttpApplication`, `HttpException`, `HttpRequestValidationException`, `Page`, `MasterPage`, `UserControl`, `ValidateRequest` (annotation), `ResponseEndException`, `TransferException`, `RedirectException`, `ViewStateCodec`, `RequestContextFilter`, `LowercaseResourceResolver`, `Scripts`, `BundleCollection`, `ScriptBundle`, `ApiController`, `ApiBody`, `FromUri`, `Required` (annotation), `ModelStateDictionary` |
+| `btnet.runtime.config` | `ConfigurationManager`, `Settings`, `WebConfigToProperties` (one-time generator), `BtnetApplication` (Spring Boot main, MVC config: case-insensitive paths, resource resolver, dialect, filters), `JsonConfig` |
+| `btnet.runtime.io` | `File`, `Directory`, `Path`, `StreamReader`, `XmlTextReader` (lazy) |
+| `btnet.runtime.web` | `HttpContext` (`Current()`), `HttpRequest`, `HttpResponse`, `HttpServerUtility`, `HttpSessionState`, `HttpApplicationState`, `ApplicationState` (`get()`), `SelectListItem`, `HttpRuntime` (`Cache()`), `HttpCookie`, `HttpPostedFile`, `HttpUtility`, `HttpApplication`, `HttpException`, `HttpRequestValidationException`, `Page`, `MasterPage`, `UserControl`, `ValidateRequest` (annotation), `ResponseEndException`, `TransferException`, `RedirectException`, `ViewStateCodec`, `RequestContextFilter`, `LowercaseResourceResolver`, `Scripts`, `BundleCollection`, `ScriptBundle`, `ApiController`, `ApiBody`, `FromUri`, `Required` (annotation), `ModelStateDictionary` |
 | `btnet.runtime.web.ui` | `Control`, `HtmlControl`, `HtmlGenericControl`, `HtmlAnchor`, `HtmlForm`, `HtmlHead`, `HtmlImage`, `HtmlInputText`, `HtmlInputPassword`, `HtmlInputHidden`, `HtmlInputCheckBox`, `HtmlInputRadioButton`, `HtmlInputSubmit`, `HtmlInputButton`, `HtmlInputFile`, `HtmlSelect`, `HtmlTextArea`, `DropDownList`, `ListBox`, `CheckBox`, `CheckBoxList`, `RadioButton`, `Button`, `Label`, `Panel`, `HyperLink`, `LinkButton`, `DataGrid` (+ columns, `DataGridItem`, `DataGridCommandEventArgs`), `ListItem`, `ListItemCollection`, `AttributeCollection`, `CssStyleCollection`, `BtnetDialect` (`bt:control`); templates `templates/runtime/form.html` |
 | `btnet.runtime.security` | `SecurityConfig`, `ClaimsIdentity`, `ClaimsPrincipal`, `Claim`, `ClaimTypes`, `IIdentity`, `IPrincipal`, `IOwinContext`, `AuthenticationManager`, `Rfc2898DeriveBytes` |
 | `btnet.runtime.mail` (+`.pop`) | `SmtpClient`, `MailMessage`, `MailAddress`, `Attachment`, `MailPriority`-compatible enum; `pop.Pop3Client`, `pop.Message`, `pop.MessagePart` |
-| `btnet.runtime.search` | `ElasticClient` (thin HTTP wrapper) |
+| `btnet.runtime.search` | `ElasticClient` (thin HTTP wrapper; `Search`), `SearchResponse`, `Hit` |
+
+**Exact semantics of the members added at gate 02** (amendment ids in brackets;
+the runtime author implements exactly this, translators rely on it):
+
+- `Strings.join(String sep, Object[] | Iterable<?> xs)` [C3]: elements joined
+  with `sep`; each element `null`/`DBNull` → `""`, else `Convert.ToString(e)`;
+  empty input → `""`; `sep == null` → `""` separator (.NET).
+- `Strings.IndexOf(String s, String|char v, int start)` [C27]: `start < 0 ||
+  start > s.length()` → `ArgumentOutOfRangeException("startIndex")`; else
+  `s.indexOf(v, start)` (ordinal). Existing `IndexOf(s, v, StringComparison)`
+  overload unchanged.
+- `Strings.CULTURE_COMPARER` [C20, C31]: `Comparator<String>` =
+  `java.text.Collator.getInstance(Locale.US)` at `TERTIARY` strength (case-
+  and accent-sensitive, lower-case before upper-case on otherwise-equal
+  strings, like .NET `StringComparer.CurrentCulture` en-US); `null` sorts
+  first. Replaces the name `CURRENT_CULTURE` (same object).
+- `DateTimes.ticks(LocalDateTime dt)` [C20]: `long` = 100 ns intervals since
+  0001-01-01T00:00:00 (= .NET `DateTime.Ticks`, `Kind` ignored).
+  `DateTimes.Parse` failure → `FormatException("String was not recognized as a valid DateTime.")` [C14].
+- `Exceptions.baseOf(Throwable e)` [C14]: follow `getCause()` to the innermost
+  non-null cause; `e` if none. `Exceptions.dotNetToString(Throwable e)`:
+  `<.NET type name>: <message>` (message omitted with its `": "` when null),
+  inner exceptions as ` ---> <dotNetToString(cause)>`, then stack lines; the
+  type-name map is a fixed table in the runtime (unknown → Java FQN). Stack
+  text is never compared by the judge. `Exceptions.rethrowIfEnd(Throwable t)`
+  [C30]: `if (t instanceof ResponseEndException r) throw r;`.
+- `DotNetException extends RuntimeException` [C11]: `.NET System.Exception`;
+  constructors `()` (message `"Exception of type 'System.Exception' was thrown."`),
+  `(String)`, `(String, Throwable)`. `SecurityException` [C26],
+  `ArgumentOutOfRangeException`, `IndexOutOfRangeException`,
+  `FileNotFoundException`, `FormatException` extend it (or the JDK parent
+  named in §2A); all unchecked.
+- `ResponseEndException extends Error`, subclasses `RedirectException`,
+  `TransferException`; message `"Thread was being aborted."` [C7].
+- `SelectListItem` (`btnet.runtime.web`) [C6]: public fields `String Text`,
+  `String Value`, `boolean Selected` (default `false`); no-arg constructor
+  and `(String text, String value)`; Jackson/Thymeleaf see the fields.
+- `ApplicationState.get()` [C32]: returns the one `HttpApplicationState`,
+  created at class-load, before `Application_OnStart`; the same object the
+  pages' `Application` field points to. `HttpApplicationState` /
+  `HttpSessionState` / `HttpRuntime.Cache()` [C10]: `set(k, null)` removes,
+  `get(absent)` → `null`; `Cache().addIfAbsent(k, v)` [C14] = `putIfAbsent`,
+  returns the previous value or `null`.
+- `HttpContext.Current()` [C34]: request-bound `ThreadLocal`, `null` off a
+  request thread; exposes `Request()`, `Response()`, `Session()`,
+  `Application()`, `Server()`, `User()`, `Cache()`.
+- `AppPaths` [C18, C32]: `executable()` = `System.getProperty("btnet.service.home",
+  System.getProperty("user.dir")) + "/btnet_service.exe"` (never needs to
+  exist); `MapPath(p)` = `Server.MapPath(p)` without a request.
+- `Threads.start(Runnable)` [C2, C22]: `new Thread(r)`, `setDaemon(false)`,
+  `start()`, returns it. `Threads.runAsync(Runnable)` [C33]: same, plus an
+  uncaught-exception handler that logs at error. `Threads.Sleep(ms)` on
+  interrupt: re-sets the flag and returns early (C19).
+- `XmlTextReader(String path)` [C35]: stores the path; first `Read()` opens
+  it (missing → `FileNotFoundException("Could not find file '<path>'.")`);
+  `Read()` returns `false` at end; `Close()` idempotent.
+- `SmtpClient.TrustAllCertificates(boolean)` [C5]: **static**; sets a
+  process-wide flag read by every later `SmtpClient.Send` (trust-all
+  `SSLSocketFactory`, `mail.smtp.ssl.trust=*`).
+- `Settings.get(String key)` [C26]: `ConfigurationManager.GetSection("appSettings").get(key)`.
+- `ElasticClient.Search(String index, String jsonBody)` [C29]: `POST
+  {uri}/{index}/bug/_search`, returns `SearchResponse { List<Hit> Hits; }`,
+  `Hit { String Id; double Score; Map<String,Object> Source; }` from
+  `hits.hits[]._id/_score/_source`; HTTP/connection failure → `DotNetException`.
+- `DotNetRegex` [C21, C26]: `RegexOptions.Compiled`/`CultureInvariant` are
+  accepted no-ops; `IgnorePatternWhitespace` → escape `#` and whitespace
+  inside `[...]`, then `Pattern.COMMENTS`; `Matches` → `List<Match>`.
 
 Every escape-hatch use in translated code is visible: a runtime call, or one
 of the markers below. Marker formats (load-bearing, one each):
@@ -742,3 +927,4 @@ is a finding for the human.
 | D-002 | 2026-11-03 | The orchestrator records gates as signed off, commits at gates, and starts the build daemon itself instead of stopping for the human (standing rule 3), because the human delegated all gates to the stated recommendations | Human, standing mandate (`PROGRESS.md`) |
 | D-003 | 2026-11-03 | Option (b): five original defects are specified as fixed (§0.1, F1–F5) instead of reproduced; the judge tests pinning them (`S1` admin-rewrite/non-admin-500 tests, `S3.browserPostWithoutUserHitSubmitSavesNothing` and the history-failure test, `S8` queue-failure tests) are rewritten to the fixed expectation, and mutations M-S1-2, S3-M1, S8-M1 are retired or inverted, in the same change | Human, gate 00b (`PROGRESS.md`) |
 | D-004 | 2026-11-03 | UI layer is a redesign: the Step 2 dual-translation bakeoff is not used for UI units (pages, masters, `.ascx`, includes); replaced by adversarial review of §2B and a throwaway pilot | Human, gate 00 (`feasibility.md` §9) |
+| D-005 | 2026-11-03 | Rulebook amendments C1–C35 (`migration/inventory/rulebook-conflicts.md`) applied by the orchestrator at the 02 gate under the human's standing mandate, instead of by the human (standing rule 1: amendments are applied between batches by the human). Applied by a rulebook agent on the rulebook-tier model; C13/C23 are duplicates (C7/C21), C17 applied as corrected | Human, standing mandate (`PROGRESS.md`) |
