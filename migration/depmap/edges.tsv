@@ -1,0 +1,1026 @@
+from	to	evidence
+src/BugTracker.Web/App_Start/LoggingConfig.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/App_Start/LoggingConfig.cs:15 Util.get_log_folder -> btnet.Util
+src/BugTracker.Web/App_Start/Startup.Auth.cs	src/BugTracker.Web/Startup.cs	T2 src/BugTracker.Web/App_Start/Startup.Auth.cs:11 Startup -> btnet.Startup
+src/BugTracker.Web/BasePage.cs	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/BasePage.cs:9 BtnetRoles.User -> btnet.Security.BtnetRoles
+src/BugTracker.Web/BasePage.cs	src/BugTracker.Web/Security/PageAllowAnonymous.cs	T1 src/BugTracker.Web/BasePage.cs:23 PageAllowAnonymous -> btnet.Security.PageAllowAnonymous
+src/BugTracker.Web/BasePage.cs	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/BasePage.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/Mail/Mime.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:33 Mime.GetMimeMessage -> btnet.Mail.Mime
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:151 Email.auto_reply -> btnet.Mail.Email
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/Models/BugFromEmail.cs	T1 src/BugTracker.Web/Controllers/BugFromEmailController.cs:16 BugFromEmail -> btnet.Models.BugFromEmail
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/Controllers/BugFromEmailController.cs:115 extension .GetOrganizationId()
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Controllers/BugFromEmailController.cs:70 SQLString -> btnet.SQLString
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:111 Bug.get_bug_defaults -> btnet.Bug
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:84 DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:101 Util.get_setting -> btnet.Util
+src/BugTracker.Web/Controllers/BugFromEmailController.cs	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/Controllers/BugFromEmailController.cs:175 WhatsNew.add_news -> btnet.WhatsNew
+src/BugTracker.Web/Controllers/BugQueryController.cs	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/Controllers/BugQueryController.cs:12 Context -> btnet.Models.Context
+src/BugTracker.Web/Controllers/BugQueryController.cs	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/Controllers/BugQueryController.cs:11 Query -> btnet.Models.Query
+src/BugTracker.Web/Controllers/BugQueryController.cs	src/BugTracker.Web/btnet/BugQueryExecutor.cs	T1 src/BugTracker.Web/Controllers/BugQueryController.cs:18 BugQueryExecutor -> btnet.BugQueryExecutor
+src/BugTracker.Web/Controllers/BugQueryController.cs	src/BugTracker.Web/btnet/BugQueryFilter.cs	T1 src/BugTracker.Web/Controllers/BugQueryController.cs:9 BugQueryFilter -> btnet.BugQueryFilter
+src/BugTracker.Web/Controllers/LoginController.cs	src/BugTracker.Web/Models/LoginModel.cs	T1 src/BugTracker.Web/Controllers/LoginController.cs:12 LoginModel -> btnet.Models.LoginModel
+src/BugTracker.Web/Controllers/LoginController.cs	src/BugTracker.Web/Security/Authenticate.cs	T2 src/BugTracker.Web/Controllers/LoginController.cs:14 Authenticate.AttemptLogin -> btnet.Security.Authenticate
+src/BugTracker.Web/Controllers/LoginController.cs	src/BugTracker.Web/Security/LoginResult.cs	T1 src/BugTracker.Web/Controllers/LoginController.cs:14 LoginResult -> btnet.Security.LoginResult
+src/BugTracker.Web/Controls/BugList.ascx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/Controls/BugList.ascx.cs:64 Context -> btnet.Models.Context
+src/BugTracker.Web/Controls/BugList.ascx	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/Controls/BugList.ascx.cs:11 Query -> btnet.Models.Query
+src/BugTracker.Web/Controls/MainMenu.ascx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/Controls/MainMenu.ascx:30 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/Controls/MainMenu.ascx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/Controls/MainMenu.ascx:21 extension .GetCanSearch()
+src/BugTracker.Web/Controls/MainMenu.ascx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Controls/MainMenu.ascx:4 Util.context.Application -> btnet.Util
+src/BugTracker.Web/Global.asax	src/BugTracker.Web/App_Start/BundleConfig.cs	T2 src/BugTracker.Web/Global.asax.cs:42 BundleConfig.RegisterBundles -> btnet.App_Start.BundleConfig
+src/BugTracker.Web/Global.asax	src/BugTracker.Web/App_Start/LoggingConfig.cs	T2 src/BugTracker.Web/Global.asax.cs:29 LoggingConfig.Configure -> btnet.App_Start.LoggingConfig
+src/BugTracker.Web/Global.asax	src/BugTracker.Web/App_Start/WebApiConfig.cs	T2 src/BugTracker.Web/Global.asax.cs:28 WebApiConfig.Register -> btnet.WebApiConfig
+src/BugTracker.Web/Global.asax	src/BugTracker.Web/btnet/tags.cs	T2 src/BugTracker.Web/Global.asax.cs:66 Tags.count_votes -> btnet.Tags
+src/BugTracker.Web/Global.asax	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Global.asax.cs:46 Util.set_context -> btnet.Util
+src/BugTracker.Web/LoggedIn.Master	src/BugTracker.Web/Controls/Footer.ascx	M3 src/BugTracker.Web/LoggedIn.Master:4 Register Src
+src/BugTracker.Web/LoggedIn.Master	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/LoggedIn.Master:3 Register Src
+src/BugTracker.Web/LoggedOut.Master	src/BugTracker.Web/Controls/Footer.ascx	M3 src/BugTracker.Web/LoggedOut.Master:2 Register Src
+src/BugTracker.Web/LoggedOut.Master	src/BugTracker.Web/LoggedIn.Master	M5 src/BugTracker.Web/LoggedOut.Master:1 Inherits=btnet.LoggedIn
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/Mail/Mime.cs:143 Email.simplify_email_address -> btnet.Mail.Email
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Mail/Mime.cs:57 SQLString -> btnet.SQLString
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/Mail/Mime.cs:218 Bug.insert_post_attachment -> btnet.Bug
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Mail/Mime.cs:59 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/btnet/user.cs	T2 src/BugTracker.Web/Mail/Mime.cs:157 btnet.User.copy_user -> btnet.User
+src/BugTracker.Web/Mail/Mime.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Mail/Mime.cs:32 Util.get_setting -> btnet.Util
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/Mail/MailFormat.cs	T2 src/BugTracker.Web/Mail/email.cs:38 MailFormat.Text -> btnet.Mail.MailFormat
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/Mail/MailPriority.cs	T2 src/BugTracker.Web/Mail/email.cs:39 MailPriority.Normal -> btnet.Mail.MailPriority
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Mail/email.cs:372 SQLString -> btnet.SQLString
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/btnet/bug.cs	T1 src/BugTracker.Web/Mail/email.cs:71 Bug.BugPostAttachment -> btnet.Bug.BugPostAttachment
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Mail/email.cs:379 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Mail/email.cs:150 Util.get_setting -> btnet.Util
+src/BugTracker.Web/Models/BugTask.cs	src/BugTracker.Web/Models/bug.cs	T1 src/BugTracker.Web/Models/BugTask.cs:11 Bug -> btnet.Models.Bug
+src/BugTracker.Web/Models/BugTask.cs	src/BugTracker.Web/Models/status.cs	T1 src/BugTracker.Web/Models/BugTask.cs:33 Status -> btnet.Models.Status
+src/BugTracker.Web/Models/BugTask.cs	src/BugTracker.Web/Models/user.cs	T1 src/BugTracker.Web/Models/BugTask.cs:14 User -> btnet.Models.User
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugPost.cs	T1 src/BugTracker.Web/Models/Context.cs:25 BugPost -> btnet.Models.BugPost
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugPostAttachment.cs	T1 src/BugTracker.Web/Models/Context.cs:24 BugPostAttachment -> btnet.Models.BugPostAttachment
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugRelationShip.cs	T1 src/BugTracker.Web/Models/Context.cs:26 BugRelationShip -> btnet.Models.BugRelationShip
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugSubscription.cs	T1 src/BugTracker.Web/Models/Context.cs:27 BugSubscription -> btnet.Models.BugSubscription
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugTask.cs	T1 src/BugTracker.Web/Models/Context.cs:28 BugTask -> btnet.Models.BugTask
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/BugUser.cs	T1 src/BugTracker.Web/Models/Context.cs:29 BugUser -> btnet.Models.BugUser
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/CustomColumnsMetaData.cs	T1 src/BugTracker.Web/Models/Context.cs:32 CustomColumnsMetaData -> btnet.Models.CustomColumnsMetaData
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/DashboardItems.cs	T1 src/BugTracker.Web/Models/Context.cs:33 DashboardItems -> btnet.Models.DashboardItems
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/EmailedLink.cs	T1 src/BugTracker.Web/Models/Context.cs:34 EmailedLink -> btnet.Models.EmailedLink
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	T1 src/BugTracker.Web/Models/Context.cs:62 BugPostAttachmentMap -> btnet.Models.Mapping.BugPostAttachmentMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugPostMap.cs	T1 src/BugTracker.Web/Models/Context.cs:63 BugPostMap -> btnet.Models.Mapping.BugPostMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	T1 src/BugTracker.Web/Models/Context.cs:64 BugRelationShipMap -> btnet.Models.Mapping.BugRelationShipMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	T1 src/BugTracker.Web/Models/Context.cs:65 BugSubscriptionMap -> btnet.Models.Mapping.BugSubscriptionMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	T1 src/BugTracker.Web/Models/Context.cs:66 BugTaskMap -> btnet.Models.Mapping.BugTaskMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/BugUserMap.cs	T1 src/BugTracker.Web/Models/Context.cs:67 BugUserMap -> btnet.Models.Mapping.BugUserMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	T1 src/BugTracker.Web/Models/Context.cs:70 CustomColumnsMetaDataMap -> btnet.Models.Mapping.CustomColumnsMetaDataMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	T1 src/BugTracker.Web/Models/Context.cs:71 DashboardItemsMap -> btnet.Models.Mapping.DashboardItemsMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	T1 src/BugTracker.Web/Models/Context.cs:72 EmailedLinkMap -> btnet.Models.Mapping.EmailedLinkMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	T1 src/BugTracker.Web/Models/Context.cs:73 OrganizationMap -> btnet.Models.Mapping.OrganizationMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	T1 src/BugTracker.Web/Models/Context.cs:75 ProjectUserMap -> btnet.Models.Mapping.ProjectUserMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	T1 src/BugTracker.Web/Models/Context.cs:78 QueuedNotificationMap -> btnet.Models.Mapping.QueuedNotificationMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	T1 src/BugTracker.Web/Models/Context.cs:82 UserDefinedAttributeMap -> btnet.Models.Mapping.UserDefinedAttributeMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/VotesMap.cs	T1 src/BugTracker.Web/Models/Context.cs:84 VotesMap -> btnet.Models.Mapping.VotesMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/bugMap.cs	T1 src/BugTracker.Web/Models/Context.cs:68 BugMap -> btnet.Models.Mapping.BugMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/categoryMap.cs	T1 src/BugTracker.Web/Models/Context.cs:69 CategoryMap -> btnet.Models.Mapping.CategoryMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/priorityMap.cs	T1 src/BugTracker.Web/Models/Context.cs:74 PriorityMap -> btnet.Models.Mapping.PriorityMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/projectMap.cs	T1 src/BugTracker.Web/Models/Context.cs:76 ProjectMap -> btnet.Models.Mapping.ProjectMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/queryMap.cs	T1 src/BugTracker.Web/Models/Context.cs:77 QueryMap -> btnet.Models.Mapping.QueryMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/reportMap.cs	T1 src/BugTracker.Web/Models/Context.cs:79 ReportMap -> btnet.Models.Mapping.ReportMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/sessionMap.cs	T1 src/BugTracker.Web/Models/Context.cs:80 sessionMap -> btnet.Models.Mapping.sessionMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/statusMap.cs	T1 src/BugTracker.Web/Models/Context.cs:81 StatusMap -> btnet.Models.Mapping.StatusMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Mapping/userMap.cs	T1 src/BugTracker.Web/Models/Context.cs:83 UserMap -> btnet.Models.Mapping.UserMap
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Organization.cs	T1 src/BugTracker.Web/Models/Context.cs:35 Organization -> btnet.Models.Organization
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/ProjectUser.cs	T1 src/BugTracker.Web/Models/Context.cs:37 ProjectUser -> btnet.Models.ProjectUser
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/QueuedNotification.cs	T1 src/BugTracker.Web/Models/Context.cs:52 QueuedNotification -> btnet.Models.QueuedNotification
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/UserDefinedAttribute.cs	T1 src/BugTracker.Web/Models/Context.cs:56 UserDefinedAttribute -> btnet.Models.UserDefinedAttribute
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/Votes.cs	T1 src/BugTracker.Web/Models/Context.cs:58 Votes -> btnet.Models.Votes
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/bug.cs	T1 src/BugTracker.Web/Models/Context.cs:30 Bug -> btnet.Models.Bug
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/category.cs	T1 src/BugTracker.Web/Models/Context.cs:31 Category -> btnet.Models.Category
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/priority.cs	T1 src/BugTracker.Web/Models/Context.cs:36 Priority -> btnet.Models.Priority
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/project.cs	T1 src/BugTracker.Web/Models/Context.cs:38 Project -> btnet.Models.Project
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/Models/Context.cs:40 Query -> btnet.Models.Query
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/report.cs	T1 src/BugTracker.Web/Models/Context.cs:53 Report -> btnet.Models.Report
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/session.cs	T1 src/BugTracker.Web/Models/Context.cs:54 session -> btnet.Models.session
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/status.cs	T1 src/BugTracker.Web/Models/Context.cs:55 Status -> btnet.Models.Status
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Models/user.cs	T1 src/BugTracker.Web/Models/Context.cs:57 User -> btnet.Models.User
+src/BugTracker.Web/Models/Context.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/Models/Context.cs:44 extension .GetUserId()
+src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs	src/BugTracker.Web/Models/BugPostAttachment.cs	T1 src/BugTracker.Web/Models/Mapping/BugPostAttachmentMap.cs:6 BugPostAttachment -> btnet.Models.BugPostAttachment
+src/BugTracker.Web/Models/Mapping/BugPostMap.cs	src/BugTracker.Web/Models/BugPost.cs	T1 src/BugTracker.Web/Models/Mapping/BugPostMap.cs:6 BugPost -> btnet.Models.BugPost
+src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs	src/BugTracker.Web/Models/BugRelationShip.cs	T1 src/BugTracker.Web/Models/Mapping/BugRelationShipMap.cs:6 BugRelationShip -> btnet.Models.BugRelationShip
+src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs	src/BugTracker.Web/Models/BugSubscription.cs	T1 src/BugTracker.Web/Models/Mapping/BugSubscriptionMap.cs:6 BugSubscription -> btnet.Models.BugSubscription
+src/BugTracker.Web/Models/Mapping/BugTaskMap.cs	src/BugTracker.Web/Models/BugTask.cs	T1 src/BugTracker.Web/Models/Mapping/BugTaskMap.cs:6 BugTask -> btnet.Models.BugTask
+src/BugTracker.Web/Models/Mapping/BugUserMap.cs	src/BugTracker.Web/Models/BugUser.cs	T1 src/BugTracker.Web/Models/Mapping/BugUserMap.cs:6 BugUser -> btnet.Models.BugUser
+src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs	src/BugTracker.Web/Models/CustomColumnsMetaData.cs	T1 src/BugTracker.Web/Models/Mapping/CustomColumnsMetaDataMap.cs:6 CustomColumnsMetaData -> btnet.Models.CustomColumnsMetaData
+src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs	src/BugTracker.Web/Models/DashboardItems.cs	T1 src/BugTracker.Web/Models/Mapping/DashboardItemsMap.cs:6 DashboardItems -> btnet.Models.DashboardItems
+src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs	src/BugTracker.Web/Models/EmailedLink.cs	T1 src/BugTracker.Web/Models/Mapping/EmailedLinkMap.cs:6 EmailedLink -> btnet.Models.EmailedLink
+src/BugTracker.Web/Models/Mapping/OrganizationMap.cs	src/BugTracker.Web/Models/Organization.cs	T1 src/BugTracker.Web/Models/Mapping/OrganizationMap.cs:6 Organization -> btnet.Models.Organization
+src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs	src/BugTracker.Web/Models/ProjectUser.cs	T1 src/BugTracker.Web/Models/Mapping/ProjectUserMap.cs:6 ProjectUser -> btnet.Models.ProjectUser
+src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs	src/BugTracker.Web/Models/QueuedNotification.cs	T1 src/BugTracker.Web/Models/Mapping/QueuedNotificationMap.cs:6 QueuedNotification -> btnet.Models.QueuedNotification
+src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs	src/BugTracker.Web/Models/UserDefinedAttribute.cs	T1 src/BugTracker.Web/Models/Mapping/UserDefinedAttributeMap.cs:6 UserDefinedAttribute -> btnet.Models.UserDefinedAttribute
+src/BugTracker.Web/Models/Mapping/VotesMap.cs	src/BugTracker.Web/Models/Votes.cs	T1 src/BugTracker.Web/Models/Mapping/VotesMap.cs:6 Votes -> btnet.Models.Votes
+src/BugTracker.Web/Models/Mapping/bugMap.cs	src/BugTracker.Web/Models/bug.cs	T1 src/BugTracker.Web/Models/Mapping/bugMap.cs:6 Bug -> btnet.Models.Bug
+src/BugTracker.Web/Models/Mapping/categoryMap.cs	src/BugTracker.Web/Models/category.cs	T1 src/BugTracker.Web/Models/Mapping/categoryMap.cs:6 Category -> btnet.Models.Category
+src/BugTracker.Web/Models/Mapping/priorityMap.cs	src/BugTracker.Web/Models/priority.cs	T1 src/BugTracker.Web/Models/Mapping/priorityMap.cs:6 Priority -> btnet.Models.Priority
+src/BugTracker.Web/Models/Mapping/projectMap.cs	src/BugTracker.Web/Models/project.cs	T1 src/BugTracker.Web/Models/Mapping/projectMap.cs:6 Project -> btnet.Models.Project
+src/BugTracker.Web/Models/Mapping/queryMap.cs	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/Models/Mapping/queryMap.cs:6 Query -> btnet.Models.Query
+src/BugTracker.Web/Models/Mapping/reportMap.cs	src/BugTracker.Web/Models/report.cs	T1 src/BugTracker.Web/Models/Mapping/reportMap.cs:6 Report -> btnet.Models.Report
+src/BugTracker.Web/Models/Mapping/sessionMap.cs	src/BugTracker.Web/Models/session.cs	T1 src/BugTracker.Web/Models/Mapping/sessionMap.cs:6 session -> btnet.Models.session
+src/BugTracker.Web/Models/Mapping/statusMap.cs	src/BugTracker.Web/Models/status.cs	T1 src/BugTracker.Web/Models/Mapping/statusMap.cs:6 Status -> btnet.Models.Status
+src/BugTracker.Web/Models/Mapping/userMap.cs	src/BugTracker.Web/Models/user.cs	T1 src/BugTracker.Web/Models/Mapping/userMap.cs:6 User -> btnet.Models.User
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/BugTask.cs	T1 src/BugTracker.Web/Models/bug.cs:44 BugTask -> btnet.Models.BugTask
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/Organization.cs	T1 src/BugTracker.Web/Models/bug.cs:23 Organization -> btnet.Models.Organization
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/category.cs	T1 src/BugTracker.Web/Models/bug.cs:26 Category -> btnet.Models.Category
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/priority.cs	T1 src/BugTracker.Web/Models/bug.cs:20 Priority -> btnet.Models.Priority
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/project.cs	T1 src/BugTracker.Web/Models/bug.cs:29 Project -> btnet.Models.Project
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/status.cs	T1 src/BugTracker.Web/Models/bug.cs:17 Status -> btnet.Models.Status
+src/BugTracker.Web/Models/bug.cs	src/BugTracker.Web/Models/user.cs	T1 src/BugTracker.Web/Models/bug.cs:12 User -> btnet.Models.User
+src/BugTracker.Web/Search/BugSearch.cs	src/BugTracker.Web/Search/IBugSearch.cs	T1 src/BugTracker.Web/Search/BugSearch.cs:16 IBugSearch -> btnet.Search.IBugSearch
+src/BugTracker.Web/Search/BugSearch.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Search/BugSearch.cs:35 SQLString -> btnet.SQLString
+src/BugTracker.Web/Search/BugSearch.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Search/BugSearch.cs:35 DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/Search/BugSearch.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Search/BugSearch.cs:33 Util.write_to_log -> btnet.Util
+src/BugTracker.Web/Search/BugSearchFactory.cs	src/BugTracker.Web/Search/BugSearch.cs	T1 src/BugTracker.Web/Search/BugSearchFactory.cs:24 BugSearch -> btnet.Search.BugSearch
+src/BugTracker.Web/Search/BugSearchFactory.cs	src/BugTracker.Web/Search/IBugSearch.cs	T1 src/BugTracker.Web/Search/BugSearchFactory.cs:9 IBugSearch -> btnet.Search.IBugSearch
+src/BugTracker.Web/Search/BugSearchFactory.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Search/BugSearchFactory.cs:11 Util.get_setting -> btnet.Util
+src/BugTracker.Web/Security/Authenticate.cs	src/BugTracker.Web/Security/LoginResult.cs	T1 src/BugTracker.Web/Security/Authenticate.cs:18 LoginResult -> btnet.Security.LoginResult
+src/BugTracker.Web/Security/Authenticate.cs	src/BugTracker.Web/Security/Security.cs	T2 src/BugTracker.Web/Security/Authenticate.cs:31 Security.SignIn -> btnet.Security.Security
+src/BugTracker.Web/Security/Authenticate.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Security/Authenticate.cs:26 SQLString -> btnet.SQLString
+src/BugTracker.Web/Security/Authenticate.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Security/Authenticate.cs:28 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/Security/Authenticate.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Security/Authenticate.cs:67 Util.write_to_log -> btnet.Util
+src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	src/BugTracker.Web/Security/BtnetClaimTypes.cs	T2 src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs:12 BtnetClaimTypes.UserId -> btnet.Security.BtnetClaimTypes
+src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/Security/PageAuthorizeAttribute.cs:26 extension .IsInRole()
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/Security/BtnetClaimTypes.cs	T2 src/BugTracker.Web/Security/Security.cs:43 BtnetClaimTypes.UserId -> btnet.Security.BtnetClaimTypes
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/Security/Security.cs:113 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/Security/Security.cs:90 PermissionLevel.ReadOnly -> btnet.Security.PermissionLevel
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/Security/Security.cs:21 SQLString -> btnet.SQLString
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/Security/Security.cs:37 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/Security/Security.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/Security/Security.cs:82 Util.get_setting -> btnet.Util
+src/BugTracker.Web/Startup.cs	src/BugTracker.Web/App_Start/Startup.Auth.cs	T1 src/BugTracker.Web/Startup.cs:8 btnet.Startup -> btnet.Startup
+src/BugTracker.Web/UpdatePassword.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/UpdatePassword.aspx.cs:54 SQLString -> btnet.SQLString
+src/BugTracker.Web/UpdatePassword.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/UpdatePassword.aspx.cs:56 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/UpdatePassword.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/UpdatePassword.aspx.cs:39 Util.check_password_strength -> btnet.Util
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/add_attachment.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/add_attachment.aspx:1 MasterPageFile
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/add_attachment.aspx.cs:49 extension .GetIsExternalUser()
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/add_attachment.aspx.cs:39 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/add_attachment.aspx.cs:38 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/add_attachment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/add_attachment.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/add_customfield.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/add_customfield.aspx:5 Register Src
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/add_customfield.aspx:1 MasterPageFile
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/add_customfield.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/add_customfield.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/add_customfield.aspx.cs:255 SQLString -> btnet.SQLString
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/add_customfield.aspx.cs:255 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/add_customfield.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/add_customfield.aspx.cs:20 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/admin.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/admin.aspx:1 MasterPageFile
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/Search/BugSearchFactory.cs	T2 src/BugTracker.Web/admin.aspx.cs:42 BugSearchFactory.CreateBugSearch -> btnet.Search.BugSearchFactory
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/Search/IBugSearch.cs	T1 src/BugTracker.Web/admin.aspx.cs:42 IBugSearch -> btnet.Search.IBugSearch
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/admin.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/admin.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/admin.aspx.cs:29 SQLString -> btnet.SQLString
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/admin.aspx.cs:29 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/admin.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/admin.aspx.cs:18 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/ajax.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/ajax.aspx:35 extension .GetIsExternalUser()
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/ajax.aspx:17 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/ajax.aspx:16 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/ajax.aspx:35 PrintBug.get_bug_posts -> btnet.PrintBug
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/ajax.aspx:11 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/ajax.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/ajax.aspx #include inc.aspx
+src/BugTracker.Web/ajax2.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/ajax2.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/ajax2.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/ajax2.aspx:19 SQLString -> btnet.SQLString
+src/BugTracker.Web/ajax2.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/ajax2.aspx:29 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/ajax2.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/ajax2.aspx:11 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/ajax2.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/ajax2.aspx #include inc.aspx
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/backup_db.aspx.cs:13 BasePage -> btnet.BasePage
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/backup_db.aspx:1 MasterPageFile
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/backup_db.aspx.cs:12 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/backup_db.aspx.cs:12 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/backup_db.aspx.cs:81 SQLString -> btnet.SQLString
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/backup_db.aspx.cs:81 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/backup_db.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/backup_db.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/btnet/BugQueryExecutor.cs:17 Query -> btnet.Models.Query
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/btnet/BugQueryExecutor.cs:82 extension .GetUserId()
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/btnet/BugQueryFilter.cs	T1 src/BugTracker.Web/btnet/BugQueryExecutor.cs:28 BugQueryFilter -> btnet.BugQueryFilter
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/btnet/BugQueryResult.cs	T1 src/BugTracker.Web/btnet/BugQueryExecutor.cs:27 BugQueryResult -> btnet.BugQueryResult
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/BugQueryExecutor.cs:45 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/BugQueryExecutor.cs:86 DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/btnet/BugQueryExecutor.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/BugQueryExecutor.cs:128 Util.alter_sql_per_project_permissions -> btnet.Util
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Mail/MailFormat.cs	T2 src/BugTracker.Web/btnet/bug.cs:1239 MailFormat.Html -> btnet.Mail.MailFormat
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/btnet/bug.cs:1233 Email.send_email -> btnet.Mail.Email
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Search/BugSearchFactory.cs	T2 src/BugTracker.Web/btnet/bug.cs:1002 BugSearchFactory.CreateBugSearch -> btnet.Search.BugSearchFactory
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Search/IBugSearch.cs	T1 src/BugTracker.Web/btnet/bug.cs:1002 IBugSearch -> btnet.Search.IBugSearch
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/btnet/bug.cs:323 extension .GetUserId()
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/btnet/bug.cs:770 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/Security/Security.cs	T2 src/BugTracker.Web/btnet/bug.cs:1165 Security.Security.GetIdentity -> btnet.Security.Security
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/bug.cs:38 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/bug.cs:144 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/btnet/bug.cs:1168 PrintBug.print_bug -> btnet.PrintBug
+src/BugTracker.Web/btnet/bug.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/bug.cs:141 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/btnet/bug_list.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/btnet/bug_list.cs:429 extension .GetTagsFieldPermissionLevel()
+src/BugTracker.Web/btnet/bug_list.cs	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/btnet/bug_list.cs:429 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/btnet/bug_list.cs	src/BugTracker.Web/btnet/tags.cs	T2 src/BugTracker.Web/btnet/bug_list.cs:220 btnet.Tags.build_filter_clause -> btnet.Tags
+src/BugTracker.Web/btnet/bug_list.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/bug_list.cs:49 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/btnet/dbutil.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/dbutil.cs:17 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/dbutil.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/dbutil.cs:19 Util.get_setting -> btnet.Util
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/btnet/print_bug.cs:389 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/btnet/print_bug.cs:133 extension .GetTagsFieldPermissionLevel()
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/btnet/print_bug.cs:341 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/print_bug.cs:172 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/print_bug.cs:183 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/btnet/print_bug.cs:245 SortableHtmlTable.create_nonsortable_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/btnet/print_bug.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/print_bug.cs:50 Util.GetAbsolutePath -> btnet.Util
+src/BugTracker.Web/btnet/sortable_html_table.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/sortable_html_table.cs:134 Util.is_numeric_datatype -> btnet.Util
+src/BugTracker.Web/btnet/tags.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/tags.cs:40 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/tags.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/tags.cs:44 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/btnet/tags.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/tags.cs:32 btnet.Util.write_to_log -> btnet.Util
+src/BugTracker.Web/btnet/user.cs	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/btnet/user.cs:46 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/btnet/user.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/user.cs:142 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/user.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/user.cs:144 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/btnet/user.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/user.cs:69 Util.get_setting -> btnet.Util
+src/BugTracker.Web/btnet/util.cs	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/btnet/util.cs:383 extension .GetUserId()
+src/BugTracker.Web/btnet/util.cs	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/btnet/util.cs:381 SQLString -> btnet.SQLString
+src/BugTracker.Web/btnet/util.cs	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/btnet/util.cs:514 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/btnet/version_control.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/version_control.cs:40 Util.write_to_log -> btnet.Util
+src/BugTracker.Web/btnet/whatsnew.cs	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/btnet/whatsnew.cs:24 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/bugs.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/Controls/BugList.ascx	M3 src/BugTracker.Web/bugs.aspx:6 Register Src
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/bugs.aspx:1 MasterPageFile
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/bugs.aspx.cs:47 Context -> btnet.Models.Context
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/bugs.aspx.cs:12 Query -> btnet.Models.Query
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/bugs.aspx:30 extension .GetCanAddBugs()
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/bugs.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/bugs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/bugs.aspx:32 Util.get_setting -> btnet.Util
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/categories.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/categories.aspx:1 MasterPageFile
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/categories.aspx.cs:23 Context -> btnet.Models.Context
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/Models/category.cs	T1 src/BugTracker.Web/categories.aspx:25 Category -> btnet.Models.Category
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/categories.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/categories.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/categories.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/categories.aspx.cs:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/change_password.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/change_password.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/change_password.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/change_password.aspx:1 MasterPageFile
+src/BugTracker.Web/change_password.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/change_password.aspx.cs:53 SQLString -> btnet.SQLString
+src/BugTracker.Web/change_password.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/change_password.aspx.cs:68 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/change_password.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/change_password.aspx.cs:15 Util.set_context -> btnet.Util
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/complete_registration.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/complete_registration.aspx:1 MasterPageFile
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/complete_registration.aspx.cs:22 SQLString -> btnet.SQLString
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/complete_registration.aspx.cs:37 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/btnet/user.cs	T2 src/BugTracker.Web/complete_registration.aspx.cs:49 btnet.User.copy_user -> btnet.User
+src/BugTracker.Web/complete_registration.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/complete_registration.aspx.cs:15 Util.set_context -> btnet.Util
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/dashboard.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/dashboard.aspx:2 Register Src
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/dashboard.aspx:18 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/dashboard.aspx:18 extension .IsInRole()
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/dashboard.aspx:28 SQLString -> btnet.SQLString
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/dashboard.aspx:36 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/dashboard.aspx:13 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/dashboard.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/dashboard.aspx #include inc.aspx
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/default.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/LoggedOut.Master	M1 src/BugTracker.Web/default.aspx:1 MasterPageFile
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/Security/Authenticate.cs	T2 src/BugTracker.Web/default.aspx.cs:127 Authenticate.AttemptLogin -> btnet.Security.Authenticate
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/Security/LoginResult.cs	T1 src/BugTracker.Web/default.aspx.cs:127 LoginResult -> btnet.Security.LoginResult
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/Security/PageAllowAnonymous.cs	T1 src/BugTracker.Web/default.aspx.cs:10 PageAllowAnonymous -> btnet.Security.PageAllowAnonymous
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/default.aspx.cs:13 SQLString -> btnet.SQLString
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/default.aspx.cs:33 btnet.DbUtil.GetConnection -> btnet.DbUtil
+src/BugTracker.Web/default.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/default.aspx:51 Util.get_setting -> btnet.Util
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_attachment.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_attachment.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_attachment.aspx.cs:27 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/delete_attachment.aspx.cs:27 extension .IsInRole()
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/delete_attachment.aspx.cs:41 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_attachment.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/delete_attachment.aspx.cs:40 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_attachment.aspx.cs:53 DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/delete_attachment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_attachment.aspx:8 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_bug.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_bug.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_bug.aspx.cs:22 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/delete_bug.aspx.cs:22 extension .IsInRole()
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/delete_bug.aspx.cs:35 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_bug.aspx.cs:12 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/delete_bug.aspx.cs:34 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_bug.aspx.cs:59 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/delete_bug.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_bug.aspx:9 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_category.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_category.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_category.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_category.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_category.aspx.cs:22 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_category.aspx.cs:27 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_category.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_category.aspx.cs:20 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_comment.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_comment.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_comment.aspx.cs:26 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/delete_comment.aspx.cs:26 extension .IsInRole()
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/delete_comment.aspx.cs:52 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_comment.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/delete_comment.aspx.cs:51 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_comment.aspx.cs:42 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_comment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_comment.aspx:8 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_org.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_org.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_org.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_org.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_org.aspx.cs:16 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_org.aspx.cs:32 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_org.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_org.aspx.cs:25 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_priority.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_priority.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_priority.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_priority.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_priority.aspx.cs:13 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_priority.aspx.cs:30 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_priority.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_priority.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_project.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_project.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_project.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_project.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_project.aspx.cs:14 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_project.aspx.cs:28 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_project.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_project.aspx.cs:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_report.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_report.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_report.aspx.cs:24 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/delete_report.aspx.cs:24 extension .IsInRole()
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_report.aspx.cs:33 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_report.aspx.cs:41 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_report.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_report.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_status.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_status.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_status.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_status.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_status.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_status.aspx.cs:30 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_status.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_status.aspx.cs:23 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_subscriber.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_subscriber.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_subscriber.aspx.cs:8 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_subscriber.aspx.cs:8 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_subscriber.aspx.cs:25 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_subscriber.aspx.cs:28 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_subscriber.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_subscriber.aspx.cs:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_task.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_task.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_task.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_task.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/delete_task.aspx.cs:35 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_task.aspx.cs:13 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/delete_task.aspx.cs:33 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_task.aspx.cs:51 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_task.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_task.aspx.cs:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_udf.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_udf.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_udf.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_udf.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_udf.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_udf.aspx.cs:31 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/delete_udf.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_udf.aspx.cs:23 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/delete_user.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/delete_user.aspx:1 MasterPageFile
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/delete_user.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/delete_user.aspx.cs:24 extension .IsInRole()
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/delete_user.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/delete_user.aspx.cs:12 SQLString -> btnet.SQLString
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/delete_user.aspx.cs:28 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/delete_user.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/delete_user.aspx.cs:20 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/download_file.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/download_file.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/download_file.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/download_file.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/download_file.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/download_file.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/download_file.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/download_file.aspx:37 btnet.Util.filename_to_content_type -> btnet.Util
+src/BugTracker.Web/download_file.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/download_file.aspx #include inc.aspx
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_attachment.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_attachment.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_attachment.aspx.cs:29 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_attachment.aspx.cs:29 extension .IsInRole()
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/edit_attachment.aspx.cs:52 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_attachment.aspx.cs:16 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/edit_attachment.aspx.cs:51 btnet.Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_attachment.aspx.cs:72 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_attachment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_attachment.aspx:7 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_bug.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_bug.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:334 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_bug.aspx:9 extension .GetUseFCKEditor()
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/edit_bug.aspx:86 btnet.Security.PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_bug.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:82 Bug.get_bug_datarow -> btnet.Bug
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:216 DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/edit_bug.aspx:297 btnet.PrintBug.write_posts -> btnet.PrintBug
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/tags.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:692 Tags.build_tag_index -> btnet.Tags
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_bug.aspx:20 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:697 WhatsNew.add_news -> btnet.WhatsNew
+src/BugTracker.Web/edit_bug.aspx	src/BugTracker.Web/btnet/workflow.cs	T2 src/BugTracker.Web/edit_bug.aspx.cs:200 Workflow.custom_adjust_controls -> btnet.Workflow
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_category.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_category.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_category.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_category.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_category.aspx.cs:53 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_category.aspx.cs:55 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_category.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_category.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_comment.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_comment.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_comment.aspx.cs:31 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_comment.aspx:7 extension .GetUseFCKEditor()
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/edit_comment.aspx.cs:70 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_comment.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/edit_comment.aspx.cs:69 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_comment.aspx.cs:65 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_comment.aspx:33 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_comment.aspx	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/edit_comment.aspx.cs:174 WhatsNew.add_news -> btnet.WhatsNew
+src/BugTracker.Web/edit_custom_html.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_custom_html.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_custom_html.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_custom_html.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_custom_html.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_custom_html.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_custom_html.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_custom_html.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_custom_html.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_custom_html.aspx.cs:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_dashboard.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_dashboard.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_dashboard.aspx.cs:24 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_dashboard.aspx.cs:24 extension .IsInRole()
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_dashboard.aspx.cs:37 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_dashboard.aspx.cs:46 DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/edit_dashboard.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_dashboard.aspx.cs:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_org.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_org.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_org.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_org.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_org.aspx.cs:14 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_org.aspx.cs:94 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_org.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_org.aspx.cs:44 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_priority.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_priority.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_priority.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_priority.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_priority.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_priority.aspx.cs:60 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_priority.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_priority.aspx.cs:23 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_project.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_project.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_project.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_project.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_project.aspx.cs:39 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_project.aspx.cs:39 btnet.DbUtil.get_dataview -> btnet.DbUtil
+src/BugTracker.Web/edit_project.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_project.aspx:96 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_queued_notifications.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_queued_notifications.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_queued_notifications.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_queued_notifications.aspx:10 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/edit_queued_notifications.aspx:37 btnet.Bug.threadproc_notifications -> btnet.Bug
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_queued_notifications.aspx:27 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_queued_notifications.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_queued_notifications.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/edit_queued_notifications.aspx #include inc.aspx
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_report.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_report.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_report.aspx.cs:26 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_report.aspx.cs:26 extension .IsInRole()
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_report.aspx.cs:16 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_report.aspx.cs:69 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_report.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_report.aspx.cs:24 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_self.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_self.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_self.aspx.cs:32 extension .GetUserId()
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_self.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_self.aspx.cs:50 btnet.DbUtil.get_dataview -> btnet.DbUtil
+src/BugTracker.Web/edit_self.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_self.aspx:85 Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_status.aspx.cs:8 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_status.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_status.aspx.cs:7 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_status.aspx.cs:7 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_status.aspx.cs:12 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_status.aspx.cs:54 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_status.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_status.aspx.cs:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_styles.aspx.cs:15 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_styles.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_styles.aspx.cs:14 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_styles.aspx.cs:14 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_styles.aspx.cs:29 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_styles.aspx.cs:28 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/edit_styles.aspx:30 btnet.SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/edit_styles.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_styles.aspx.cs:26 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_task.aspx.cs:13 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_task.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_task.aspx.cs:42 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_task.aspx.cs:42 extension .IsInRole()
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/edit_task.aspx.cs:36 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_task.aspx.cs:18 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/edit_task.aspx.cs:34 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_task.aspx.cs:148 DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_task.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_task.aspx:11 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_udf.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_udf.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_udf.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_udf.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_udf.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_udf.aspx.cs:57 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/edit_udf.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_udf.aspx.cs:24 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_user.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/edit_user.aspx:1 MasterPageFile
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_user.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/edit_user.aspx.cs:32 extension .IsInRole()
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_user.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/edit_user.aspx.cs:150 PermissionLevel.All -> btnet.Security.PermissionLevel
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_user.aspx.cs:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_user.aspx.cs:40 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/edit_user.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_user.aspx:139 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/edit_user_permissions2.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/edit_user_permissions2.aspx:2 Register Src
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/edit_user_permissions2.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/edit_user_permissions2.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/edit_user_permissions2.aspx:12 SQLString -> btnet.SQLString
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/edit_user_permissions2.aspx:54 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/edit_user_permissions2.aspx:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/edit_user_permissions2.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/edit_user_permissions2.aspx #include inc.aspx
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/flag.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/flag.aspx:17 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/flag.aspx:17 extension .IsInRole()
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/flag.aspx:23 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/flag.aspx:30 SQLString -> btnet.SQLString
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/flag.aspx:22 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/flag.aspx:39 DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/flag.aspx:15 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/flag.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/flag.aspx #include inc.aspx
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/forgot.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/LoggedOut.Master	M1 src/BugTracker.Web/forgot.aspx:1 MasterPageFile
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/Mail/MailFormat.cs	T2 src/BugTracker.Web/forgot.aspx.cs:136 MailFormat.Html -> btnet.Mail.MailFormat
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/forgot.aspx.cs:122 Email.send_email -> btnet.Mail.Email
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/Security/PageAllowAnonymous.cs	T1 src/BugTracker.Web/forgot.aspx.cs:9 PageAllowAnonymous -> btnet.Security.PageAllowAnonymous
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/forgot.aspx.cs:53 SQLString -> btnet.SQLString
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/forgot.aspx.cs:55 DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/forgot.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/forgot.aspx.cs:17 Util.set_context -> btnet.Util
+src/BugTracker.Web/generate_btnetsc_reg.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/generate_btnetsc_reg.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/generate_btnetsc_reg.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/generate_btnetsc_reg.aspx:24 extension .GetEmail()
+src/BugTracker.Web/generate_btnetsc_reg.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/generate_btnetsc_reg.aspx #include inc.aspx
+src/BugTracker.Web/get_db_datetime.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/get_db_datetime.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/get_db_datetime.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/get_db_datetime.aspx:12 SQLString -> btnet.SQLString
+src/BugTracker.Web/get_db_datetime.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/get_db_datetime.aspx:12 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/get_db_datetime.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/get_db_datetime.aspx:9 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/get_db_datetime.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/get_db_datetime.aspx #include inc.aspx
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_blame.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/git_blame.aspx:33 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_blame.aspx:20 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/git_blame.aspx:32 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_blame.aspx:29 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_blame.aspx:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/git_blame.aspx:42 VersionControl.git_blame -> btnet.VersionControl
+src/BugTracker.Web/git_blame.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_blame.aspx #include inc.aspx
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_diff.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/git_diff.aspx:39 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_diff.aspx:26 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/git_diff.aspx:38 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_diff.aspx:35 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_diff.aspx:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/git_diff.aspx:56 VersionControl.git_get_unified_diff_one_commit -> btnet.VersionControl
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_diff.aspx #include inc.aspx
+src/BugTracker.Web/git_diff.aspx	src/BugTracker.Web/inc_diff.inc	M6 src/BugTracker.Web/git_diff.aspx #include inc_diff.inc
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_hook.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/Security/Authenticate.cs	T2 src/BugTracker.Web/git_hook.aspx:51 Authenticate.check_password -> btnet.Security.Authenticate
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_hook.aspx:157 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_hook.aspx:201 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_hook.aspx:14 Util.set_context -> btnet.Util
+src/BugTracker.Web/git_hook.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_hook.aspx #include inc.aspx
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_log.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/git_log.aspx:41 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_log.aspx:22 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/git_log.aspx:40 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_log.aspx:34 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_log.aspx:18 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/git_log.aspx:52 VersionControl.git_log -> btnet.VersionControl
+src/BugTracker.Web/git_log.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_log.aspx #include inc.aspx
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_view.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/git_view.aspx:30 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_view.aspx:17 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/git_view.aspx:29 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_view.aspx:26 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_view.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/git_view.aspx:39 VersionControl.git_get_file_contents -> btnet.VersionControl
+src/BugTracker.Web/git_view.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_view.aspx #include inc.aspx
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/git_view_revisions.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/git_view_revisions.aspx:22 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/git_view_revisions.aspx:32 SQLString -> btnet.SQLString
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/git_view_revisions.aspx:21 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/git_view_revisions.aspx:61 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/git_view_revisions.aspx:82 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/git_view_revisions.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/git_view_revisions.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/git_view_revisions.aspx #include inc.aspx
+src/BugTracker.Web/hello.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hello.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_blame.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/hg_blame.aspx:32 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_blame.aspx:19 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/hg_blame.aspx:31 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_blame.aspx:28 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_blame.aspx:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/hg_blame.aspx:41 VersionControl.hg_blame -> btnet.VersionControl
+src/BugTracker.Web/hg_blame.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_blame.aspx #include inc.aspx
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_diff.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/hg_diff.aspx:40 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_diff.aspx:27 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/hg_diff.aspx:39 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_diff.aspx:36 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_diff.aspx:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/hg_diff.aspx:58 VersionControl.hg_log -> btnet.VersionControl
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_diff.aspx #include inc.aspx
+src/BugTracker.Web/hg_diff.aspx	src/BugTracker.Web/inc_diff.inc	M6 src/BugTracker.Web/hg_diff.aspx #include inc_diff.inc
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_hook.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/Security/Authenticate.cs	T2 src/BugTracker.Web/hg_hook.aspx:51 Authenticate.check_password -> btnet.Security.Authenticate
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_hook.aspx:92 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_hook.aspx:134 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_hook.aspx:15 Util.set_context -> btnet.Util
+src/BugTracker.Web/hg_hook.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_hook.aspx #include inc.aspx
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_log.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/hg_log.aspx:43 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_log.aspx:24 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/hg_log.aspx:42 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_log.aspx:36 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_log.aspx:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/hg_log.aspx:54 VersionControl.hg_log -> btnet.VersionControl
+src/BugTracker.Web/hg_log.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_log.aspx #include inc.aspx
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_view.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/hg_view.aspx:30 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_view.aspx:17 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/hg_view.aspx:29 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_view.aspx:26 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_view.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/hg_view.aspx:39 VersionControl.hg_get_file_contents -> btnet.VersionControl
+src/BugTracker.Web/hg_view.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_view.aspx #include inc.aspx
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/hg_view_revisions.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/hg_view_revisions.aspx:22 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/hg_view_revisions.aspx:32 SQLString -> btnet.SQLString
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/hg_view_revisions.aspx:21 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/hg_view_revisions.aspx:61 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/hg_view_revisions.aspx:81 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/hg_view_revisions.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/hg_view_revisions.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/hg_view_revisions.aspx #include inc.aspx
+src/BugTracker.Web/inc.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/inc.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/install.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/install.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/install.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/install.aspx:38 SQLString -> btnet.SQLString
+src/BugTracker.Web/install.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/install.aspx:37 btnet.DbUtil.GetConnection -> btnet.DbUtil
+src/BugTracker.Web/install.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/install.aspx:13 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/install.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/install.aspx #include inc.aspx
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/loginnt.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/Security/Security.cs	T2 src/BugTracker.Web/loginnt.aspx:64 Security.SignIn -> btnet.Security.Security
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/loginnt.aspx:13 SQLString -> btnet.SQLString
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/loginnt.aspx:20 btnet.DbUtil.GetConnection -> btnet.DbUtil
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/btnet/user.cs	T2 src/BugTracker.Web/loginnt.aspx:140 btnet.User.copy_user -> btnet.User
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/loginnt.aspx:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/loginnt.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/loginnt.aspx #include inc.aspx
+src/BugTracker.Web/logoff.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/logoff.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/logoff.aspx	src/BugTracker.Web/Security/Security.cs	T2 src/BugTracker.Web/logoff.aspx.cs:15 Security.Security.SignOut -> btnet.Security.Security
+src/BugTracker.Web/logoff.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/logoff.aspx.cs:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/manage_logs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/manage_logs.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/manage_logs.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/manage_logs.aspx:1 MasterPageFile
+src/BugTracker.Web/manage_logs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/manage_logs.aspx.cs:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/massedit.aspx.cs:8 BasePage -> btnet.BasePage
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/massedit.aspx:1 MasterPageFile
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/massedit.aspx.cs:21 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/massedit.aspx.cs:21 extension .IsInRole()
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/massedit.aspx.cs:11 SQLString -> btnet.SQLString
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/massedit.aspx.cs:169 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/massedit.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/massedit.aspx.cs:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/mbug.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/mbug.aspx:113 extension .GetForcedProjectId()
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/mbug.aspx:15 SQLString -> btnet.SQLString
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/mbug.aspx:192 btnet.Bug.get_bug_datarow -> btnet.Bug
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/mbug.aspx:81 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/mbug.aspx:244 PrintBug.get_bug_posts -> btnet.PrintBug
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/mbug.aspx:30 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/mbug.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/mbug.aspx #include inc.aspx
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/mbugs.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/mbugs.aspx:56 extension .GetUserId()
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/mbugs.aspx:65 SQLString -> btnet.SQLString
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/mbugs.aspx:67 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/mbugs.aspx:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/mbugs.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/mbugs.aspx #include inc.aspx
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/merge_bug.aspx.cs:8 BasePage -> btnet.BasePage
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/merge_bug.aspx:1 MasterPageFile
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/merge_bug.aspx.cs:22 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/merge_bug.aspx.cs:22 extension .IsInRole()
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/merge_bug.aspx.cs:11 SQLString -> btnet.SQLString
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/merge_bug.aspx.cs:270 Bug.delete_bug -> btnet.Bug
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/merge_bug.aspx.cs:123 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/merge_bug.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/merge_bug.aspx:14 Util.get_setting -> btnet.Util
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/notifications.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/notifications.aspx:1 MasterPageFile
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/notifications.aspx.cs:25 Context -> btnet.Models.Context
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/Models/QueuedNotification.cs	T1 src/BugTracker.Web/notifications.aspx:49 QueuedNotification -> btnet.Models.QueuedNotification
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/notifications.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/notifications.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/notifications.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/notifications.aspx.cs:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/orgs.aspx.cs:13 BasePage -> btnet.BasePage
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/orgs.aspx:1 MasterPageFile
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/orgs.aspx.cs:28 Context -> btnet.Models.Context
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/Models/Organization.cs	T1 src/BugTracker.Web/orgs.aspx:35 Organization -> btnet.Models.Organization
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/orgs.aspx.cs:12 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/orgs.aspx.cs:12 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/orgs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/orgs.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/print_bug.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/print_bug.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/print_bug.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/print_bug.aspx:26 btnet.Bug.get_bug_datarow -> btnet.Bug
+src/BugTracker.Web/print_bug.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/print_bug.aspx:85 PrintBug.print_bug -> btnet.PrintBug
+src/BugTracker.Web/print_bug.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/print_bug.aspx:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/print_bug.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/print_bug.aspx #include inc.aspx
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:35 Context -> btnet.Models.Context
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:34 Query -> btnet.Models.Query
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/btnet/BugQueryExecutor.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:40 BugQueryExecutor -> btnet.BugQueryExecutor
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/btnet/BugQueryFilter.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:33 BugQueryFilter -> btnet.BugQueryFilter
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/btnet/BugQueryResult.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:42 BugQueryResult -> btnet.BugQueryResult
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/print_bugs.aspx.cs:11 SQLString -> btnet.SQLString
+src/BugTracker.Web/print_bugs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/print_bugs.aspx.cs:22 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:39 Context -> btnet.Models.Context
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/Models/query.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:38 Query -> btnet.Models.Query
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/BugQueryExecutor.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:44 BugQueryExecutor -> btnet.BugQueryExecutor
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/BugQueryFilter.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:37 BugQueryFilter -> btnet.BugQueryFilter
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/BugQueryResult.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:46 BugQueryResult -> btnet.BugQueryResult
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/print_bugs2.aspx.cs:13 SQLString -> btnet.SQLString
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/print_bugs2.aspx:41 btnet.Bug.get_bug_datarow -> btnet.Bug
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/print_bugs2.aspx:45 PrintBug.print_bug -> btnet.PrintBug
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/print_bugs2.aspx.cs:24 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/print_bugs2.aspx	src/BugTracker.Web/print_bugs.aspx	T2 src/BugTracker.Web/print_bugs2.aspx.cs:37 print_bugs.BuildFilter -> btnet.print_bugs
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/priorities.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/priorities.aspx:1 MasterPageFile
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/priorities.aspx.cs:26 Context -> btnet.Models.Context
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/Models/priority.cs	T1 src/BugTracker.Web/priorities.aspx:32 Priority -> btnet.Models.Priority
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/priorities.aspx.cs:11 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/priorities.aspx.cs:11 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/priorities.aspx.cs:30 SQLString -> btnet.SQLString
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/priorities.aspx.cs:30 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/priorities.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/priorities.aspx.cs:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/projects.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/projects.aspx:1 MasterPageFile
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/projects.aspx.cs:21 Context -> btnet.Models.Context
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/Models/project.cs	T1 src/BugTracker.Web/projects.aspx:39 Project -> btnet.Models.Project
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/projects.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/projects.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/projects.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/projects.aspx.cs:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/queries.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/queries.aspx:1 MasterPageFile
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/queries.aspx.cs:25 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/queries.aspx.cs:25 extension .IsInRole()
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/queries.aspx.cs:23 SQLString -> btnet.SQLString
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/queries.aspx.cs:61 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/queries.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/queries.aspx.cs:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/register.aspx.cs:8 BasePage -> btnet.BasePage
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/Mail/MailFormat.cs	T2 src/BugTracker.Web/register.aspx.cs:84 MailFormat.Html -> btnet.Mail.MailFormat
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/register.aspx.cs:72 Email.send_email -> btnet.Mail.Email
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/register.aspx.cs:55 SQLString -> btnet.SQLString
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/register.aspx.cs:70 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/register.aspx.cs:15 Util.set_context -> btnet.Util
+src/BugTracker.Web/register.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/register.aspx #include inc.aspx
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/relationships.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/relationships.aspx:72 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/relationships.aspx:72 extension .IsInRole()
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/relationships.aspx:47 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/relationships.aspx:29 SQLString -> btnet.SQLString
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/relationships.aspx:46 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/relationships.aspx:89 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/relationships.aspx:378 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/relationships.aspx:23 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/relationships.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/relationships.aspx #include inc.aspx
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/reports.aspx.cs:7 BasePage -> btnet.BasePage
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/reports.aspx:1 MasterPageFile
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/reports.aspx:14 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/reports.aspx:14 extension .IsInRole()
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/reports.aspx.cs:30 SQLString -> btnet.SQLString
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/reports.aspx.cs:69 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/reports.aspx:24 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/reports.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/reports.aspx.cs:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/search.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/search.aspx:1 MasterPageFile
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/search.aspx:23 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/search.aspx:23 extension .IsInRole()
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/search.aspx.cs:458 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/search.aspx.cs:75 SQLString -> btnet.SQLString
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/btnet/bug_list.cs	T2 src/BugTracker.Web/search.aspx:396 btnet.BugList.display_buglist_tags_line -> btnet.BugList
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/search.aspx.cs:82 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/search.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/search.aspx:19 Util.get_setting -> btnet.Util
+src/BugTracker.Web/search_text.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/search_text.aspx.cs:7 BasePage -> btnet.BasePage
+src/BugTracker.Web/search_text.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/search_text.aspx:1 MasterPageFile
+src/BugTracker.Web/search_text.aspx	src/BugTracker.Web/Search/BugSearchFactory.cs	T2 src/BugTracker.Web/search_text.aspx.cs:29 BugSearchFactory.CreateBugSearch -> btnet.Search.BugSearchFactory
+src/BugTracker.Web/search_text.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/search_text.aspx.cs:15 Util.get_setting -> btnet.Util
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/seen.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/seen.aspx:16 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/seen.aspx:16 extension .IsInRole()
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/seen.aspx:22 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/seen.aspx:28 SQLString -> btnet.SQLString
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/seen.aspx:21 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/seen.aspx:37 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/seen.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/seen.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/seen.aspx #include inc.aspx
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/select_report.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/select_report.aspx:1 MasterPageFile
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/select_report.aspx.cs:22 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/select_report.aspx.cs:22 extension .IsInRole()
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/select_report.aspx.cs:35 SQLString -> btnet.SQLString
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/select_report.aspx.cs:50 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/select_report.aspx:25 btnet.SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/select_report.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/select_report.aspx.cs:20 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/send_email.aspx.cs:12 BasePage -> btnet.BasePage
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/send_email.aspx:1 MasterPageFile
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/Mail/MailFormat.cs	T1 src/BugTracker.Web/send_email.aspx.cs:540 MailFormat -> btnet.Mail.MailFormat
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/Mail/MailPriority.cs	T1 src/BugTracker.Web/send_email.aspx.cs:541 MailPriority -> btnet.Mail.MailPriority
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/Mail/email.cs	T2 src/BugTracker.Web/send_email.aspx.cs:121 Email.simplify_email_address -> btnet.Mail.Email
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/send_email.aspx:9 extension .GetUseFCKEditor()
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/send_email.aspx.cs:94 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/send_email.aspx:238 SQLString -> btnet.SQLString
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/send_email.aspx.cs:93 btnet.Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/send_email.aspx:276 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/send_email.aspx.cs:485 PrintBug.print_bug -> btnet.PrintBug
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/send_email.aspx:107 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/send_email.aspx	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/send_email.aspx.cs:602 btnet.WhatsNew.add_news -> btnet.WhatsNew
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/send_password_resets.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/send_password_resets.aspx.cs:9 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/send_password_resets.aspx.cs:9 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/send_password_resets.aspx.cs:14 SQLString -> btnet.SQLString
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/send_password_resets.aspx.cs:15 DbUtil.execute_reader -> btnet.DbUtil
+src/BugTracker.Web/send_password_resets.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/send_password_resets.aspx.cs:23 Util.GenerateRandomString -> btnet.Util
+src/BugTracker.Web/server_variables.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/server_variables.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/statuses.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/statuses.aspx:1 MasterPageFile
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/statuses.aspx.cs:24 Context -> btnet.Models.Context
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/Models/status.cs	T1 src/BugTracker.Web/statuses.aspx:30 Status -> btnet.Models.Status
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/statuses.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/statuses.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/statuses.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/statuses.aspx.cs:18 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/subscribe.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/subscribe.aspx:43 extension .GetUserId()
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/subscribe.aspx:20 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/subscribe.aspx:10 SQLString -> btnet.SQLString
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/subscribe.aspx:19 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/subscribe.aspx:44 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/subscribe.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/subscribe.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/subscribe.aspx #include inc.aspx
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_blame.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/svn_blame.aspx:39 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_blame.aspx:23 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/svn_blame.aspx:38 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_blame.aspx:35 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_blame.aspx:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/svn_blame.aspx:58 VersionControl.svn_cat -> btnet.VersionControl
+src/BugTracker.Web/svn_blame.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_blame.aspx #include inc.aspx
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_diff.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/svn_diff.aspx:81 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_diff.aspx:68 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/svn_diff.aspx:80 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_diff.aspx:77 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_diff.aspx:65 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/svn_diff.aspx:106 VersionControl.svn_diff -> btnet.VersionControl
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_diff.aspx #include inc.aspx
+src/BugTracker.Web/svn_diff.aspx	src/BugTracker.Web/inc_diff.inc	M6 src/BugTracker.Web/svn_diff.aspx #include inc_diff.inc
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_hook.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/Security/Authenticate.cs	T2 src/BugTracker.Web/svn_hook.aspx:51 Authenticate.check_password -> btnet.Security.Authenticate
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_hook.aspx:108 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_hook.aspx:151 btnet.DbUtil.execute_scalar -> btnet.DbUtil
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_hook.aspx:15 Util.set_context -> btnet.Util
+src/BugTracker.Web/svn_hook.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_hook.aspx #include inc.aspx
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_log.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/svn_log.aspx:41 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_log.aspx:25 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/svn_log.aspx:40 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_log.aspx:37 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_log.aspx:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/svn_log.aspx:54 VersionControl.svn_log -> btnet.VersionControl
+src/BugTracker.Web/svn_log.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_log.aspx #include inc.aspx
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_view.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/svn_view.aspx:35 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_view.aspx:19 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/svn_view.aspx:34 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_view.aspx:31 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_view.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/btnet/version_control.cs	T2 src/BugTracker.Web/svn_view.aspx:53 VersionControl.svn_cat -> btnet.VersionControl
+src/BugTracker.Web/svn_view.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_view.aspx #include inc.aspx
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/svn_view_revisions.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/svn_view_revisions.aspx:21 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/svn_view_revisions.aspx:31 SQLString -> btnet.SQLString
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/svn_view_revisions.aspx:20 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/svn_view_revisions.aspx:68 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/svn_view_revisions.aspx:89 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/svn_view_revisions.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/svn_view_revisions.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/svn_view_revisions.aspx #include inc.aspx
+src/BugTracker.Web/tags.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tags.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tags.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/tags.aspx:31 extension .GetCategoryFieldPermissionLevel()
+src/BugTracker.Web/tags.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/tags.aspx:31 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/tags.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tags.aspx:25 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/tags.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tags.aspx #include inc.aspx
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tasks.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/tasks.aspx:35 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/tasks.aspx:35 extension .IsInRole()
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/tasks.aspx:29 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/tasks.aspx:48 SQLString -> btnet.SQLString
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/tasks.aspx:28 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/tasks.aspx:122 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/tasks.aspx:173 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tasks.aspx:21 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/tasks.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tasks.aspx #include inc.aspx
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tasks_all.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/tasks_all.aspx:22 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/tasks_all.aspx:22 extension .IsInRole()
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/tasks_all.aspx:54 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tasks_all.aspx:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/tasks_all.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tasks_all.aspx #include inc.aspx
+src/BugTracker.Web/tasks_all_excel.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tasks_all_excel.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tasks_all_excel.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/tasks_all_excel.aspx:16 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/tasks_all_excel.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/tasks_all_excel.aspx:16 extension .IsInRole()
+src/BugTracker.Web/tasks_all_excel.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tasks_all_excel.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/tasks_all_excel.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tasks_all_excel.aspx #include inc.aspx
+src/BugTracker.Web/tasks_frame.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tasks_frame.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tasks_frame.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tasks_frame.aspx:15 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/tasks_frame.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tasks_frame.aspx #include inc.aspx
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/translate.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/translate.aspx:2 Register Src
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/translate.aspx:68 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/translate.aspx:14 SQLString -> btnet.SQLString
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/btnet/TranslationService.cs	T1 src/BugTracker.Web/translate.aspx:89 TranslationService -> TranslationService
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/translate.aspx:67 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/translate.aspx:41 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/translate.aspx:19 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/translate.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/translate.aspx #include inc.aspx
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/tropo_recording.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/tropo_recording.aspx:89 extension .GetUserId()
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/Security/Security.cs	T2 src/BugTracker.Web/tropo_recording.aspx:15 Security.GetIdentity -> btnet.Security.Security
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/tropo_recording.aspx:51 Bug.insert_post_attachment -> btnet.Bug
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/tropo_recording.aspx:14 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/tropo_recording.aspx:151 btnet.WhatsNew.add_news -> btnet.WhatsNew
+src/BugTracker.Web/tropo_recording.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/tropo_recording.aspx #include inc.aspx
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/udfs.aspx.cs:13 BasePage -> btnet.BasePage
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/udfs.aspx:1 MasterPageFile
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/Models/Context.cs	T1 src/BugTracker.Web/udfs.aspx.cs:25 Context -> btnet.Models.Context
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/Models/UserDefinedAttribute.cs	T1 src/BugTracker.Web/udfs.aspx:31 UserDefinedAttribute -> btnet.Models.UserDefinedAttribute
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/udfs.aspx.cs:12 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/udfs.aspx.cs:12 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/udfs.aspx.cs:29 SQLString -> btnet.SQLString
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/udfs.aspx.cs:29 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/udfs.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/udfs.aspx.cs:20 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/update_dashboard.aspx.cs:10 BasePage -> btnet.BasePage
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/LoggedIn.Master	M1 src/BugTracker.Web/update_dashboard.aspx:1 MasterPageFile
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/update_dashboard.aspx.cs:20 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/update_dashboard.aspx.cs:20 extension .IsInRole()
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/update_dashboard.aspx.cs:38 SQLString -> btnet.SQLString
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/update_dashboard.aspx.cs:117 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/update_dashboard.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/update_dashboard.aspx.cs:18 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/upgrade_273_to_274.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/upgrade_273_to_274.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/upgrade_273_to_274.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/upgrade_273_to_274.aspx:30 SQLString -> btnet.SQLString
+src/BugTracker.Web/upgrade_273_to_274.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/upgrade_273_to_274.aspx:33 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/upgrade_273_to_274.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/upgrade_273_to_274.aspx:25 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/users.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/users.aspx:2 Register Src
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/users.aspx:25 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/users.aspx:25 extension .IsInRole()
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/users.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/users.aspx:146 SQLString -> btnet.SQLString
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/users.aspx:148 btnet.DbUtil.get_dataset -> btnet.DbUtil
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/users.aspx:230 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/users.aspx:17 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/users.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/users.aspx #include inc.aspx
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_attachment.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/view_attachment.aspx:39 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/view_attachment.aspx:22 SQLString -> btnet.SQLString
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/view_attachment.aspx:38 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/view_attachment.aspx:31 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_attachment.aspx:19 btnet.Util.sanitize_integer -> btnet.Util
+src/BugTracker.Web/view_attachment.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_attachment.aspx #include inc.aspx
+src/BugTracker.Web/view_memory_log.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_memory_log.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_memory_log.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_memory_log.aspx:9 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/view_memory_log.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_memory_log.aspx #include inc.aspx
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_report.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/view_report.aspx:19 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/view_report.aspx:19 extension .IsInRole()
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/view_report.aspx:7 SQLString -> btnet.SQLString
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/view_report.aspx:51 btnet.DbUtil.get_datarow -> btnet.DbUtil
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/view_report.aspx:635 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_report.aspx:16 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/view_report.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_report.aspx #include inc.aspx
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_subscribers.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/view_subscribers.aspx:69 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/view_subscribers.aspx:69 extension .IsInRole()
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/view_subscribers.aspx:26 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/view_subscribers.aspx:11 SQLString -> btnet.SQLString
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/view_subscribers.aspx:25 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/view_subscribers.aspx:55 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/btnet/sortable_html_table.cs	T2 src/BugTracker.Web/view_subscribers.aspx:232 SortableHtmlTable.create_from_dataset -> btnet.SortableHtmlTable
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_subscribers.aspx:18 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/view_subscribers.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_subscribers.aspx #include inc.aspx
+src/BugTracker.Web/view_web_config.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_web_config.aspx.cs:11 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_web_config.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/view_web_config.aspx.cs:10 BtnetRoles.Admin -> btnet.Security.BtnetRoles
+src/BugTracker.Web/view_web_config.aspx	src/BugTracker.Web/Security/PageAuthorizeAttribute.cs	T1 src/BugTracker.Web/view_web_config.aspx.cs:10 PageAuthorizeAttribute -> btnet.Security.PageAuthorizeAttribute
+src/BugTracker.Web/view_web_config.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_web_config.aspx:13 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/view_web_config.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_web_config.aspx #include inc.aspx
+src/BugTracker.Web/view_whatsnew.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/view_whatsnew.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/view_whatsnew.aspx	src/BugTracker.Web/Controls/MainMenu.ascx	M3 src/BugTracker.Web/view_whatsnew.aspx:2 Register Src
+src/BugTracker.Web/view_whatsnew.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/view_whatsnew.aspx:9 btnet.Util.get_setting -> btnet.Util
+src/BugTracker.Web/view_whatsnew.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/view_whatsnew.aspx #include inc.aspx
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/vote.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/Security/BtnetRoles.cs	T2 src/BugTracker.Web/vote.aspx:16 BtnetRoles.Guest -> btnet.Security.BtnetRoles
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/vote.aspx:16 extension .IsInRole()
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/vote.aspx:25 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/btnet/SQLString.cs	T1 src/BugTracker.Web/vote.aspx:36 SQLString -> btnet.SQLString
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/vote.aspx:24 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/btnet/dbutil.cs	T2 src/BugTracker.Web/vote.aspx:45 btnet.DbUtil.execute_nonquery -> btnet.DbUtil
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/vote.aspx:14 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/vote.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/vote.aspx #include inc.aspx
+src/BugTracker.Web/whatsnew.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/whatsnew.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/whatsnew.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/whatsnew.aspx:40 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/whatsnew.aspx	src/BugTracker.Web/btnet/whatsnew.cs	T2 src/BugTracker.Web/whatsnew.aspx:64 WhatsNew.ten_million -> btnet.WhatsNew
+src/BugTracker.Web/whatsnew.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/whatsnew.aspx #include inc.aspx
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/BasePage.cs	T1 src/BugTracker.Web/write_posts.aspx.cs:9 BasePage -> btnet.BasePage
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/Security/ClaimsIdentityExtensions.cs	T3 src/BugTracker.Web/write_posts.aspx:23 extension .GetIsExternalUser()
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/Security/PermissionLevel.cs	T2 src/BugTracker.Web/write_posts.aspx:17 PermissionLevel.None -> btnet.Security.PermissionLevel
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/btnet/bug.cs	T2 src/BugTracker.Web/write_posts.aspx:16 Bug.get_bug_permission_level -> btnet.Bug
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/btnet/print_bug.cs	T2 src/BugTracker.Web/write_posts.aspx:23 PrintBug.get_bug_posts -> btnet.PrintBug
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/btnet/util.cs	T2 src/BugTracker.Web/write_posts.aspx:10 Util.do_not_cache -> btnet.Util
+src/BugTracker.Web/write_posts.aspx	src/BugTracker.Web/inc.aspx	M6 src/BugTracker.Web/write_posts.aspx #include inc.aspx
+src/btnet_service/btnet_console.cs	src/btnet_service/POP3Main.cs	T1 src/btnet_service/btnet_console.cs:30 POP3Main -> POP3Main
+src/btnet_service/btnet_service.cs	src/btnet_service/POP3Main.cs	T1 src/btnet_service/btnet_service.cs:16 POP3Main -> POP3Main

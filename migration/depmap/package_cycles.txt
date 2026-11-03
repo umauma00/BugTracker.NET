@@ -1,0 +1,2 @@
+# package-level SCCs > 1 package: 1
+btnet	btnet.App_Start	btnet.Controls	btnet.Mail	btnet.Models	btnet.Models.Mapping	btnet.Search	btnet.Security

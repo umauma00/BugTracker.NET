@@ -1,0 +1,5 @@
+# strongly connected components > 1 unit: 4
+src/BugTracker.Web/btnet/dbutil.cs	src/BugTracker.Web/btnet/util.cs
+src/BugTracker.Web/App_Start/Startup.Auth.cs	src/BugTracker.Web/Startup.cs
+src/BugTracker.Web/Mail/email.cs	src/BugTracker.Web/btnet/bug.cs
+src/BugTracker.Web/Models/BugTask.cs	src/BugTracker.Web/Models/bug.cs
