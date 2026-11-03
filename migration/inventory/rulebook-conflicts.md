@@ -10,3 +10,8 @@ Applied at the 02 gate under the standing mandate (PROGRESS.md), recorded in RUL
 - C4 (gap) LINQ `All` — `BasePage.cs:30` — not in §2A table. Amend: `All(p)` → `stream().allMatch(p)` (empty → true, same as .NET).
 - C5 §3 `SmtpClient.TrustAllCertificates(true)` — `email.cs:242` — static vs instance unspecified. Amend: static, process-wide (matches ServicePointManager callback).
 - C6 (gap) `SelectListItem` + object initializers — `Controls/BugList.ascx.cs:67-132` — no runtime class / no rule. Amend: runtime `btnet.runtime.web.SelectListItem` (Text, Value, Selected); object initializer `new T { A = x }` → construct then assign, in declaration order.
+
+## From classifier CONTROL_FLOW
+- C7 §2A Exceptions — `install.aspx:32` End inside `try` with `catch (Exception ex)` at :46 — .NET runs the catch body (writes "Thread was being aborted." in red) before re-throwing; port's `ResponseEndException extends Error` skips it. Amend: a `catch (Exception)` whose try contains End/Redirect gets an explicit `catch (ResponseEndException e) { <catch body with ex.Message = "Thread was being aborted.">; throw e; }` before the general catch.
+- C8 §2B B5 vs B2 step 8 — `print_bugs2.aspx:81` End inside a `<% %>` render region — output buffered in the region's local StringWriter is discarded on End; .NET flushes it. Amend: render regions write to the page's response buffer (not a local writer), so End flushes what was written.
+- C9 (minor) — `loginnt.aspx:191` `StatusCode = 401; End` — NTLM challenge not produced; keep TODO(port) (Windows auth out of scope).
