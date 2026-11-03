@@ -17,6 +17,8 @@ Categories (each one is a decision the rulebook's defaults may not cover):
   DELEGATE       delegate / event declarations, lambdas, anonymous methods
   NULLABLE       nullable value types (int? ...) and the ?? operator
   THREADING      lock, Thread, ThreadPool, Timer
+  TEXT_REGION    markup code blocks (<% %>, <%= %>) inside a client <script> element or
+                 inside an HTML attribute value (RULEBOOK [J-U2]: string-returning methods)
 
 Usage: migration/scripts/.venv/bin/python -I migration/scripts/gap_sweep.py --repo . --out migration/inventory/sweep.tsv
 Two runs on the same tree produce byte-identical output.
@@ -155,6 +157,31 @@ def sweep(src: bytes, rel: str, lmap, out):
     visit(tree.root_node)
 
 
+import re as _re2
+_SCRIPT = _re2.compile(r"<script\b(?![^>]*\brunat\s*=)[^>]*>(.*?)</script>", _re2.S | _re2.I)
+_BLOCK = _re2.compile(r"<%(?!\s*@|--|\$)([=:#]?)(.*?)%>", _re2.S)
+
+
+def text_regions(raw, rel, out):
+    # mask server-side blocks so their '<' / '>' don't confuse the tag scan
+    masked = _BLOCK.sub(lambda m: "\0" * len(m.group(0)), raw)
+    script_spans = [(m.start(1), m.end(1)) for m in _SCRIPT.finditer(masked)]
+    for m in _BLOCK.finditer(raw):
+        pos = m.start()
+        where = None
+        if any(a <= pos < b for a, b in script_spans):
+            where = "in <script>"
+        else:
+            lt = masked.rfind("<", 0, pos)
+            gt = masked.rfind(">", 0, pos)
+            if lt > gt and lt >= 0 and masked[lt + 1:lt + 2] not in ("%", "!", "/"):
+                where = "in attribute/tag"
+        if where:
+            line = raw.count("\n", 0, pos) + 1
+            c = " ".join(m.group(0).split())
+            out.add(("TEXT_REGION", rel, line, "(markup)", (where + ": " + c)[:160]))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo", required=True, type=Path)
@@ -171,6 +198,7 @@ def main():
         else:
             code, lmap = d.markup_code(raw, "__Page")
             sweep(code.encode("utf-8"), rel, lmap, out)
+            text_regions(raw, rel, out)
     rows = sorted(out)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     with open(a.out, "w", encoding="utf-8") as f:

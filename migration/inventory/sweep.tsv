@@ -861,6 +861,88 @@ STATIC_MUTABLE	src/btnet_service/POP3Main.cs	33	POP3Main	static object dummy = n
 STATIC_MUTABLE	src/btnet_service/POP3Main.cs	65	POP3Main	static Regex rePipes = new Regex("\\|");
 STATIC_MUTABLE	src/btnet_service/POP3Main.cs	70	POP3Main	public static DateTime heartbeat_datetime = DateTime.Now;
 STATIC_MUTABLE	src/btnet_service/btnet_service.cs	16	service	protected static POP3Main pop3;
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	19	(markup)	in attribute/tag: <%=columnName %>
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	22	(markup)	in attribute/tag: <%=option.Value %>
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	128	(markup)	in <script>: <%= string.Join(", ", GetVisibleColumns().Select(c => string.Format("'{0}'", c)).ToArray()) %>
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	129	(markup)	in <script>: <%=SelectedQuery != null ? SelectedQuery.Id : 0%>
+TEXT_REGION	src/BugTracker.Web/Controls/MainMenu.ascx	48	(markup)	in attribute/tag: <%:Util.get_setting("CustomMenuLinkUrl", "") %>
+TEXT_REGION	src/BugTracker.Web/Controls/MainMenu.ascx	123	(markup)	in <script>: <%:SelectedItem%>
+TEXT_REGION	src/BugTracker.Web/add_attachment.aspx	12	(markup)	in <script>: <%:msg.ClientID%>
+TEXT_REGION	src/BugTracker.Web/add_attachment.aspx	18	(markup)	in <script>: <%:msg.ClientID%>
+TEXT_REGION	src/BugTracker.Web/admin.aspx	47	(markup)	in <script>: <% if (nag) Response.Write("onload='start_animation()'"); %>
+TEXT_REGION	src/BugTracker.Web/bugs.aspx	66	(markup)	in <script>: <% Response.Write(User.Identity.GetEnablePopups() ? "1" : "0"); %>
+TEXT_REGION	src/BugTracker.Web/bugs.aspx	67	(markup)	in <script>: <%=frm.ClientID %>
+TEXT_REGION	src/BugTracker.Web/categories.aspx	31	(markup)	in attribute/tag: <%:category.Id %>
+TEXT_REGION	src/BugTracker.Web/default.aspx	81	(markup)	in <script>: <%=user.ClientID%>
+TEXT_REGION	src/BugTracker.Web/edit_attachment.aspx	7	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid));%>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	19	(markup)	in attribute/tag: <%: Convert.ToString(id)%>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	20	(markup)	in attribute/tag: <%: btnet.Util.get_setting("DatepickerDateFormat", "yy-mm-dd")%>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	21	(markup)	in attribute/tag: <%: isSubscribed %>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	22	(markup)	in attribute/tag: <%: User.Identity.GetUseFCKEditor() ? "data-use-fck-editor=''" : "" %>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	27	(markup)	in attribute/tag: <%=id > 0 ? "col-sm-12 col-md-3 col-lg-2" : "" %>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	50	(markup)	in attribute/tag: <%:id %>
+TEXT_REGION	src/BugTracker.Web/edit_bug.aspx	317	(markup)	in <script>: <%=id%>
+TEXT_REGION	src/BugTracker.Web/edit_comment.aspx	17	(markup)	in <script>: <% if (use_fckeditor) { Response.Write("CKEDITOR.replace( 'comment' )"); } else { Response.Write("$('textarea').resizable()"); } %>
+TEXT_REGION	src/BugTracker.Web/edit_comment.aspx	33	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid));%>
+TEXT_REGION	src/BugTracker.Web/edit_dashboard.aspx	71	(markup)	in attribute/tag: <% Response.Write(ses); %>
+TEXT_REGION	src/BugTracker.Web/edit_priority.aspx	11	(markup)	in <script>: <%= color.ClientID%>
+TEXT_REGION	src/BugTracker.Web/edit_task.aspx	11	(markup)	in <script>: <% Response.Write(btnet.Util.get_setting("DatepickerDateFormat", "yy-mm-dd")); %>
+TEXT_REGION	src/BugTracker.Web/edit_task.aspx	23	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid)); %>
+TEXT_REGION	src/BugTracker.Web/edit_user.aspx	389	(markup)	in attribute/tag: <%# ((int)(( System.Data.DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 0 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user.aspx	392	(markup)	in attribute/tag: <%# ((int)(( System.Data.DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 1 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user.aspx	395	(markup)	in attribute/tag: <%# ((int)(( System.Data.DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 3 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user.aspx	398	(markup)	in attribute/tag: <%# ((int)(( System.Data.DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 2 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user_permissions2.aspx	166	(markup)	in attribute/tag: <%# ((int)(( DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 0 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user_permissions2.aspx	169	(markup)	in attribute/tag: <%# ((int)(( DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 1 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user_permissions2.aspx	172	(markup)	in attribute/tag: <%# ((int)(( DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 3 ) %>
+TEXT_REGION	src/BugTracker.Web/edit_user_permissions2.aspx	175	(markup)	in attribute/tag: <%# ((int)(( DataRowView ) Container.DataItem ) [ "pu_permission_level" ] == 2 ) %>
+TEXT_REGION	src/BugTracker.Web/forgot.aspx	60	(markup)	in <script>: <%=email.ClientID%>
+TEXT_REGION	src/BugTracker.Web/orgs.aspx	44	(markup)	in attribute/tag: <%=org.Id %>
+TEXT_REGION	src/BugTracker.Web/orgs.aspx	45	(markup)	in attribute/tag: <%=org.Id %>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	40	(markup)	in attribute/tag: <%=priority.BackgroundColor%>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	45	(markup)	in attribute/tag: <%=priority.Id %>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	46	(markup)	in attribute/tag: <%=priority.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	54	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	55	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	56	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/queries.aspx	32	(markup)	in attribute/tag: <%=queryRow["id"]%>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	304	(markup)	in <script>: <% Response.Write(Util.get_form_name()); %>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	319	(markup)	in <script>: <% Response.Write(Convert.ToString(bugid)); Response.Write(","); Response.Write(Convert.ToString(ds.Tables[0].Rows.Count)); %>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	366	(markup)	in attribute/tag: <% Response.Write(ses); %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	19	(markup)	in <script>: <% Response.Write(Util.get_setting("SearchSuggestMinChars","3")); %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	23	(markup)	in <script>: <% if (User.IsInRole(BtnetRoles.Admin) || User.Identity.GetCanMassEditBugs()) { %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	129	(markup)	in <script>: <%=project.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	130	(markup)	in <script>: <%=org.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	131	(markup)	in <script>: <%=category.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	132	(markup)	in <script>: <%=priority.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	133	(markup)	in <script>: <%=assigned_to.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	134	(markup)	in <script>: <%=status.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	135	(markup)	in <script>: <%=reported_by.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	138	(markup)	in <script>: <% } %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	141	(markup)	in <script>: <%=hit_submit_button.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	148	(markup)	in <script>: <%=searchForm.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	164	(markup)	in <script>: <%=project_changed.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	170	(markup)	in <script>: <% Response.Write(btnet.Util.get_setting("DatepickerDateFormat","yy-mm-dd")); %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	366	(markup)	in <script>: <% Response.Write(User.Identity.GetEnablePopups() ? "1" : "0"); %>
+TEXT_REGION	src/BugTracker.Web/search_text.aspx	28	(markup)	in attribute/tag: <%=bugRow["id"] %>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	70	(markup)	in <script>: <%=include_bug.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	71	(markup)	in <script>: <%=include_internal_posts.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	72	(markup)	in <script>: <%=include_internal_posts_label.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	75	(markup)	in <script>: <%=include_internal_posts.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	76	(markup)	in <script>: <%=include_internal_posts.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	81	(markup)	in <script>: <% if (User.Identity.GetUseFCKEditor()) { Response.Write("CKEDITOR.replace( 'body' )"); } %>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	88	(markup)	in <script>: <% if (enable_internal_posts) { %>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	92	(markup)	in <script>: <% } %>
+TEXT_REGION	src/BugTracker.Web/statuses.aspx	40	(markup)	in attribute/tag: <%=status.Id %>
+TEXT_REGION	src/BugTracker.Web/statuses.aspx	41	(markup)	in attribute/tag: <%=status.Id %>
+TEXT_REGION	src/BugTracker.Web/tasks.aspx	141	(markup)	in <script>: <% Response.Write(Convert.ToString(ds.Tables[0].Rows.Count)); %>
+TEXT_REGION	src/BugTracker.Web/tasks.aspx	161	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid)); %>
+TEXT_REGION	src/BugTracker.Web/tasks_frame.aspx	32	(markup)	in <script>: <% Response.Write(string_bugid); %>
+TEXT_REGION	src/BugTracker.Web/tasks_frame.aspx	36	(markup)	in attribute/tag: <%Response.Write(string_bugid);%>
+TEXT_REGION	src/BugTracker.Web/udfs.aspx	40	(markup)	in attribute/tag: <%=udf.udf_id %>
+TEXT_REGION	src/BugTracker.Web/udfs.aspx	41	(markup)	in attribute/tag: <%=udf.udf_id %>
+TEXT_REGION	src/BugTracker.Web/view_subscribers.aspx	223	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid));%>
+TEXT_REGION	src/BugTracker.Web/view_whatsnew.aspx	185	(markup)	in <script>: <% Response.Write(btnet.Util.get_setting("WhatsNewPageIntervalInSeconds","20")); %>
 THREADING	src/BugTracker.Web/Mail/email.cs	273	Email.delete_stuff	new System.Threading.Thread(threadproc_delete_stuff)
 THREADING	src/BugTracker.Web/btnet/bug.cs	1201	Bug.send_notifications	new System.Threading.Thread(threadproc_notifications)
 THREADING	src/BugTracker.Web/btnet/bug.cs	1276	Bug.threadproc_notifications	lock(dummy)

@@ -1,0 +1,45 @@
+category	file	line	symbol	construct
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	19	(markup)	in attribute/tag: <%=columnName %>
+TEXT_REGION	src/BugTracker.Web/Controls/BugList.ascx	22	(markup)	in attribute/tag: <%=option.Value %>
+TEXT_REGION	src/BugTracker.Web/Controls/MainMenu.ascx	48	(markup)	in attribute/tag: <%:Util.get_setting("CustomMenuLinkUrl", "") %>
+TEXT_REGION	src/BugTracker.Web/add_attachment.aspx	12	(markup)	in <script>: <%:msg.ClientID%>
+TEXT_REGION	src/BugTracker.Web/add_attachment.aspx	18	(markup)	in <script>: <%:msg.ClientID%>
+TEXT_REGION	src/BugTracker.Web/categories.aspx	31	(markup)	in attribute/tag: <%:category.Id %>
+TEXT_REGION	src/BugTracker.Web/edit_comment.aspx	17	(markup)	in <script>: <% if (use_fckeditor) { Response.Write("CKEDITOR.replace( 'comment' )"); } else { Response.Write("$('textarea').resizable()"); } %>
+TEXT_REGION	src/BugTracker.Web/edit_priority.aspx	11	(markup)	in <script>: <%= color.ClientID%>
+TEXT_REGION	src/BugTracker.Web/edit_task.aspx	11	(markup)	in <script>: <% Response.Write(btnet.Util.get_setting("DatepickerDateFormat", "yy-mm-dd")); %>
+TEXT_REGION	src/BugTracker.Web/forgot.aspx	60	(markup)	in <script>: <%=email.ClientID%>
+TEXT_REGION	src/BugTracker.Web/orgs.aspx	44	(markup)	in attribute/tag: <%=org.Id %>
+TEXT_REGION	src/BugTracker.Web/orgs.aspx	45	(markup)	in attribute/tag: <%=org.Id %>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	40	(markup)	in attribute/tag: <%=priority.BackgroundColor%>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	45	(markup)	in attribute/tag: <%=priority.Id %>
+TEXT_REGION	src/BugTracker.Web/priorities.aspx	46	(markup)	in attribute/tag: <%=priority.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	54	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	55	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/projects.aspx	56	(markup)	in attribute/tag: <%=project.Id %>
+TEXT_REGION	src/BugTracker.Web/queries.aspx	32	(markup)	in attribute/tag: <%=queryRow["id"]%>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	304	(markup)	in <script>: <% Response.Write(Util.get_form_name()); %>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	319	(markup)	in <script>: <% Response.Write(Convert.ToString(bugid)); Response.Write(","); Response.Write(Convert.ToString(ds.Tables[0].Rows.Count)); %>
+TEXT_REGION	src/BugTracker.Web/relationships.aspx	366	(markup)	in attribute/tag: <% Response.Write(ses); %>
+TEXT_REGION	src/BugTracker.Web/search.aspx	129	(markup)	in <script>: <%=project.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	130	(markup)	in <script>: <%=org.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	131	(markup)	in <script>: <%=category.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	132	(markup)	in <script>: <%=priority.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	133	(markup)	in <script>: <%=assigned_to.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	134	(markup)	in <script>: <%=status.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	135	(markup)	in <script>: <%=reported_by.ClientID%>
+TEXT_REGION	src/BugTracker.Web/search.aspx	138	(markup)	in <script>: <% } %>
+TEXT_REGION	src/BugTracker.Web/search_text.aspx	28	(markup)	in attribute/tag: <%=bugRow["id"] %>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	71	(markup)	in <script>: <%=include_internal_posts.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	72	(markup)	in <script>: <%=include_internal_posts_label.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	75	(markup)	in <script>: <%=include_internal_posts.ClientID%>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	81	(markup)	in <script>: <% if (User.Identity.GetUseFCKEditor()) { Response.Write("CKEDITOR.replace( 'body' )"); } %>
+TEXT_REGION	src/BugTracker.Web/send_email.aspx	88	(markup)	in <script>: <% if (enable_internal_posts) { %>
+TEXT_REGION	src/BugTracker.Web/statuses.aspx	40	(markup)	in attribute/tag: <%=status.Id %>
+TEXT_REGION	src/BugTracker.Web/statuses.aspx	41	(markup)	in attribute/tag: <%=status.Id %>
+TEXT_REGION	src/BugTracker.Web/tasks.aspx	141	(markup)	in <script>: <% Response.Write(Convert.ToString(ds.Tables[0].Rows.Count)); %>
+TEXT_REGION	src/BugTracker.Web/tasks.aspx	161	(markup)	in attribute/tag: <% Response.Write(Convert.ToString(bugid)); %>
+TEXT_REGION	src/BugTracker.Web/tasks_frame.aspx	32	(markup)	in <script>: <% Response.Write(string_bugid); %>
+TEXT_REGION	src/BugTracker.Web/udfs.aspx	40	(markup)	in attribute/tag: <%=udf.udf_id %>
+TEXT_REGION	src/BugTracker.Web/udfs.aspx	41	(markup)	in attribute/tag: <%=udf.udf_id %>
+TEXT_REGION	src/BugTracker.Web/view_whatsnew.aspx	185	(markup)	in <script>: <% Response.Write(btnet.Util.get_setting("WhatsNewPageIntervalInSeconds","20")); %>
