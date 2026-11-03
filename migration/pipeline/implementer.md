@@ -10,7 +10,6 @@ Output root: {OUT}  (write each target at {OUT}/<target path>; for UI units also
 4. Use only the `btnet.runtime.*` API exactly as RULEBOOK §3 specifies it (the runtime is hand-written separately; do not write runtime classes yourself). Other in-repo types: refer to them by the names RULEBOOK §4 gives their targets, even if not translated yet.
 5. Obligations (§6): header comment citing the source path(s); markers `TODO(port):` / `BUG(port):` / `PERF(port):` exactly as §0/§2A define; preserve behavior including inherited quirks — fix nothing except the sanctioned fixes F1–F5 of §0.1.
 6. Do NOT compile, run anything, edit any other file, or run git.
-7. End each Java target file with a status trailer comment:
-   `// PORT-STATUS: source=<paths> rules=<§ ids you relied on most> todos=<n> bugs=<n> notes=<one line>`
+7. End each target file with the status trailer exactly as RULEBOOK §6 defines it (`// PORT STATUS: confidence=… todos=N` for Java, `<!-- PORT STATUS: … -->` for templates).
 
 Final message (< 120 words): files written, TODO(port) count, the rule sections you found ambiguous (§ + one line each).

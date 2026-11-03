@@ -4,6 +4,6 @@ Unit sources: {UNIT_SOURCES}
 Targets: {TARGETS} under {OUT}/ (and the unit's templates/fragments)
 Confirmed findings: {OUT}/migration/reviews/{UID}.confirmed.md
 
-Apply the confirmed findings, and only those, to the unit's target files. Read `migration/RULEBOOK.md` for the rules they cite. If a confirmed finding cannot be applied (it contradicts the rulebook, or the fix needs a runtime API §3 doesn't have), don't improvise: add `// TODO(port): <finding id> <why>` at the site and list it in your final message. Do not touch any other file, do not compile, do not run git. Update the `// PORT-STATUS:` trailer (`fixed=<ids>`).
+Apply the confirmed findings, and only those, to the unit's target files. Read `migration/RULEBOOK.md` for the rules they cite. If a confirmed finding cannot be applied (it contradicts the rulebook, or the fix needs a runtime API §3 doesn't have), don't improvise: add `// TODO(port): <finding id> <why>` at the site and list it in your final message. Do not touch any other file, do not compile, do not run git. Keep the RULEBOOK §6 `PORT STATUS` trailer accurate (update `todos=N`).
 
 Final message (< 80 words): applied ids, flagged ids with reasons.
