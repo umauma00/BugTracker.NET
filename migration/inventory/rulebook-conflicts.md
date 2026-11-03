@@ -53,3 +53,22 @@ Applied at the 02 gate under the standing mandate (PROGRESS.md), recorded in RUL
 - C17 CORRECTED — `System.Timers.Timer` with `AutoReset=false` (:307) re-armed in `do_work` (:291) → one-shot `timer.schedule(task, interval)` re-armed in `do_work`, never `scheduleAtFixedRate`.
 - C34 static core classes reading `Session`/`Request` (e.g. 11 rows in `btnet/bug_list.cs`) — Amend: core statics obtain request state via the method's own `HttpContext`/`Page` parameter if it has one, else `HttpContext.Current()` (runtime request-bound accessor); never a bare `Session` identifier.
 - C35 `XmlTextReader` lazy open — `POP3Main.cs:427` — Amend: missing config file must surface at first `Read()` exactly as .NET (FileNotFoundException path), so the runtime `XmlTextReader` wrapper opens lazily.
+
+## Applied reviews
+Fixer pass over `inventory.tsv` (874 rows, keys unchanged) using `review.core.tsv` (87 rows) and `review.ui.tsv` (55 rows): 142 review rows (28 REFUTE, 114 AMEND), all keyed to an existing inventory row. Script: `scratchpad/apply_reviews.py` + `postfix.py`.
+- Applied (source line checked, reviewer confirmed; translation/evidence merged, status `confirmed`): 142 (2 of them then re-opened as `unknown`, see below).
+- Contested by the source -> `unknown`: 0. Reviewer claims all held against the cited lines (e.g. edit_user.aspx.cs:942 discards the String.Format result; POP3Main.cs:307 `AutoReset=false`; XmlTextReader opens at first `Read()`).
+- Left/returned to `unknown` because neither RULEBOOK nor C1-C35 decides them (conservative form + `TODO(port)` kept): 2 - `Search/BugSearch.cs:79` (N1) and `btnet/util.cs:1117` (N2).
+- Previously-unknown rows resolved by a C-number: BasePage.cs:30 (C28), BugList.ascx.cs GetFilterValues x6 (C6), MainMenu.ascx:4,15 (C32), BugSearch.cs:55 (C29), admin.aspx.cs:43 (C2/C22), tags.cs:108 (C31), util.cs:918,964 (C32), print_bugs2.aspx:81 (C8), POP3Main.cs:75 and btnet_service.cs:36 (C18), POP3Main.cs:306 (C17 corrected: one-shot `schedule`). POP3Main.cs:732 now follows C33 (`Threads.runAsync`, non-daemon, cookie-handling HttpClient) and :427 follows C35.
+- `edit_user.aspx.cs:942`: preserved as an expression statement with `BUG(port):` (the discarded-result quirk is not a sanctioned fix F1-F5).
+- Rows whose classification was corrected: install.aspx:32/:46 -> END_INSIDE_CATCH; POP3Main.cs:306 UNKNOWN -> THREAD_LONG_RUNNING; POP3Main.cs:75 and btnet_service.cs:36 UNKNOWN -> APP_CONFIG.
+
+### New rulebook gaps found while applying
+- N1 (extends C29) `BugSearch.cs:75-84`: `Hit` also needs `Highlights = LinkedHashMap<String, Highlight{ String Field; List<String> Highlights }>` in response order.
+- N2 (RULEBOOK 3) `util.cs:1103-1104`: `UrlHelper.IsLocalUrl` (MVC5 semantics) has no runtime class; open-redirect guard.
+- N3 (runtime requirement) `dbutil.cs:104`: runtime `SqlCommand.close()` must not close a JDBC Statement still owned by an open `SqlDataReader` (try-with-resources on `using (SqlCommand)` before the caller reads the returned reader).
+- N4 (inventory gap) `version_control.cs:465` `line.IndexOf(",", pos1)` (pos1 may be -1) has no row; same C27 hazard as :470 - give it `Strings.IndexOf`.
+- N5 (extends C19) interrupt-based abort needs the loop check `Thread.currentThread().isInterrupted()` in `fetching_thread_proc` (Threads.Sleep re-sets the flag, so otherwise respawns leak threads).
+- N6 (naming) RULEBOOK 2A/3 call the comparator `Strings.CURRENT_CULTURE`, C20/C31 call it `Strings.CULTURE_COMPARER`: pick one name.
+- N7 (runtime author gap, not a rule) `File.AppendText`/`StreamWriter` for `POP3Main.write_to_log`.
+- N8 (C17 text) C17 must read `timer.schedule(task, interval)` one-shot re-armed in `do_work`, never `scheduleAtFixedRate` (already marked CORRECTED above); inventory rows follow the corrected form.
