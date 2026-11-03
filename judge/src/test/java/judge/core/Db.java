@@ -3,6 +3,7 @@ package judge.core;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,13 +30,34 @@ public final class Db {
 
     /**
      * Rebuild the schema and seed data from the original's own setup script
-     * (src/BugTracker.Web/setup.sql — drops and recreates every table). The
-     * script contains no GO separators, so it runs as one batch.
+     * (src/BugTracker.Web/setup.sql — drops and recreates every table; no GO
+     * separators, so it runs as one batch), plus two seed patches. Both patches
+     * are judge decisions, listed in judge/README.md ("Seed patches"):
+     *
+     * <ul>
+     * <li><b>P1</b> setup.sql:168 inserts the admin row with an explicit us_id
+     *     into an identity column (setup.sql:135) without SET IDENTITY_INSERT, which
+     *     SQL Server rejects — admin would be missing and every other user id
+     *     would shift. The statement is wrapped in IDENTITY_INSERT ON/OFF.</li>
+     * <li><b>P2</b> The EF model maps queries.qu_columns
+     *     (Models/Mapping/queryMap.cs:29), which setup.sql never creates; the
+     *     database project does (BugTracker.Database/dbo/Tables/queries.sql:8) and
+     *     its Script.PostDeployment.sql fills it. Both are applied.</li>
+     * </ul>
      */
     public static void reset() {
         try (Connection c = connect(); Statement s = c.createStatement()) {
-            String sql = Files.readString(JudgeConfig.seedSql(), StandardCharsets.UTF_8);
+            String sql = Files.readString(JudgeConfig.seedSql(), StandardCharsets.UTF_8).replace("\uFEFF", "");
+            int i = sql.indexOf("INSERT [dbo].[users] ([us_id]");
+            if (i < 0) throw new IllegalStateException("P1: admin insert not found in seed script");
+            int j = sql.indexOf('\n', i);
+            sql = sql.substring(0, i) + "SET IDENTITY_INSERT [dbo].[users] ON\n" + sql.substring(i, j)
+                    + "\nSET IDENTITY_INSERT [dbo].[users] OFF" + sql.substring(j);
             s.execute(sql);
+            s.execute("alter table queries add qu_columns nvarchar(max) not null default 'ColumnsNeeded'");
+            Path post = JudgeConfig.seedSql().toAbsolutePath().getParent().getParent()
+                    .resolve("BugTracker.Database").resolve("Script.PostDeployment.sql");
+            s.execute(Files.readString(post, StandardCharsets.UTF_8).replace("\uFEFF", ""));
         } catch (SQLException | IOException e) {
             throw new IllegalStateException("Database reset failed", e);
         }

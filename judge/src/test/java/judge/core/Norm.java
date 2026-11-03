@@ -35,6 +35,20 @@ public final class Norm {
     }
 
     /**
+     * N4: visible text of a server control by its logical id. The original's
+     * Web.config sets pages clientIDMode="AutoID" (src/BugTracker.Web/Web.config:38),
+     * so {@code id="msg"} inside a master-page content area renders as
+     * {@code ctl00_body_msg} unless the page opts into Static; the port renders
+     * {@code msg}. Tries the exact id first, then {@code ctl00_body_<id>}.
+     */
+    public static String textByLogicalId(Document d, String id) {
+        Element e = d.getElementById(id);
+        if (e == null) e = d.getElementById("ctl00_body_" + id);
+        if (e == null) throw new AssertionError("No element #" + id + " (or #ctl00_body_" + id + ") in " + d.location());
+        return text(e.text());
+    }
+
+    /**
      * N2: a data table as rows of normalized cell text. Header row(s) — rows of
      * {@code th} only — are returned first. Markup inside cells (links, icons,
      * spans) is reduced to its text.

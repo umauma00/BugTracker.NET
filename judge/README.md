@@ -67,10 +67,21 @@ addressed through these stable handles, which the port **must preserve**:
 | N1 | Whitespace runs (incl. `&nbsp;`) collapsed, trimmed | Markup is redesigned; whitespace is layout |
 | N2 | Markup inside table cells (links, icons) → text | Same |
 | N3 | Path case, base path | IIS is case-insensitive; deployment root differs |
+| N4 | Server-control id prefix `ctl00_body_` | Original's Web.config `clientIDMode="AutoID"` (line 38) mangles ids inside master pages; the port renders the plain id |
 | — | `__VIEWSTATE`, `__EVENTVALIDATION`, CSRF tokens | Framework plumbing, not behavior |
 
 Anything else — dates, ids, ordering — is asserted unless a scenario spec says
 otherwise and explains why. Adding a rule is a judge change and needs review.
+
+## Seed patches (judge decisions)
+
+`Db.reset()` runs `src/BugTracker.Web/setup.sql` with two patches, because the
+script alone does not produce a database the original can run on:
+
+| Patch | Problem in the original's seed | Fix |
+|---|---|---|
+| P1 | `setup.sql:168` inserts admin with an explicit `us_id` into an identity column without `SET IDENTITY_INSERT` → SQL Server rejects it; admin missing, other ids shift | Wrap that one statement in `IDENTITY_INSERT ON/OFF` |
+| P2 | EF maps `queries.qu_columns` (`Models/Mapping/queryMap.cs:29`); setup.sql never creates it → every read of `queries` fails | Add the column as the database project defines it and run `BugTracker.Database/Script.PostDeployment.sql` |
 
 ## Inherited behavior
 
