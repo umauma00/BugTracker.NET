@@ -26,3 +26,8 @@ Guardrails: `.claude/settings.json` installed (adapted template; D-006).
 Workspaces: A = git worktree `/tmp/claude-0/-home-user/9c6707b8-af5b-57fb-b9d4-be71e6af9275/scratchpad/st-A` on branch `stress-A-throwaway` (never merged);
 B = `/tmp/claude-0/-home-user/9c6707b8-af5b-57fb-b9d4-be71e6af9275/scratchpad/st-B` (the 3 source files only);
 pilot = `/tmp/claude-0/-home-user/9c6707b8-af5b-57fb-b9d4-be71e6af9275/scratchpad/st-pilot`.
+
+## Round 1 closed (2026-11-04)
+- Workspace A (worktree `st-A`, branch `stress-A-throwaway`) deleted: `git worktree remove --force` + `git branch -D` — confirmed, 0 remaining.
+- Workspace B (`st-B`) deleted: `rm -rf` — confirmed.
+- Pilot workspace `st-pilot` kept until the re-round reads its review files, then deleted.
