@@ -21,61 +21,79 @@ import judge.core.Web;
 /**
  * S8 — notification queue (queued_notifications) as a side effect of editing a bug,
  * and the admin pages notifications.aspx / edit_queued_notifications.aspx.
- * See judge/specs/S8.md — in short: the original can never write a queue row.
+ * See judge/specs/S8.md. Sanctioned fix F3 (D-003): the port writes the queue row the original
+ * could not (syntax error); the tests assert that row.
  */
 class S8_NotificationQueueTest extends Scenario {
 
     // ------------------------------------------------------------------ side effect of edit_bug
 
+    /**
+     * Sanctioned fix F3 (RULEBOOK §0.1, D-003): the queue INSERT reads {@code N'not sent'}.
+     * Sanctioned fix F4 also applies: the developer subscriber is a non-admin, so
+     * {@code Security.GetIdentity} (bug.cs:1165) must succeed for it.
+     *
+     * <p>Not asserted: qn_retries and qn_last_exception. A worker thread starts after the
+     * insert (bug.cs:1198-1203) and, with no SMTP server, bumps them (:1240-1250) at a time
+     * the judge cannot predict; qn_status stays {@code not sent} either way.
+     */
     @Test
-    @Inherited("The queue INSERT has a stray quote (N''not sent') so the batch never compiles; any edit with a qualifying "
-            + "subscriber ends in an unhandled SqlException (500) after the bug row was already saved, and nothing is queued. "
-            + "For a non-admin subscriber Security.GetIdentity also fails first (selects no project_admin column).")
-    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1178-1192", why = "delete+insert batch with N''not sent' (syntax error)")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1178-1192", why = "delete + insert batch, status N'not sent', retries 0, body = print_bug html")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1183", why = "values (getdate(), @bug, @user, N'not sent', 0, @to, @from, @subject, @body, N'')")
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1067-1107", why = "qualifying subscriber: subscribed, email, notifications on, active, change level, permission, not the editor")
-    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1165", why = "GetIdentity(subscriber) before the insert")
-    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:21-35,117", why = "dr[\"project_admin\"] not selected -> throws for non-admins")
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:761-831", why = "bug UPDATE committed, then send_notifications (not caught)")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1116-1148", why = "subject from NotificationSubjectFormat: $THING$ -> 'Bug', $BUGID$, $ACTION$ -> 'updated', $SHORTDESC$ (after the update), $TRACKINGID$ = ' (' + TrackingIdString + bugid + ')'")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1150-1163", why = "body starts <html><base href=\"AbsoluteUrlPrefix\"/>, then print_bug output")
+    @SourceRef(value = "src/BugTracker.Web/Web.config:128,164,180,525", why = "AbsoluteUrlPrefix http://127.0.0.1/btnet/, NotificationEmailFrom dont_reply@example.com, NotificationSubjectFormat, TrackingIdString 'DO NOT EDIT THIS:'")
+    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:111-121", why = "GetIdentity for the non-admin subscriber works once project_admin is selected (F4)")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:761-831", why = "bug UPDATE committed, then send_notifications; page answers 'Bug was updated.'")
     @SourceRef(value = "src/BugTracker.Web/Web.config:159", why = "NotificationEmailEnabled = 1")
-    void qualifyingSubscriberMakesEditFailAndQueuesNothing() {
+    void qualifyingSubscriberGetsQueuedNotification() {
         seedBug();
         Db.exec("update users set us_email = N'developer@example.com' where us_id = 2");
         Db.exec("insert into bug_subscriptions (bs_bug, bs_user) values (1, 2)");
         loginAdmin(web);
+        java.sql.Timestamp before = S3_EditBugTest.dbNow();
         Web.Page p = editShortDesc("changed once");
-        assertEquals(500, p.status());
-        assertEquals(0L, Db.count("select count(*) from queued_notifications"));
+        java.sql.Timestamp after = S3_EditBugTest.dbNow();
+        assertEquals(200, p.status());
+        assertEquals("Bug was updated.", Norm.textById(p.html(), "msg"));
         assertEquals("changed once", Db.scalar("select bg_short_desc from bugs where bg_id = 1"));
+        assertQueuedRow(Db.one("select * from queued_notifications"), 2, "developer@example.com", "changed once", before, after);
     }
 
+    /** Sanctioned fix F3 (RULEBOOK §0.1, D-003): the delete in the same batch now runs, and the new row is inserted. */
     @Test
-    @Inherited("Because the whole delete+insert batch fails to compile, an older queued row for the same bug and recipient is not replaced")
-    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1178-1183", why = "delete ... where qn_bug = @bug and qn_to = @to is in the same failing batch")
-    void existingQueueRowIsNotReplaced() {
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1178-1183", why = "delete from queued_notifications where qn_bug = @bug and qn_to = @to, then insert, in one batch")
+    void existingQueueRowIsReplaced() {
         seedBug();
         Db.exec("update users set us_email = N'developer@example.com' where us_id = 2");
         Db.exec("insert into bug_subscriptions (bs_bug, bs_user) values (1, 2)");
         seedQueueRow("2024-05-01T10:00:00", 1, 2, "not sent", 1, "old error", "developer@example.com", "old subject");
         loginAdmin(web);
-        assertEquals(500, editShortDesc("changed twice").status());
-        List<Map<String, Object>> rows = Db.rows("select qn_id, qn_bug, qn_user, qn_status, qn_retries, qn_last_exception, qn_to, qn_subject from queued_notifications");
-        assertEquals(1, rows.size());
-        assertEquals(Map.of("qn_id", 1, "qn_bug", 1, "qn_user", 2, "qn_status", "not sent", "qn_retries", 1,
-                "qn_last_exception", "old error", "qn_to", "developer@example.com", "qn_subject", "old subject"), rows.get(0));
+        java.sql.Timestamp before = S3_EditBugTest.dbNow();
+        assertEquals(200, editShortDesc("changed twice").status());
+        java.sql.Timestamp after = S3_EditBugTest.dbNow();
+        List<Map<String, Object>> rows = Db.rows("select * from queued_notifications");
+        assertEquals(1, rows.size(), "old row deleted, one new row");
+        assertQueuedRow(rows.get(0), 2, "developer@example.com", "changed twice", before, after);
+        org.junit.jupiter.api.Assertions.assertNotEquals(1, ((Number) rows.get(0).get("qn_id")).intValue(), "not the old row");
     }
 
+    /** Sanctioned fix F3 (RULEBOOK §0.1, D-003): self-notification reaches the (now valid) INSERT. */
     @Test
-    @Inherited("Self-notification reaches the same broken INSERT: 500, nothing queued")
     @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1095", why = "editor included when us_send_notifications_to_self = 1")
-    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:111-114", why = "admin subscriber: GetIdentity succeeds, so the failure is the INSERT itself")
-    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1183", why = "N''not sent'")
-    void selfNotificationAlsoFails() {
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1183", why = "N'not sent'")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1116-1148", why = "subject format")
+    void selfNotificationIsQueued() {
         seedBug();
         Db.exec("update users set us_email = N'admin@example.com', us_send_notifications_to_self = 1 where us_id = 1");
         Db.exec("insert into bug_subscriptions (bs_bug, bs_user) values (1, 1)");
         loginAdmin(web);
-        assertEquals(500, editShortDesc("self").status());
-        assertEquals(0L, Db.count("select count(*) from queued_notifications"));
+        java.sql.Timestamp before = S3_EditBugTest.dbNow();
+        Web.Page p = editShortDesc("self");
+        java.sql.Timestamp after = S3_EditBugTest.dbNow();
+        assertEquals(200, p.status());
+        assertQueuedRow(Db.one("select * from queued_notifications"), 1, "admin@example.com", "self", before, after);
     }
 
     @Test
@@ -117,12 +135,17 @@ class S8_NotificationQueueTest extends Scenario {
         assertQuietSuccess();
     }
 
+    /**
+     * Sanctioned fix F1 (RULEBOOK §0.1, D-003): a form post without the button click (the rendered
+     * {@code user_hit_submit} is still disabled, so it is not posted) is an autopostback and
+     * notifies nobody; the same form after the click saves and queues the notification.
+     */
     @Test
-    @Inherited("edit_bug only saves when user_hit_submit=1 arrives, but no element of that name is rendered; a plain form post saves nothing and notifies nobody")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:100,142-146", why = "did_user_hit_submit_button reads Request[\"user_hit_submit\"]")
-    @SourceRef(value = "src/BugTracker.Web/Scripts/Site/EditBug.ts:202-204", why = "script sets #user_hit_submit, which edit_bug.aspx never renders")
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx:236-270", why = "form fields: no user_hit_submit")
-    void plainFormPostNeitherSavesNorNotifies() {
+    @SourceRef(value = "src/BugTracker.Web/Scripts/Site/EditBug.ts:202-204", why = "script sets #user_hit_submit - the element the port renders")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:133-137", why = "no user_hit_submit: project autopostback only reloads users")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:1178-1183", why = "queue insert after a real save")
+    void formPostNeedsTheButtonClickToSaveAndNotify() {
         seedBug();
         Db.exec("update users set us_email = N'developer@example.com' where us_id = 2");
         Db.exec("insert into bug_subscriptions (bs_bug, bs_user) values (1, 2)");
@@ -133,6 +156,12 @@ class S8_NotificationQueueTest extends Scenario {
         assertEquals(200, p.status());
         assertEquals("notify me", Db.scalar("select bg_short_desc from bugs where bg_id = 1"));
         assertEquals(0L, Db.count("select count(*) from queued_notifications"));
+
+        Web.Page clicked = formAfterSubmitButtonClick(web.get("edit_bug.aspx?id=1"), "submit_button")
+                .set("short_desc", "saved by click").submit(null);
+        assertEquals(200, clicked.status());
+        assertEquals("saved by click", Db.scalar("select bg_short_desc from bugs where bg_id = 1"));
+        assertEquals(1L, Db.count("select count(*) from queued_notifications"));
     }
 
     // ------------------------------------------------------------------ notifications.aspx
@@ -243,6 +272,25 @@ class S8_NotificationQueueTest extends Scenario {
         assertEquals("Bug was updated.", Norm.textById(p.html(), "msg"));
         assertEquals("changed quietly", Db.scalar("select bg_short_desc from bugs where bg_id = 1"));
         assertEquals(0L, Db.count("select count(*) from queued_notifications"));
+    }
+
+    /**
+     * The row bug.cs:1180-1183 writes for one subscriber of bug 1 after a plain update by admin.
+     * qn_retries / qn_last_exception are not asserted (worker thread, see qualifyingSubscriberGetsQueuedNotification).
+     */
+    private static void assertQueuedRow(Map<String, Object> row, int user, String to, String shortDesc,
+            java.sql.Timestamp before, java.sql.Timestamp after) {
+        assertEquals(1, ((Number) row.get("qn_bug")).intValue());
+        assertEquals(user, ((Number) row.get("qn_user")).intValue());
+        assertEquals("not sent", row.get("qn_status"));
+        assertEquals(to, row.get("qn_to"));
+        assertEquals("dont_reply@example.com", row.get("qn_from"));
+        assertEquals("Bug:1 was updated - " + shortDesc + " (DO NOT EDIT THIS:1)", row.get("qn_subject"));
+        String body = (String) row.get("qn_body");
+        org.junit.jupiter.api.Assertions.assertTrue(
+                body.startsWith("<html><base href=\"http://127.0.0.1/btnet/\"/>"), "body starts with the base tag: " + body.substring(0, Math.min(80, body.length())));
+        org.junit.jupiter.api.Assertions.assertTrue(body.contains(shortDesc), "body is the printed bug");
+        S3_EditBugTest.between(before, after, row.get("qn_date_created"), "qn_date_created");
     }
 
     private static List<String> without(List<String> row, int col) {

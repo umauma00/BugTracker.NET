@@ -22,9 +22,9 @@
 ### S8 — Notification queue
 | # | Mutation in the port | Must fail |
 |---|---|---|
-| S8-M1 | "Fix" the queue insert so a row with status `not sent` is written and the edit returns 200 | `S8_NotificationQueueTest.qualifyingSubscriberMakesEditFailAndQueuesNothing`, `selfNotificationAlsoFails` |
-| S8-M2 | Run the delete of the older queued row separately (replacing it) | `S8_NotificationQueueTest.existingQueueRowIsNotReplaced` |
-| S8-M3 | Drop the `us_enable_notifications = 1` or the editor-exclusion condition from the subscriber query (the edit then 500s) | `S8_NotificationQueueTest.subscriberWithNotificationsDisabledGetsNothing`, `editorIsNotNotifiedByDefault` |
+| S8-M1 | **(inverted, D-003 / F3)** Reintroduce the `N''not sent'` syntax error, or skip the queue insert, so the edit 500s / nothing is queued | `S8_NotificationQueueTest.qualifyingSubscriberGetsQueuedNotification`, `selfNotificationIsQueued`, `existingQueueRowIsReplaced` |
+| S8-M2 | Keep the older queued row (skip the `delete ... where qn_bug = @bug and qn_to = @to`), or run the delete and insert as separate statements that leave two rows | `S8_NotificationQueueTest.existingQueueRowIsReplaced` |
+| S8-M3 | Drop the `us_enable_notifications = 1` or the editor-exclusion condition from the subscriber query (a row is then queued where none may be) | `S8_NotificationQueueTest.subscriberWithNotificationsDisabledGetsNothing`, `editorIsNotNotifiedByDefault` |
 | S8-M4 | `actn=delete` deletes every row regardless of status | `S8_NotificationQueueTest.deleteRemovesOnlyUnsent` |
 | S8-M5 | Fix the "Delete unsent notifications" link | `S8_NotificationQueueTest.renderedDeleteLinkDeletesNothing` |
 
@@ -32,8 +32,8 @@
 
 | ID | Mutation a port could plausibly make | Tests that must fail |
 |---|---|---|
-| S3-M1 | Save on any POST that has a submit button, and ignore `user_hit_submit` (the "fixed" Create button) | `S3_EditBugTest.browserPostWithoutUserHitSubmitSavesNothing` |
-| S3-M2 | Write the history row correctly (`Changed priority from low to high`) and return 200 instead of failing with the malformed `AddChange` SQL | `S3_EditBugTest.changingStatusAndPriorityUpdatesBugThenFailsOnHistory` |
+| S3-M1 | **(inverted, D-003 / F1)** (a) Save on any POST, ignoring `user_hit_submit`; (b) do not render `#user_hit_submit` or render it enabled; (c) drop/alter the inline `onclick` on `#submit_button`; (d) read only the form (not the query string) or only the first value | (a) `S3_EditBugTest.projectAutopostbackWithoutButtonClickSavesNothing`, `anyUserHitSubmitValueEqualToOneSaves`; (b)(c) `submitButtonClickCreatesBug`, `submitButtonClickUpdatesExistingBug` (+ `S8...formPostNeedsTheButtonClickToSaveAndNotify`); (d) `anyUserHitSubmitValueEqualToOneSaves` / every S8 edit |
+| S3-M2 | **(inverted, D-003 / F2)** Keep the malformed `AddChange` SQL (500), skip the history insert, or write another text/order (e.g. status before priority, `bp_comment_search` set) | `S3_EditBugTest.changingStatusAndPriorityUpdatesBugAndWritesHistory` |
 | S3-M3 | Store the comment raw, not HTML-decoded, or leave `bg_tags` NULL on update | `S3_EditBugTest.createBugRedirectsToItAndWritesRows`, `commentOnExistingBugAddsPost` |
 | S3-M4 | Mark a bug as seen only when it exists and is viewable (no `bug_user` row for id 0/999/forbidden) | `S3_EditBugTest.createBugRedirectsToItAndWritesRows`, `missingShortDescriptionIsRejected`, `noPermissionIsRefused`, `invalidAndUnknownIdsAreReported` |
 | S3-M5 | Let the admin role bypass project permissions, or default the new-bug status to 0 / project to the first project | `S3_EditBugTest.readOnlyPermissionShowsStaticFields`, `noPermissionIsRefused`, `newBugFormHasSourceDefaults` |
@@ -49,7 +49,8 @@
 
 ### S1 — login
 - **M-S1-1** Login redirect honours `returnUrl` (or any `url`, incl. absolute) instead of local `url` only → `S1_LoginTest.loginIgnoresReturnUrl`, `loginHonoursLocalUrlParameterOnly` fail.
-- **M-S1-2** "Fix" the admin rewrite (drop `update_user_password(1,"admin")` from the password check) → `failedAdminAttemptRewritesAdminPassword`, `seededNonAdminLoginFailsWithServerError` fail.
+- **M-S1-2** **(inverted, D-003 / F5)** Keep the admin rewrite (`update_user_password(1,"admin")` in the password check) → `loginAttemptsNeverRewriteAdminPassword`, `seededNonAdminLoginFailsWithServerError` fail (and `unknownUserGetsSameMessageAndDoesNotTouchAdmin` if the rewrite is reached for unknown users).
+- **M-S1-5** (new, F4) Leave the non-admin sign-in crashing, or sign in without the `ProjectAdmin`/`User` roles, or show `admin.aspx` to everyone → `nonAdminWithCorrectPasswordLogsInAndLandsOnBugs`, `plainUserSeesNoAdminMenuEntries`, `projectAdminSeesUsersEntryInsteadOfAdmin`, `userOfOrgWithoutSearchHasNoSearchMenu`, `createdNonAdminUserCanLogInWithChosenPassword` fail.
 - **M-S1-3** Lockout uses `>=` instead of `>` (or locks after the check, so a locked attempt still rewrites admin) → `tenFailuresDoNotLock` / `elevenFailuresLockTheAccount` fail.
 - **M-S1-4** Distinct messages for unknown/inactive user, or API returns 401 / a JSON body → `unknownUserGetsSameMessageAndDoesNotTouchAdmin`, `inactiveUserGetsSameMessageAndDoesNotTouchAdmin`, `apiLoginFailureReturns403Empty` fail.
 
@@ -60,10 +61,11 @@
 - **M-S6-4** `delete_user` deletes the users row but not `project_user_xref` rows, or deletes despite bug references → `deleteUserRemovesUserAndProjectRows`, `deleteUserReferencedByBugIsRefused` fail.
 - **M-S6-5** Admin pages authorise any authenticated user / skip auth on POST.
   - "skip auth on POST" → `anonymousAdminPagesRedirectToLogin`, `anonymousDeletePostDeletesNothing` fail.
-  - "authorise any authenticated user": unverifiable until non-admin login works (inherited defect). No non-admin can log in on the original: `GetIdentity` reads `dr["project_admin"]`, a column its query never selects (`Security.cs:117`, query :21-35), so the request fails with HTTP 500 (S1 `nonAdminWithCorrectPasswordFailsWithServerError`). No scenario can present an authenticated non-admin.
+  - "authorise any authenticated user" (testable since F4, D-003: non-admins can sign in) → `plainUserIsRefusedFromAdminPages`, `projectAdminReachesUsersAndCategoriesButNotAdminOnlyPages` fail.
 
 ### S9 — search
 - **M-S9-1** Description criterion built without escaping `%`/`_` (or with a bound parameter that still treats them as wildcards) → `likeEscapesSqlWildcards` fails.
 - **M-S9-2** Results ordered by description or ascending id → `descriptionSearchIsCaseInsensitiveNewestFirst`, `orLogicUnionsCriteria` fail.
 - **M-S9-3** `and_or` radio ignored (always AND) or `[not assigned]` mapped to `IS NULL` → `orLogicUnionsCriteria`, `listboxCriteriaWithAndLogic` fail.
+- **M-S9-5** (new, F4) Ignore `og_can_search` for non-admins (always show the form) or deny it for everyone → `searchPageDependsOnOrgSearchPermissionForNonAdmins` fails.
 - **M-S9-4** Date column rendered with time for noon timestamps / culture format → `noonTimestampIsShownAsDateOnly` fails.

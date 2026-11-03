@@ -66,6 +66,40 @@ class S9_SearchTest extends Scenario {
         assertFalse(Norm.text(p.html().text()).contains("returned by query"));
     }
 
+    /**
+     * Sanctioned fix F4 (RULEBOOK §0.1, D-003): a non-admin in an org with og_can_search=1 (org1
+     * default) signs in and gets the search form; a non-admin in an org with og_can_search=0 gets
+     * the refusal text. (Result contents for non-admins depend on further permission claims and are
+     * not judged.)
+     */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/search.aspx.cs:40-49", why = "Admin or CanSearch -> page; otherwise Response.Write('You are not allowed to use this page.') + Response.End")
+    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:74", why = "CanSearch claim = og_can_search == 1")
+    @SourceRef(value = "src/BugTracker.Web/setup.sql:90-108", why = "og_can_search default 1")
+    @SourceRef(value = "src/BugTracker.Web/search.aspx:217-335", why = "form fields like, and_or ...")
+    void searchPageDependsOnOrgSearchPermissionForNonAdmins() {
+        seedBugs();
+        insertLoginableUser("judge_can", 0, 1);
+        Db.exec("insert into orgs (og_name, og_can_search) values (N'judge nosearch', 0)");
+        int org = ((Number) Db.scalar("select og_id from orgs where og_name = N'judge nosearch'")).intValue();
+        insertLoginableUser("judge_cannot", 0, org);
+
+        Web can = newSession();
+        assertEquals("bugs.aspx", submitLogin(can, "judge_can", "admin").path());
+        Web.Page ok = can.get("search.aspx");
+        assertEquals(200, ok.status());
+        Form f = Form.containing(can, ok, "like");
+        assertEquals("and", f.get("and_or"));
+
+        Web cannot = newSession();
+        assertEquals("bugs.aspx", submitLogin(cannot, "judge_cannot", "admin").path());
+        Web.Page no = cannot.get("search.aspx");
+        assertEquals(200, no.status());
+        assertTrue(Norm.text(no.html().text()).contains("You are not allowed to use this page."), no.text());
+        assertTrue(no.html().select("[name]").stream().noneMatch(e -> Form.logicalName(e.attr("name")).equals("like")),
+                "no search form for an org without search permission");
+    }
+
     @Test
     @SourceRef(value = "src/BugTracker.Web/search.aspx.cs:312-327", why = "desc_clause: bg_short_desc like N'%...%' (DB collation: case-insensitive)")
     @SourceRef(value = "src/BugTracker.Web/search.aspx.cs:402-607", why = "built-in select (SearchSQL unset), order by bg_id desc")

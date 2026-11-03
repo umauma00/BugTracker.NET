@@ -1,6 +1,8 @@
 package judge.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,26 +44,64 @@ public abstract class Scenario {
     /**
      * Log in as admin/admin and assert it worked. Fixture, not a scenario.
      *
-     * <p>Up to two attempts, by design: every login attempt that reaches
-     * check_password_with_db first rewrites user 1's password to "admin" with a
-     * fresh salt (src/BugTracker.Web/Security/Authenticate.cs:215), but compares
-     * against the row read <i>before</i> that rewrite (:57-65). Whether the very
-     * first attempt on a fresh setup.sql database succeeds therefore depends on
-     * the seeded hash, which cannot be verified without running the original.
-     * The second attempt always compares against a hash of "admin" and must
-     * succeed. S1 pins this behavior explicitly; other scenarios only need a
-     * logged-in admin. One failed attempt is far below the lockout threshold
-     * (FailedLoginAttemptsAllowed, default 10 — Authenticate.cs:91,116), and the
-     * success clears the counter (:139-143).
+     * <p>One attempt, no priming. The original rewrote user 1's password to
+     * "admin" on every login attempt (Authenticate.cs:215), which is why this
+     * fixture used to retry; sanctioned fix F5 (RULEBOOK §0.1, D-003) removed
+     * that statement, so the fixture now relies on the seeded row alone:
+     * setup.sql:168 stores salt {@code PmafvZSWFYML3} and a hash that is
+     * {@code HashString("admin", "PmafvZSWFYML3")} (the acceptance vector in
+     * RULEBOOK §2 B7). The fixture therefore needs no database write and no
+     * hash computed by the judge (a judge-side PBKDF2 would have to reproduce
+     * .NET's lossy {@code Encoding.UTF8.GetString} exactly). If the first
+     * attempt fails, the port's password hash does not meet the acceptance
+     * vector, and every scenario fails loudly here instead of in a confusing
+     * place.
      */
     protected Web.Page loginAdmin(Web session) {
         Web.Page p = submitLogin(session, "admin", "admin");
-        if (p.path().equals("default.aspx") && p.redirects().isEmpty()) {
-            p = submitLogin(session, "admin", "admin");
-        }
         org.junit.jupiter.api.Assertions.assertFalse(p.path().equals("default.aspx") && p.redirects().isEmpty(),
-                "admin/admin login failed twice");
+                "admin/admin login failed: the seeded admin hash (setup.sql:168) must verify 'admin' - see RULEBOOK B7 acceptance vector");
         return p;
+    }
+
+    /**
+     * Fixture: insert a user whose password is "admin" by copying user 1's seeded
+     * {@code us_salt}/{@code us_password} (the hash does not depend on the username;
+     * with F5 user 1's row is never rewritten, so it is always the seed). Returns the
+     * new user's id. {@code usAdmin} 0/1; the user is active, in {@code org}, default
+     * query 1. The login cannot be tried before F4 (non-admin sign-in crashed).
+     */
+    protected static int insertLoginableUser(String username, int usAdmin, int org) {
+        Db.exec("insert into users (us_username, us_salt, us_password, us_admin, us_org, us_default_query) "
+                + "select ?, us_salt, us_password, ?, ?, 1 from users where us_id = 1", username, usAdmin, org);
+        return ((Number) Db.scalar("select us_id from users where us_username = ?", username)).intValue();
+    }
+
+    /**
+     * Simulates a click on the page's submit button, for sanctioned fix F1
+     * (RULEBOOK §0.1, D-003): asserts the form renders the hidden
+     * {@code user_hit_submit} field disabled with value 1, asserts the named submit button
+     * carries the exact inline {@code onclick} that enables it, then removes the
+     * {@code disabled} attribute (what that onclick does in a browser, before EditBug.js
+     * submits the form) and returns the form as the browser would now post it.
+     */
+    protected Form formAfterSubmitButtonClick(Web.Page p, String buttonId) {
+        org.jsoup.nodes.Document d = p.html();
+        d.outputSettings().prettyPrint(false);
+        org.jsoup.nodes.Element hidden = d.getElementById("user_hit_submit");
+        assertNotNull(hidden, "F1: form must render #user_hit_submit");
+        assertEquals("user_hit_submit", hidden.attr("name"));
+        assertEquals("hidden", hidden.attr("type").toLowerCase());
+        assertEquals("1", hidden.attr("value"));
+        assertTrue(hidden.hasAttr("disabled"), "F1: #user_hit_submit starts disabled");
+        org.jsoup.nodes.Element button = d.getElementById(buttonId);
+        assertNotNull(button, "#" + buttonId);
+        assertEquals("document.getElementById('user_hit_submit').disabled=false;", button.attr("onclick").trim(),
+                "F1: inline onclick on #" + buttonId);
+        hidden.removeAttr("disabled");
+        Web.Page patched = new Web.Page(p.status(), p.uri(), p.headers(),
+                d.outerHtml().getBytes(java.nio.charset.StandardCharsets.UTF_8), p.redirects());
+        return Form.containing(web, patched, "short_desc");
     }
 
     /**

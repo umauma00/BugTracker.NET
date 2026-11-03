@@ -28,12 +28,11 @@ import judge.core.Web;
  * S3 — create / edit a bug, add a comment (edit_bug.aspx). See judge/specs/S3.md.
  *
  * <p>Key reading: the save path only runs when the request carries
- * {@code user_hit_submit=1} (edit_bug.aspx.cs:100,142-146). No element with that
- * name or id exists anywhere in the original (edit_bug.aspx, EditBug.js only sets
- * {@code $("#user_hit_submit")}, which matches nothing), so a real browser POST is
- * treated as a project-dropdown autopostback and saves nothing. The save-path
- * tests therefore add the hidden field {@code user_hit_submit=1} to the rendered
- * form — exactly what the browser would post if the element existed.
+ * {@code user_hit_submit=1} (edit_bug.aspx.cs:100,142-146). The original renders no such
+ * element, so its browser POST never saved; sanctioned fix F1 (RULEBOOK §0.1, D-003)
+ * specifies the port renders a disabled hidden {@code user_hit_submit} that the submit
+ * button enables. Tests that are not about F1 still add the field by hand
+ * ({@link #bugForm}) - it is exactly what the browser posts after the click.
  */
 class S3_EditBugTest extends Scenario {
 
@@ -179,13 +178,56 @@ class S3_EditBugTest extends Scenario {
         assertEquals(1, Db.count("select count(*) from bug_user where bu_bug = 0 and bu_user = ?", id("admin")));
     }
 
+    /**
+     * Sanctioned fix F1 (RULEBOOK §0.1, D-003), part (b)+(c): clicking Create enables the
+     * hidden field, so the browser's POST carries user_hit_submit=1 and saves. The original
+     * rendered no such field (nothing was ever saved from a browser).
+     */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:100-119", why = "user_hit_submit=1 -> validate and do_insert")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:142-146", why = "did_user_hit_submit_button: Request[\"user_hit_submit\"] == \"1\"")
+    @SourceRef(value = "src/BugTracker.Web/Scripts/Site/EditBug.js:35-38,188-190", why = "button click disables the button and calls form.submit(); the intended #user_hit_submit element is the one the port renders")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:705", why = "after insert: Response.Redirect(edit_bug.aspx?id=<new id>)")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:187", why = "the new-bug button (#submit_button) is labelled Create")
+    void submitButtonClickCreatesBug() {
+        loginAdmin(web);
+        primeAspNetSession(web); // edit_bug.aspx.cs:32 ViewStateUserKey = Session.SessionID
+        Web.Page p = web.get("edit_bug.aspx?id=0");
+        Web.Page r = formAfterSubmitButtonClick(p, "submit_button").set("short_desc", "Saved by click")
+                .set("project", "1").set("comment", "").submit(null);
+
+        assertEquals(1, r.redirects().size(), "redirect to the new bug: " + r.redirects());
+        assertEquals("edit_bug.aspx", Norm.relPath(r.redirects().get(0)));
+        assertEquals("1", Norm.query(r.redirects().get(0), "id"));
+        assertEquals(200, r.status());
+        assertEquals("Saved by click", Db.scalar("select bg_short_desc from bugs where bg_id = 1"));
+        assertEquals(1, Db.count("select count(*) from bugs"));
+    }
+
+    /** Sanctioned fix F1 (RULEBOOK §0.1, D-003): the same click on an existing bug saves the comment. */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:100,142-146", why = "save path gated on user_hit_submit == 1")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:813-834", why = "insert_comment, msg 'Bug was updated.'")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:636-651", why = "HtmlDecode of plain-text comment")
+    void submitButtonClickUpdatesExistingBug() {
+        loginAdmin(web);
+        seedBug(1, "Seeded bug");
+        Web.Page p = web.get("edit_bug.aspx?id=1");
+        Web.Page r = formAfterSubmitButtonClick(p, "submit_button").set("comment", "via button").submit(null);
+        assertEquals(200, r.status());
+        assertEquals("Bug was updated.", Norm.textById(r.html(), "msg"));
+        assertEquals("via button", Db.scalar("select bp_comment from bug_posts where bp_bug = 1 and bp_type = 'comment'"));
+    }
+
+    /**
+     * Sanctioned fix F1 (RULEBOOK §0.1, D-003), part (a)+(c): a POST that does not click a
+     * button (the disabled field is not posted) is a project-dropdown autopostback and saves
+     * nothing - the old "browser never saves" test, narrowed to the part that is still true.
+     */
     @Test
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:100,133-137", why = "without user_hit_submit the POST is handled as project autopostback: load_user_dropdown only")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:142-146", why = "Request[\"user_hit_submit\"] == \"1\" is the only save trigger")
-    @SourceRef(value = "src/BugTracker.Web/Scripts/Site/EditBug.js:35-38,188-190", why = "button click disables the button and submits; user_hit_submit is never added (no such element)")
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx:239-270", why = "the form has no user_hit_submit field")
-    @Inherited("the Create/Update button as shipped never saves: no element named user_hit_submit exists, so every browser POST is treated as a project-dropdown autopostback")
-    void browserPostWithoutUserHitSubmitSavesNothing() {
+    void projectAutopostbackWithoutButtonClickSavesNothing() {
         loginAdmin(web);
         primeAspNetSession(web); // edit_bug.aspx.cs:32 ViewStateUserKey = Session.SessionID
         Web.Page p = web.get("edit_bug.aspx?id=0");
@@ -200,17 +242,45 @@ class S3_EditBugTest extends Scenario {
         assertEquals(0, Db.count("select count(*) from bug_user"), "get_bug_datarow not reached");
     }
 
+    /**
+     * Sanctioned fix F1 (RULEBOOK §0.1, D-003), part (a): "true iff ANY value of user_hit_submit
+     * in the query string or the form equals 1". A repeated parameter with values 0 and 1
+     * saves; 0 and 2 does not. (Request["x"] on the original joins repeated values as "0,1".)
+     */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:142-146", why = "intent: user hit submit when user_hit_submit == \"1\"; F1(a) widens to any repeated value")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:100-119", why = "save path")
+    void anyUserHitSubmitValueEqualToOneSaves() {
+        loginAdmin(web);
+        seedBug(1, "Seeded bug");
+        Web.Page p = web.get("edit_bug.aspx?id=1");
+        Web.Page no = bugFormWithUserHitSubmit(p, "0", "2").set("comment", "ignored").submit(null);
+        assertEquals(200, no.status());
+        assertEquals(0, Db.count("select count(*) from bug_posts"), "values 0 and 2: autopostback, nothing saved");
+        Web.Page yes = bugFormWithUserHitSubmit(web.get("edit_bug.aspx?id=1"), "0", "1").set("comment", "kept").submit(null);
+        assertEquals(200, yes.status());
+        assertEquals("kept", Db.scalar("select bp_comment from bug_posts where bp_type = 'comment'"));
+    }
+
     // ---------------------------------------------------------------- update
 
+    /**
+     * Sanctioned fix F2 (RULEBOOK §0.1, D-003): AddChange's INSERT gets its missing closing ")".
+     * Intent: one bug_posts row of type 'update' per changed field, text
+     * 'Changed <field> from <old> to <new>', user = editor, date = getdate().
+     * record_changes visits priority (:1817) before status (:1842), so priority's row has the lower bp_id.
+     */
     @Test
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1743-1748", why = "AddChange: values(@id, @us, getdate(), 'Changed ' + @field + ' from ' + @oldValue + ' to ' + @newValue, 'update') - the row it writes, minus the syntax error")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1813-1820", why = "priority: AddChange(\"priority\", text of prev value, new text); seeded priority 3 = low, form sets 1 = high")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1832-1845", why = "status: AddChange(\"status\", text of prev value, new text); seeded status 1 = new, form sets 2 = in progress")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:745-787", why = "update bugs runs first (own connection, autocommit), tags written as '' ")
     @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:794-800", why = "update happened -> record_changes()")
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1743-1756", why = "AddChange SQL lacks the closing ')' of values(...) -> SqlException")
-    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:1813-1820", why = "priority change is the first AddChange reached (desc/tags/project/org/category unchanged)")
-    @SourceRef(value = "src/BugTracker.Web/Global.asax.cs:19-24", why = "Application_Error only logs -> unhandled 500")
+    @SourceRef(value = "src/BugTracker.Web/edit_bug.aspx.cs:813-834", why = "empty comment: insert_comment writes nothing; msg 'Bug was updated.'")
+    @SourceRef(value = "src/BugTracker.Web/btnet/bug.cs:892-897", why = "insert_comment skips an empty comment")
+    @SourceRef(value = "src/BugTracker.Web/setup.sql:308-326", why = "bug_posts columns not named by AddChange keep NULL / default 0")
     @SourceRef(value = "src/BugTracker.Web/Web.config", why = "TrackBugHistory=1, so record_changes does not short-circuit")
-    @Inherited("changing any tracked field fails: the history insert is a SQL syntax error (missing ')'), after the bugs row was already updated; no 'update' post, no comment, HTTP 500")
-    void changingStatusAndPriorityUpdatesBugThenFailsOnHistory() {
+    void changingStatusAndPriorityUpdatesBugAndWritesHistory() {
         loginAdmin(web);
         int admin = id("admin");
         seedBug(1, "Seeded bug");
@@ -224,13 +294,25 @@ class S3_EditBugTest extends Scenario {
         Web.Page r = f.submit(null);
         Timestamp after = dbNow();
 
-        assertEquals(500, r.status(), "SqlException from AddChange is unhandled");
+        assertEquals(200, r.status());
+        assertEquals("Bug was updated.", Norm.textById(r.html(), "msg"));
         Map<String, Object> bug = Db.one("select * from bugs where bg_id = 1");
         expect(bug, "bg_short_desc", "Seeded bug", "bg_status", 2, "bg_priority", 1, "bg_project", 1, "bg_org", 1,
                 "bg_category", 1, "bg_assigned_to_user", 0, "bg_user_defined_attribute", 0, "bg_tags", "",
                 "bg_last_updated_user", admin, "bg_reported_user", admin, "bg_reported_date", SEED_DATE);
         between(before, after, bug.get("bg_last_updated_date"), "bg_last_updated_date");
-        assertEquals(0, Db.count("select count(*) from bug_posts"), "no history row: the insert is malformed");
+
+        List<Map<String, Object>> posts = Db.rows("select * from bug_posts order by bp_id");
+        assertEquals(2, posts.size(), "one history row per changed field, no comment row");
+        String[] text = {"Changed priority from low to high", "Changed status from new to in progress"};
+        for (int i = 0; i < 2; i++) {
+            Map<String, Object> post = posts.get(i);
+            expect(post, "bp_bug", 1, "bp_type", "update", "bp_user", admin, "bp_comment", text[i],
+                    "bp_comment_search", null, "bp_email_from", null, "bp_email_to", null, "bp_email_cc", null,
+                    "bp_file", null, "bp_size", null, "bp_content_type", null, "bp_parent", null,
+                    "bp_original_comment_id", null, "bp_hidden_from_external_users", 0);
+            between(before, after, post.get("bp_date"), "bp_date");
+        }
     }
 
     @Test
@@ -350,8 +432,8 @@ class S3_EditBugTest extends Scenario {
 
     /**
      * The bug form, optionally with {@code user_hit_submit=1} added as a hidden
-     * field (what the browser would post if the element EditBug.js writes to
-     * existed). Everything else is the form exactly as rendered.
+     * field (what the browser posts after the button click enabled the rendered
+     * field, F1). Everything else is the form exactly as rendered.
      */
     private Form bugForm(Web.Page p, boolean userHitSubmit) {
         if (!userHitSubmit) return Form.containing(web, p, "short_desc");
@@ -366,6 +448,26 @@ class S3_EditBugTest extends Scenario {
         }
         assertNotNull(form, "form with short_desc");
         form.appendElement("input").attr("type", "hidden").attr("name", "user_hit_submit").attr("value", "1");
+        Web.Page patched = new Web.Page(p.status(), p.uri(), p.headers(),
+                d.outerHtml().getBytes(StandardCharsets.UTF_8), p.redirects());
+        return Form.containing(web, patched, "short_desc");
+    }
+
+    /** The bug form with one hidden user_hit_submit input per given value (all posted). */
+    private Form bugFormWithUserHitSubmit(Web.Page p, String... values) {
+        Document d = p.html();
+        d.outputSettings().prettyPrint(false);
+        Element form = null;
+        outer:
+        for (Element f : d.select("form")) {
+            for (Element el : f.select("[name]")) {
+                if (Form.logicalName(el.attr("name")).equals("short_desc")) { form = f; break outer; }
+            }
+        }
+        assertNotNull(form, "form with short_desc");
+        for (String v : values) {
+            form.appendElement("input").attr("type", "hidden").attr("name", "user_hit_submit").attr("value", v);
+        }
         Web.Page patched = new Web.Page(p.status(), p.uri(), p.headers(),
                 d.outerHtml().getBytes(StandardCharsets.UTF_8), p.redirects());
         return Form.containing(web, patched, "short_desc");

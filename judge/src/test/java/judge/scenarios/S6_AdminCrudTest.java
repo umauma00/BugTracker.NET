@@ -76,6 +76,76 @@ class S6_AdminCrudTest extends Scenario {
         }
     }
 
+    /**
+     * Sanctioned fix F4 (RULEBOOK §0.1, D-003): a logged-in non-admin is refused the Admin-only
+     * pages with the same redirect an anonymous visitor gets (BasePage.OnPreInit runs
+     * {@code IsUserAuthorized}, which also requires every PageAuthorize role). Unblocks the
+     * "authorise any authenticated user" half of mutation M-S6-5.
+     */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/BasePage.cs:12-17,21-31", why = "authenticated but missing a required role -> same 302 default.aspx?returnUrl=UrlEncode(RawUrl)")
+    @SourceRef(value = "src/BugTracker.Web/Security/PageAuthorizeAttribute.cs:23-27", why = "roles.Any(IsInRole)")
+    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:111-125", why = "plain user: only role User (F4: no crash)")
+    @SourceRef(value = "src/BugTracker.Web/admin.aspx.cs:9", why = "Admin")
+    @SourceRef(value = "src/BugTracker.Web/users.aspx.cs:10", why = "Admin, ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/categories.aspx.cs:9", why = "Admin, ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/delete_user.aspx.cs:9", why = "Admin, ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:10", why = "Admin")
+    @SourceRef(value = "src/BugTracker.Web/edit_project.aspx.cs:11", why = "Admin")
+    @SourceRef(value = "src/BugTracker.Web/edit_category.aspx.cs:9", why = "Admin")
+    @SourceRef(value = "src/BugTracker.Web/projects.aspx.cs:9", why = "Admin")
+    @SourceRef(value = "src/BugTracker.Web/delete_user.aspx.cs:42-57", why = "the delete a refused POST must not reach")
+    void plainUserIsRefusedFromAdminPages() {
+        Db.exec("insert into users (us_username, us_salt, us_password, us_admin, us_org, us_default_query) "
+                + "select N'judge_plain', us_salt, us_password, 0, 1, 1 from users where us_id = 1");
+        Web s = newSession();
+        assertEquals("bugs.aspx", submitLogin(s, "judge_plain", "admin").path());
+        String base = JudgeConfig.baseUrl().getPath();
+        for (String page : new String[] {"admin.aspx", "users.aspx", "edit_user.aspx?id=2", "delete_user.aspx?id=2",
+                "edit_project.aspx", "projects.aspx", "edit_category.aspx", "categories.aspx"}) {
+            Web.Page p = s.getNoFollow(page);
+            assertEquals(302, p.status(), page);
+            URI loc = p.uri().resolve(p.header("Location").orElseThrow());
+            assertEquals("default.aspx", Norm.relPath(loc), page);
+            assertEquals(base + page, Norm.query(loc, "returnUrl"), page);
+        }
+        Web.Page post = s.postForm(s.resolve("delete_user.aspx?id=7"), List.of(Map.entry("row_id", "7")));
+        assertFalse(post.redirects().isEmpty(), "must be redirected");
+        assertEquals("default.aspx", Norm.relPath(post.redirects().get(0)));
+        assertEquals(SEED_USERS + 1, Db.count("select count(1) from users"));
+        assertEquals(2, Db.count("select count(1) from project_user_xref where pu_user = 7"));
+    }
+
+    /** Sanctioned fix F4 (RULEBOOK §0.1, D-003): the ProjectAdmin role opens exactly the Admin+ProjectAdmin pages. */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:117-120", why = "project_admin count > 0 -> role ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/users.aspx.cs:10", why = "Admin, ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/categories.aspx.cs:9", why = "Admin, ProjectAdmin")
+    @SourceRef(value = "src/BugTracker.Web/admin.aspx.cs:9", why = "Admin only")
+    @SourceRef(value = "src/BugTracker.Web/projects.aspx.cs:9", why = "Admin only")
+    @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:10", why = "Admin only")
+    @SourceRef(value = "src/BugTracker.Web/setup.sql:413-422", why = "project_user_xref.pu_admin")
+    void projectAdminReachesUsersAndCategoriesButNotAdminOnlyPages() {
+        Db.exec("insert into users (us_username, us_salt, us_password, us_admin, us_org, us_default_query) "
+                + "select N'judge_pa', us_salt, us_password, 0, 1, 1 from users where us_id = 1");
+        int id = ((Number) Db.scalar("select us_id from users where us_username = N'judge_pa'")).intValue();
+        Db.exec("insert into project_user_xref (pu_project, pu_user, pu_permission_level, pu_admin) values (1, ?, 2, 1)", id);
+        Web s = newSession();
+        assertEquals("bugs.aspx", submitLogin(s, "judge_pa", "admin").path());
+        for (String page : new String[] {"users.aspx", "categories.aspx"}) {
+            Web.Page p = s.getNoFollow(page);
+            assertEquals(200, p.status(), page);
+        }
+        String base = JudgeConfig.baseUrl().getPath();
+        for (String page : new String[] {"admin.aspx", "projects.aspx", "edit_user.aspx?id=2", "edit_category.aspx"}) {
+            Web.Page p = s.getNoFollow(page);
+            assertEquals(302, p.status(), page);
+            URI loc = p.uri().resolve(p.header("Location").orElseThrow());
+            assertEquals("default.aspx", Norm.relPath(loc), page);
+            assertEquals(base + page, Norm.query(loc, "returnUrl"), page);
+        }
+    }
+
     @Test
     @SourceRef(value = "src/BugTracker.Web/BasePage.cs:12-17", why = "redirect happens in OnPreInit, before Page_Load's delete")
     @SourceRef(value = "src/BugTracker.Web/delete_user.aspx.cs:42-57", why = "the delete itself")
@@ -195,6 +265,29 @@ class S6_AdminCrudTest extends Scenario {
         Web.Page bad = submitLogin(s, "judgeadm", "Secret98");
         assertEquals("default.aspx", bad.path());
         Web.Page ok = submitLogin(s, "judgeadm", "Secret99");
+        assertEquals("bugs.aspx", ok.path());
+        assertEquals(200, ok.status());
+    }
+
+    /** Sanctioned fix F4 (RULEBOOK §0.1, D-003): a user created in the UI without admin can sign in with the chosen password. */
+    @Test
+    @SourceRef(value = "src/BugTracker.Web/edit_user.aspx.cs:594", why = "update_user_password(id, pw)")
+    @SourceRef(value = "src/BugTracker.Web/Security/Authenticate.cs:213-223", why = "login compares HashString(pw, us_salt) with us_password")
+    @SourceRef(value = "src/BugTracker.Web/Security/Security.cs:111-121", why = "non-admin sign-in succeeds (F4)")
+    @SourceRef(value = "src/BugTracker.Web/btnet/util.cs:1097-1108", why = "lands on bugs.aspx")
+    void createdNonAdminUserCanLogInWithChosenPassword() {
+        loginAdmin(web);
+        primeAspNetSession(web);
+        Form f = Form.containing(web, web.get("edit_user.aspx"), "username");
+        f.set("username", "judgeusr").set("pw", "Secret97").set("confirm_pw", "Secret97")
+                .set("org", "1").set("query", "1").set("signature", "");
+        f.submit("sub");
+        assertNum(0, Db.scalar("select us_admin from users where us_username = 'judgeusr'"));
+
+        Web s = newSession();
+        Web.Page bad = submitLogin(s, "judgeusr", "Secret98");
+        assertEquals("default.aspx", bad.path());
+        Web.Page ok = submitLogin(s, "judgeusr", "Secret97");
         assertEquals("bugs.aspx", ok.path());
         assertEquals(200, ok.status());
     }
