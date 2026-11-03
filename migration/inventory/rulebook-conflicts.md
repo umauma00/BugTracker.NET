@@ -42,3 +42,8 @@ Applied at the 02 gate under the standing mandate (PROGRESS.md), recorded in RUL
 - C27 `version_control.cs:470` .NET `IndexOf(str, -1)` throws ArgumentOutOfRangeException, Java `indexOf` clamps. Amend: `Strings.IndexOf(s, v, start)` runtime helper that throws `ArgumentOutOfRangeException` (runtime class) for start<0 or start>length.
 - C28 UNKNOWN `BasePage.cs:30` — nested `Logic` class signature unspecified → decision: `PageAuthorizeAttribute.Logic(String... roles)` with `boolean OnAuthorize(ClaimsPrincipal user)`.
 - C29 UNKNOWN `BugSearch.cs:55` — runtime `ElasticClient.Search(String index, String jsonBody)` returns `SearchResponse` with `List<Hit>{ String Id; double Score; Map<String,Object> Source }`; request body fixed by §2A.
+
+## From classifier (18 added sites)
+- C30 (gap) bare `catch { }` — Amend: `catch (Throwable t)`; a bare catch that rethrows → `throw t;` (precise rethrow); bare catch must not swallow `ResponseEndException` (rethrow it first, cf. C7).
+- C31 = C20 `SortedDictionary` comparer — `tags.cs:108`: keys are tag strings → use `Strings.CULTURE_COMPARER` (en-US, case-insensitive-first like .NET `StringComparer.CurrentCulture`), not ordinal.
+- C32 (UNKNOWN → decided) `Util.context` static HttpContext set at `Global.asax.cs:46`; `Util.context.Application[...]` at `MainMenu.ascx:4,15`, `util.cs:918,964` — Amend: `Util.context.Application` → `ApplicationState.get()` (runtime singleton available from startup, independent of any request); `Util.context` itself kept only for `MapPath` via `AppPaths`.
