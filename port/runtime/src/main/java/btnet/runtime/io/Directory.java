@@ -126,6 +126,9 @@ public final class Directory {
 
     static Pattern wildcard(String pattern) {
         String pat = pattern;
+        if (pat.equals("*.*") || pat.equals("*")) {
+            return Pattern.compile(".*", Pattern.DOTALL);
+        }
         boolean extQuirk = false;
         int dot = pat.lastIndexOf('.');
         if (pat.startsWith("*") && dot >= 0 && pat.length() - dot - 1 == 3

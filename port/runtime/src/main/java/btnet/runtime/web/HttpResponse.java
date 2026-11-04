@@ -527,7 +527,7 @@ public class HttpResponse {
         if (cookies != null) {
             for (HttpCookie c : cookies) res.addHeader("Set-Cookie", c.toSetCookieHeader());
         }
-        res.setContentLength(headRequest ? 0 : bytes.length);
+        res.setContentLength(bytes.length);
         if (!headRequest && bytes.length > 0) {
             try {
                 OutputStream o = res.getOutputStream();

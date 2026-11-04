@@ -91,7 +91,8 @@ final class Html {
 
     /** .NET {@code Util.MergeScript}: first script, a {@code ;} if it does not end with one, then the second. */
     static String mergeScript(String first, String second) {
-        if (first == null || first.isEmpty()) return second;
+        if (first == null || first.isEmpty()) return second == null ? "" : second;
+        if (second == null || second.isEmpty()) return first;
         return first.endsWith(";") ? first + second : first + ";" + second;
     }
 
