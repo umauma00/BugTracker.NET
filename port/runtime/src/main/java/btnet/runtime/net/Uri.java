@@ -57,7 +57,7 @@ public final class Uri {
      */
     public Uri(String uriString) {
         if (uriString == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: uriString");
+            throw new ArgumentNullException("uriString");
         }
         this.originalString = uriString;
         String s = trimWhite(uriString);
@@ -229,7 +229,7 @@ public final class Uri {
      */
     public static String EscapeDataString(String stringToEscape) {
         if (stringToEscape == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: stringToEscape");
+            throw new ArgumentNullException("stringToEscape");
         }
         if (stringToEscape.isEmpty()) {
             return "";
@@ -257,7 +257,7 @@ public final class Uri {
     /** .NET {@code Uri.UnescapeDataString}: decodes valid UTF-8 escapes, keeps the rest. */
     public static String UnescapeDataString(String stringToUnescape) {
         if (stringToUnescape == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: stringToUnescape");
+            throw new ArgumentNullException("stringToUnescape");
         }
         return unescape(stringToUnescape, "");
     }
@@ -265,7 +265,7 @@ public final class Uri {
     /** .NET {@code Uri.EscapeUriString}: escapes characters not legal anywhere in a URI. */
     public static String EscapeUriString(String stringToEscape) {
         if (stringToEscape == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: stringToEscape");
+            throw new ArgumentNullException("stringToEscape");
         }
         if (stringToEscape.length() >= MAX_URI_BUFFER_SIZE) {
             throw new UriFormatException("Invalid URI: The Uri string is too long.");

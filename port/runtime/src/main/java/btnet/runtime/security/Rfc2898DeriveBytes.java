@@ -62,7 +62,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
     /** .NET {@code Rfc2898DeriveBytes(string password, int saltSize, int iterations)}. */
     public Rfc2898DeriveBytes(String password, int saltSize, int iterations) {
         if (saltSize < 0) {
-            throw new ArgumentOutOfRangeException("Non-negative number required.\r\nParameter name: saltSize");
+            throw new ArgumentOutOfRangeException("saltSize", "Non-negative number required.");
         }
         byte[] s = new byte[saltSize];
         new SecureRandom().nextBytes(s);
@@ -75,7 +75,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
     /** .NET {@code Rfc2898DeriveBytes(byte[] password, byte[] salt, int iterations)}. */
     public Rfc2898DeriveBytes(byte[] password, byte[] salt, int iterations) {
         if (password == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: password");
+            throw new ArgumentNullException("password");
         }
         this.password = password.clone();
         Salt(salt);
@@ -91,7 +91,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
     /** .NET {@code Salt} setter: null → {@code ArgumentNullException}; under 8 bytes → {@code ArgumentException}. */
     public void Salt(byte[] value) {
         if (value == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: value");
+            throw new ArgumentNullException("value");
         }
         if (value.length < 8) {
             throw new ArgumentException("Salt is not at least eight bytes.");
@@ -110,7 +110,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
     /** .NET {@code IterationCount} setter: ≤ 0 → {@code ArgumentOutOfRangeException}. */
     public void IterationCount(int value) {
         if (value <= 0) {
-            throw new ArgumentOutOfRangeException("Positive number required.\r\nParameter name: value");
+            throw new ArgumentOutOfRangeException("value", "Positive number required.");
         }
         this.iterations = value;
         if (hmac != null) {
@@ -124,7 +124,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
      */
     public byte[] GetBytes(int cb) {
         if (cb <= 0) {
-            throw new ArgumentOutOfRangeException("Positive number required.\r\nParameter name: cb");
+            throw new ArgumentOutOfRangeException("cb", "Positive number required.");
         }
         byte[] result = new byte[cb];
         int offset = 0;
@@ -208,7 +208,7 @@ public class Rfc2898DeriveBytes implements AutoCloseable {
 
     private static byte[] utf8(String s) {
         if (s == null) {
-            throw new ArgumentNullException("String reference not set to an instance of a String.\r\nParameter name: s");
+            throw new ArgumentNullException("s", "String reference not set to an instance of a String.");
         }
         CharsetEncoder enc = StandardCharsets.UTF_8.newEncoder()
                 .onMalformedInput(CodingErrorAction.REPLACE)

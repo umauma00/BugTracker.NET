@@ -109,6 +109,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain btnetSecurityFilterChain(HttpSecurity http) throws Exception {
         CookieOptions(); // run Startup at boot, as OWIN does
+        installHooks();
         RequestMatcher apiLogin = r -> pathOf(r).equals("/api/login") || pathOf(r).startsWith("/api/login/");
         RequestMatcher api = r -> pathOf(r).equals("/api") || pathOf(r).startsWith("/api/");
         http
@@ -128,6 +129,22 @@ public class SecurityConfig {
                         .authenticationEntryPoint(katanaEntryPoint())
                         .accessDeniedHandler((req, res, ex) -> katanaEntryPoint().commence(req, res, null)));
         return http.build();
+    }
+
+    /**
+     * Installs the runtime web hooks: {@code Request.GetOwinContext()} →
+     * {@link IOwinContext#of}, and the request principal → {@link ClaimsPrincipal#Current()}
+     * (anonymous = {@code GenericIdentity("")}, B7). Idempotent.
+     */
+    public static void installHooks() {
+        btnet.runtime.web.HttpRequest.OwinContextFactory = r -> IOwinContext.of(r.servletRequest(), currentResponse());
+        btnet.runtime.web.HttpContext.PrincipalResolver = ctx -> ClaimsPrincipal.Current();
+    }
+
+    private static HttpServletResponse currentResponse() {
+        org.springframework.web.context.request.RequestAttributes ra =
+                org.springframework.web.context.request.RequestContextHolder.getRequestAttributes();
+        return ra instanceof org.springframework.web.context.request.ServletRequestAttributes sra ? sra.getResponse() : null;
     }
 
     /** The Katana 3.0.0 {@code ApplyRedirect} behaviour for an unauthenticated API call. */

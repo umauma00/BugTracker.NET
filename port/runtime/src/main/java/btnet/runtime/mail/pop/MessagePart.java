@@ -217,7 +217,7 @@ public class MessagePart {
     /** OpenPop {@code GetBodyAsText()} (see the class comment); a multipart part → {@code ArgumentNullException}. */
     public String GetBodyAsText() {
         if (body == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: bytes");
+            throw new ArgumentNullException("bytes");
         }
         String cs = contentType.CharSet();
         if (cs == null || cs.isEmpty() || cs.equalsIgnoreCase("us-ascii") || cs.equalsIgnoreCase("ascii")) {

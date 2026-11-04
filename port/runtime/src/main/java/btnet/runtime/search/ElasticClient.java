@@ -63,7 +63,7 @@ public class ElasticClient {
 
     public ElasticClient(String node, String defaultIndex) {
         if (node == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: uri");
+            throw new ArgumentNullException("uri");
         }
         String b = node;
         while (b.endsWith("/")) {

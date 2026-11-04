@@ -43,7 +43,7 @@ public class MailAddress {
      */
     public MailAddress(String address, String displayName, Encoding displayNameEncoding) {
         if (address == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: address");
+            throw new ArgumentNullException("address");
         }
         if (address.isEmpty()) {
             throw new ArgumentException("The parameter 'address' cannot be an empty string.", "address");

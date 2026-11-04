@@ -31,7 +31,7 @@ public class ClaimsPrincipal implements IPrincipal, Serializable {
 
     public ClaimsPrincipal(ClaimsIdentity identity) {
         if (identity == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: identity");
+            throw new ArgumentNullException("identity");
         }
         identities.add(identity);
     }
@@ -39,7 +39,7 @@ public class ClaimsPrincipal implements IPrincipal, Serializable {
     /** .NET {@code ClaimsPrincipal(IIdentity)}: a non-claims identity is wrapped by name/type. */
     public ClaimsPrincipal(IIdentity identity) {
         if (identity == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: identity");
+            throw new ArgumentNullException("identity");
         }
         if (identity instanceof ClaimsIdentity ci) {
             identities.add(ci);
@@ -54,7 +54,7 @@ public class ClaimsPrincipal implements IPrincipal, Serializable {
 
     public ClaimsPrincipal(Iterable<ClaimsIdentity> ids) {
         if (ids == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: identities");
+            throw new ArgumentNullException("identities");
         }
         for (ClaimsIdentity i : ids) {
             identities.add(i);
@@ -88,7 +88,7 @@ public class ClaimsPrincipal implements IPrincipal, Serializable {
     /** .NET {@code AddIdentity}. */
     public void AddIdentity(ClaimsIdentity identity) {
         if (identity == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: identity");
+            throw new ArgumentNullException("identity");
         }
         identities.add(identity);
     }

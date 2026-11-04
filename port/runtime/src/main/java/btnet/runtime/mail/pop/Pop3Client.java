@@ -74,10 +74,10 @@ public class Pop3Client implements AutoCloseable {
     public void Connect(String hostname, int port, boolean useSsl) {
         assertNotDisposed();
         if (hostname == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: hostname");
+            throw new ArgumentNullException("hostname");
         }
         if (port > 65535 || port < 0) {
-            throw new ArgumentOutOfRangeException("Specified argument was out of the range of valid values.\r\nParameter name: port");
+            throw new ArgumentOutOfRangeException("port", "Specified argument was out of the range of valid values.");
         }
         if (state != State.DISCONNECTED) {
             throw new InvalidUseException("You cannot ask to connect to a POP3 server, when we are already connected to one. Disconnect first.");
@@ -121,10 +121,10 @@ public class Pop3Client implements AutoCloseable {
     public void Authenticate(String username, String password) {
         assertNotDisposed();
         if (username == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: username");
+            throw new ArgumentNullException("username");
         }
         if (password == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: password");
+            throw new ArgumentNullException("password");
         }
         if (state != State.AUTHORIZATION) {
             throw new InvalidUseException("You have to be connected and not authorized when trying to authorize yourself");

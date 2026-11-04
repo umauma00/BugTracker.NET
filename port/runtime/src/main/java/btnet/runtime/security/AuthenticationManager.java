@@ -37,7 +37,7 @@ public class AuthenticationManager {
     /** {@code Authentication.SignIn(params ClaimsIdentity[])}: stores the identities as the session's principal. */
     public void SignIn(ClaimsIdentity... identities) {
         if (identities == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: identities");
+            throw new ArgumentNullException("identities");
         }
         ClaimsPrincipal principal = new ClaimsPrincipal(Arrays.asList(identities));
         SecurityContext ctx = SecurityContextHolder.createEmptyContext();

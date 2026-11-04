@@ -40,7 +40,7 @@ public class Message {
     /** OpenPop {@code Message(byte[] rawMessageContent)}. */
     public Message(byte[] rawMessageContent) {
         if (rawMessageContent == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: rawMessageContent");
+            throw new ArgumentNullException("rawMessageContent");
         }
         this.rawMessage = rawMessageContent.clone();
         try {

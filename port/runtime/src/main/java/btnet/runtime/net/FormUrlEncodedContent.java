@@ -23,7 +23,7 @@ public final class FormUrlEncodedContent {
      */
     public static String encode(Map<String, String> nameValueCollection) {
         if (nameValueCollection == null) {
-            throw new btnet.runtime.ArgumentNullException("Value cannot be null.\r\nParameter name: nameValueCollection");
+            throw new btnet.runtime.ArgumentNullException("nameValueCollection");
         }
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> e : nameValueCollection.entrySet()) {

@@ -20,7 +20,7 @@ public class IAppBuilder {
     /** {@code app.UseCookieAuthentication(options)}: records {@code options}; returns this. */
     public IAppBuilder UseCookieAuthentication(CookieAuthenticationOptions options) {
         if (options == null) {
-            throw new btnet.runtime.ArgumentNullException("Value cannot be null.\r\nParameter name: options");
+            throw new btnet.runtime.ArgumentNullException("options");
         }
         cookieOptions.add(options);
         return this;

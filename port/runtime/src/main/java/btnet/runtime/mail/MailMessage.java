@@ -58,10 +58,10 @@ public class MailMessage implements AutoCloseable {
     /** .NET {@code MailMessage(string from, string to)}. */
     public MailMessage(String from, String to) {
         if (from == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: from");
+            throw new ArgumentNullException("from");
         }
         if (to == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: to");
+            throw new ArgumentNullException("to");
         }
         this.from = new MailAddress(from);
         this.to.Add(to);
@@ -77,10 +77,10 @@ public class MailMessage implements AutoCloseable {
     /** .NET {@code MailMessage(MailAddress from, MailAddress to)}. */
     public MailMessage(MailAddress from, MailAddress to) {
         if (from == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: from");
+            throw new ArgumentNullException("from");
         }
         if (to == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: to");
+            throw new ArgumentNullException("to");
         }
         this.from = from;
         this.to.Add(to);
@@ -90,7 +90,7 @@ public class MailMessage implements AutoCloseable {
 
     public void From(MailAddress value) {
         if (value == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: value");
+            throw new ArgumentNullException("value");
         }
         this.from = value;
     }
@@ -265,7 +265,7 @@ public class MailMessage implements AutoCloseable {
         /** .NET {@code Add(MailAddress)}; null → {@code ArgumentNullException}. */
         public void Add(MailAddress item) {
             if (item == null) {
-                throw new ArgumentNullException("Value cannot be null.\r\nParameter name: item");
+                throw new ArgumentNullException("item");
             }
             add(item);
         }
@@ -277,7 +277,7 @@ public class MailMessage implements AutoCloseable {
          */
         public void Add(String addresses) {
             if (addresses == null) {
-                throw new ArgumentNullException("Value cannot be null.\r\nParameter name: addresses");
+                throw new ArgumentNullException("addresses");
             }
             if (addresses.isEmpty()) {
                 throw new btnet.runtime.ArgumentException("The parameter 'addresses' cannot be an empty string.", "addresses");
@@ -334,7 +334,7 @@ public class MailMessage implements AutoCloseable {
         /** .NET {@code Add(Attachment)}; null → {@code ArgumentNullException}. */
         public void Add(Attachment item) {
             if (item == null) {
-                throw new ArgumentNullException("Value cannot be null.\r\nParameter name: item");
+                throw new ArgumentNullException("item");
             }
             add(item);
         }
@@ -351,7 +351,7 @@ public class MailMessage implements AutoCloseable {
         /** .NET {@code Add(name, value)}: appends (a second value for a name is kept). */
         public void Add(String name, String value) {
             if (name == null) {
-                throw new ArgumentNullException("Value cannot be null.\r\nParameter name: name");
+                throw new ArgumentNullException("name");
             }
             entries.add(Map.entry(name, value == null ? "" : value));
         }

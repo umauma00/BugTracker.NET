@@ -245,7 +245,7 @@ public class SmtpClient implements AutoCloseable {
 
     public void Host(String value) {
         if (value == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: value");
+            throw new ArgumentNullException("value");
         }
         if (value.isEmpty()) {
             throw new btnet.runtime.ArgumentException("The parameter 'value' cannot be an empty string.", "value");
@@ -257,7 +257,7 @@ public class SmtpClient implements AutoCloseable {
 
     public void Port(int value) {
         if (value <= 0) {
-            throw new ArgumentOutOfRangeException("Specified argument was out of the range of valid values.\r\nParameter name: value");
+            throw new ArgumentOutOfRangeException("value", "Specified argument was out of the range of valid values.");
         }
         this.port = value;
     }
@@ -278,7 +278,7 @@ public class SmtpClient implements AutoCloseable {
 
     public void Timeout(int value) {
         if (value < 0) {
-            throw new ArgumentOutOfRangeException("Specified argument was out of the range of valid values.\r\nParameter name: value");
+            throw new ArgumentOutOfRangeException("value", "Specified argument was out of the range of valid values.");
         }
         this.timeout = value;
     }
@@ -304,7 +304,7 @@ public class SmtpClient implements AutoCloseable {
             throw new btnet.runtime.DotNetException("Cannot access a disposed object.\r\nObject name: 'System.Net.Mail.SmtpClient'.");
         }
         if (message == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: message");
+            throw new ArgumentNullException("message");
         }
         if (message.From() == null) {
             MailSettings s = Settings();

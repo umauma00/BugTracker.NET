@@ -62,7 +62,7 @@ public class ClaimsIdentity implements IIdentity, Serializable {
     /** .NET {@code AddClaim}; null → {@code ArgumentNullException}. */
     public void AddClaim(Claim claim) {
         if (claim == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: claim");
+            throw new ArgumentNullException("claim");
         }
         claims.add(claim);
     }
@@ -70,7 +70,7 @@ public class ClaimsIdentity implements IIdentity, Serializable {
     /** .NET {@code AddClaims}. */
     public void AddClaims(Iterable<Claim> cs) {
         if (cs == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: claims");
+            throw new ArgumentNullException("claims");
         }
         for (Claim c : cs) {
             if (c != null) {
@@ -87,7 +87,7 @@ public class ClaimsIdentity implements IIdentity, Serializable {
     /** .NET {@code FindFirst(type)}: first claim (insertion order) whose type matches ignoring case, else null. */
     public Claim FindFirst(String type) {
         if (type == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: type");
+            throw new ArgumentNullException("type");
         }
         for (Claim c : claims) {
             if (c.Type().equalsIgnoreCase(type)) {
@@ -110,7 +110,7 @@ public class ClaimsIdentity implements IIdentity, Serializable {
     /** .NET {@code FindAll(type)}. */
     public List<Claim> FindAll(String type) {
         if (type == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: type");
+            throw new ArgumentNullException("type");
         }
         List<Claim> r = new ArrayList<>();
         for (Claim c : claims) {
@@ -124,10 +124,10 @@ public class ClaimsIdentity implements IIdentity, Serializable {
     /** .NET {@code HasClaim(type, value)}: any claim with matching type (ignore case) and value (ordinal). */
     public boolean HasClaim(String type, String value) {
         if (type == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: type");
+            throw new ArgumentNullException("type");
         }
         if (value == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: value");
+            throw new ArgumentNullException("value");
         }
         for (Claim c : claims) {
             if (c.Type().equalsIgnoreCase(type) && c.Value().equals(value)) {

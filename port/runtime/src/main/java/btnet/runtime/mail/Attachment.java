@@ -32,7 +32,7 @@ public class Attachment implements AutoCloseable {
     /** .NET {@code Attachment(string fileName, string mediaType)}. */
     public Attachment(String fileName, String mediaType) {
         if (fileName == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: fileName");
+            throw new ArgumentNullException("fileName");
         }
         String p = fileName.replace('\\', '/');
         Path path = Paths.get(p);

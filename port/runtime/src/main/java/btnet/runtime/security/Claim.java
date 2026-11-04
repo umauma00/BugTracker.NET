@@ -24,10 +24,10 @@ public final class Claim implements Serializable {
     /** .NET {@code Claim(type, value, valueType, issuer)}. */
     public Claim(String type, String value, String valueType, String issuer) {
         if (type == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: type");
+            throw new ArgumentNullException("type");
         }
         if (value == null) {
-            throw new ArgumentNullException("Value cannot be null.\r\nParameter name: value");
+            throw new ArgumentNullException("value");
         }
         this.type = type;
         this.value = value;
