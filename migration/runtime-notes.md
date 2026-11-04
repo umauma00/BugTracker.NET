@@ -25,3 +25,11 @@
 - btnet.runtime 50 classes, btnet.runtime.io 13 classes, 8 test files; not compiled.
 - Riskiest test: XmlTextReader empty-element detection via StAX char offset (IoTest).
 - Added where §3 silent: Strings.PadLeft/PadRight, IsNullOrWhiteSpace, Equals/StartsWith/EndsWith(s,v,StringComparison), Compare, 4-arg IndexOf, Format(CultureInfo,…); Match.Groups() → Match.GroupCollection (get(int)/get(String)); MatchEvaluator.Invoke; DateTimes.ParseExact + DateTimeStyles_* constants, TryParse, fromTicks, MinValue/MaxValue; Convert.ToSingle/ToDouble/ToInt16/ToChar/ChangeType/ToByte(short 0–255); Int32/Decimal.TryParse; Environment.Version() "4.0.30319.42000", MachineName(); Encoding charset()/GetEncoding/ASCII/Unicode; AppPaths.SetWebRoot/WebRoot; Stream bridges; Exceptions.wrap(InterruptedException) → DotNetException.
+
+## From web author (btnet.runtime.web, 2026-11-04)
+- 46 classes + 2 test classes (HttpUtilityTest, WebSemanticsTest); not compiled.
+- Page follows the web.ui contract: roots = master (first) + page `control(...)` fields; LoadViewStateTree → LoadPostDataTree → (Page_Loads) → RaisePostBackEventTree → SaveViewStateTree → ViewStateCodec; model vars `page`, `master`, `viewState`. Server-form id: overridable `Page.ServerFormClientID(HtmlForm)` = `aspnetForm` on master pages, else null (declared ID / ctl00); bugs.aspx (ClientIDMode=Static) must override it to return `form.ID()`.
+- UserControl extends Control<UserControl>, uses Control.control(c); no IsNamingContainer override. MasterPage = UserControl with ID `ctl00`.
+- RequestContextFilter (no-arg) also implements ApplicationListener<ApplicationReadyEvent>: applies `btnet.webroot` and runs HttpApplication.startUp() (Global via reflection `btnet.pages.Global`); first request is a fallback.
+- Webroot: HttpServerUtility.WebRoot() delegates to AppPaths.WebRoot().
+- Invented: HttpCookieCollection, HttpFileCollection, HttpResponseException, HttpStatusCode, IHttpActionResult (extends ResponseEntity<Object>), IHtmlString/HtmlString (Scripts.Render returns IHtmlString — translate `<%: Scripts.Render(..) %>` as `HttpUtility.HtmlEncode((Object) Scripts.Render(..))`, never through Strings.cs), BundleTable, HttpConfiguration/GlobalConfiguration/RouteParameter (WebApiConfig), FromUri.bind/bindOptional for simple params, ApiBody.bind(req, T.class[, paramName]), Response.Cache() policy.

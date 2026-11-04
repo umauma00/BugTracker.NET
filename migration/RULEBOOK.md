@@ -63,6 +63,16 @@ separately) on 2026-11-03.
   (S1-2), D43 trust-all certificates (S1-4), D44 100 s/HTTP/1.1 (S1-5).
   Accepted latent divergences: D-006. Under the standing mandate (D-002,
   D-005).
+  2026-11-04, gate 03: stress-test round-2 amendments applied 2026-11-04
+  (S2-*); stress test closed (D-008) — the amendment queue (1–11), the
+  both-wrong rows (L3, V1, V7), the native-right row (V2) and the 4
+  `RULEBOOK-SILENT` proposals (F1–F4) of `migration/stress-test/bakeoff-r2.md`;
+  the pilot notes and merged "Rulebook gaps" of
+  `migration/stress-test/pilot-r2.md`; and the .NET-faithful choices the
+  runtime authors recorded in `migration/runtime-notes.md` (S2-33…S2-36).
+  Each changed rule cites `[S2-n]`; inventory rows corrected or added under
+  the same tags (§5). Every choice is the recommended one: reproduce the
+  original .NET behavior. Under the standing mandate (D-002, D-005).
 
 ### 0.1 Sanctioned behavior fixes (option (b), gate 00b — the complete list)
 
@@ -123,6 +133,7 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `partial class` (148, pages+designer, `Startup`) | one Java class; `Startup.cs` + `App_Start/Startup.Auth.cs` → one `btnet/Startup.java`, one batch. Both methods are kept over the runtime OWIN types (§3 security) [J-C14]: `public void Configuration(IAppBuilder app) { ConfigureAuth(app); }`, `public void ConfigureAuth(IAppBuilder app)` with the options built per C6 (`var o = new CookieAuthenticationOptions(); o.AuthenticationType = "ApplicationCookie"; o.LoginPath = new PathString("/default.aspx"); app.UseCookieAuthentication(o);`). `[assembly: OwinStartup(typeof(btnet.Startup))]` → the comment `// [assembly: OwinStartup] → invoked by SecurityConfig` | depmap cycle 2 |
 | `const T X = v` (55) | `public static final T X = v;` (keep access modifier); a method-local `const T x = v` → `final T x = v;` [S1-39] | `BtnetRoles.Admin`; `util.cs:750` |
 | `readonly` (7) | `final` | |
+| Access modifiers [S2-12] | explicit modifiers are kept (`public`, `protected`, `private`); a member **without** a modifier (C# default `private`) → Java `private`; `internal` → package-private (no modifier); `protected internal` → `protected`; a top-level type without a modifier (C# default `internal`) → package-private. These win over any inventory row that shows the member without `private`. Exceptions (they keep their own rules): UI control fields and template-referenced members (`public`, B1), an `override` of a runtime member (keeps the runtime's access; Java forbids narrowing), interface members, and §4's nested second top-level type | `print_bug.cs:19,28` `static Regex reEmail` → `private static final DotNetRegex reEmail`; `:983,990,1002` `static string convert_bug_link(Match m)` → `private static String convert_bug_link(Match m)`; `version_control.cs:175` → `private static void which_chars_changed(…)`; `bug_list.cs:19,42,66,284,298,443` |
 | Auto-property `public T X { get; set; }` (284/31 files) | **public field** `public T X;` (same name, same initializer). `{ get; private set; }` → public field too | `LoginResult.Success` |
 | Property with an accessor body | getter → method `T X()`; setter → `void X(T value)` | `Query.ColumnNames` → `String[] ColumnNames()` |
 | Property of a **runtime** facade type (DataTable, controls, HttpRequest…) | same method convention: read `x.Value()`, write `x.Value(v)` | `row_id.Value = id` → `row_id.Value(id)` |
@@ -144,10 +155,11 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `using (var x = …) { }` (34/18) | try-with-resources; the resource type must be `AutoCloseable` (runtime facades are) | `dbutil.cs:24` |
 | `lock (o) { }` (3) | `synchronized (o) { }` | `bug.cs:1276`, `whatsnew.cs:42` |
 | `Thread.Sleep(ms)` | `btnet.runtime.Threads.Sleep(ms)` (wraps `InterruptedException`, re-sets interrupt flag) | `email.cs:300` |
+| `System.Diagnostics.Debug.*` (`Assert`, `WriteLine`, `Fail`, …) [S2-9] | the statement is dropped **including the evaluation of its arguments** (`[Conditional("DEBUG")]`; the Release build defines `TRACE` only, `BugTracker.Web.csproj:42`, and under w3wp the `DefaultTraceListener` shows no UI in a Debug build either) and replaced by the plain comment `// Debug.Assert dropped (RULEBOOK §2A)` (naming the dropped method); no marker, no `todos=` count | `print_bug.cs:575` `System.Diagnostics.Debug.Assert(false);` (the only site in `src/`) |
 | `delegate(...) {}` / lambda `=>` | Java lambda / method reference; event handlers `void X(Object sender, EventArgs e)` | `print_bug.cs:948` |
 | `switch` on string (2) | Java `switch`, preceded by `if (s == null) { <default branch> }` (C# routes null to default; Java throws) | |
 | `foreach (DataRow dr in t.Rows)` (28/19) | `for (DataRow dr : t.Rows())` | `bug.cs:165` |
-| `foreach (DataRowView drv in dv)` (5/5) | `for (DataRowView drv : dv)` | |
+| `foreach (DataRowView drv in dv)` (5/5) | `for (DataRowView drv : dv)` — iterates a **snapshot** of the view's rows taken when the loop starts (.NET `DataView.GetEnumerator` copies them to an array), so `dr.set(…)` inside the loop never changes the iteration even when the view is sorted on the written column (§3 `DataView`) [S2-5] | `bug_list.cs:647,764` (`$VOTE` rewritten while `dv.Sort` may be `$VOTE DESC`) |
 | `int`/`long`/`bool`/`double`/`decimal`/`DateTime`/`TimeSpan`/`char`/`byte[]` | `int`/`long`/`boolean`/`double`/`java.math.BigDecimal`/`java.time.LocalDateTime`/`java.time.Duration`/`char`/`byte[]` | integer overflow wraps in both (C# unchecked default) |
 | `List<T>` / `Dictionary<K,V>` / `HashSet<T>` / `LinkedList<T>` | `ArrayList` / **`LinkedHashMap`** / **`LinkedHashSet`** / `java.util.LinkedList` (insertion order = .NET's observable order without removals) | `Authenticate.cs:80` LinkedList |
 | `Dictionary` read indexer `d[k]` | `btnet.runtime.Collections2.indexer(d, k)` — throws `KeyNotFoundException` when absent (C# semantics) and `ArgumentNullException` for a `null` key [S1-28]; write indexer `d[k] = v` → `Collections2.set(d, k, v)` (overwrites, as .NET; `null` key → `ArgumentNullException`) [S1-28] | |
@@ -155,34 +167,36 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `d.Add(k, v)` on a `Dictionary`; collection initializer `new Dictionary<K,V> { {k1, v1}, … }` [S1-29] | `Collections2.Add(d, k, v)`: duplicate key → `ArgumentException("An item with the same key has already been added.")`, `null` key → `ArgumentNullException` (.NET `Add`); `put` never stands for `Add`. An initializer becomes construction plus one `Collections2.Add` per entry **in source order**: for a field, an instance (or `static`, for a static field) initializer block placed right after the field declaration; for a local, statements right after the declaration. `private final Map<String,String> _columnNameOverrides = new LinkedHashMap<>(); { Collections2.Add(_columnNameOverrides, "$FLAG", "flag"); … }` | `BugList.ascx.cs:18-26`; `POP3Main.cs:697-700,708-719` |
 | Declared type `IDictionary<K,V>` [S1-28] | `java.util.Map<K,V>` (the instance stays `LinkedHashMap`, per the row above) | `BugList.ascx.cs:18`, `BugSearch.cs:180` |
 | LINQ `array.Contains(x)` / `list.Contains(x)` [S1-28] | `Arrays.asList(array).contains(x)` / `list.contains(x)` (`Equals` semantics; ordinal for strings) | `BugList.ascx.cs:42` |
-| `Hashtable` / `ArrayList` (non-generic) | `HashMap<Object,Object>` (`get` returns null when absent, like C#) / `ArrayList<Object>` | iteration order of Hashtable differs: if output depends on it, mark `BUG(port):` |
+| `Hashtable` / `ArrayList` (non-generic) | `HashMap<Object,Object>` (`get` returns null when absent, like C#) / `ArrayList<Object>` | iteration order of Hashtable differs: if output depends on it, mark `BUG(port):`. Exception [S2-30]: an order-insensitive SQL `in (…)` list built from Hashtable iteration (`edit_user.aspx.cs:687`) gets only the plain comment `// Hashtable order: SQL in-list, order-insensitive (RULEBOOK §2A)`, no marker (the SQL text may differ in list order only) |
 | `foreach (T x in c)` with a typed variable over a non-generic collection (`ArrayList`, `Hashtable.Keys`) [J-C18] | `for (Object o_ : c) { T x = (T) o_; … }` (the C# implicit cast; a wrong element type fails with ClassCastException ≈ InvalidCastException) | `email.cs:289` `foreach (string directory in stuff_to_delete.directories_to_delete)` → `for (Object o_ : stuff_to_delete.directories_to_delete) { String directory = (String) o_; … }` |
 | `NameValueCollection` / `StringDictionary` [J-C4] | runtime `NameValueCollection` (case-insensitive keys, multi-value, comma-joined `get`) / runtime `btnet.runtime.StringDictionary` (§3: keys lower-cased with `Locale.ROOT` **inside** `get`/`set`; `get` of an absent key → `null`). Translators write the source's key verbatim: `settings["MessageInputFile"] = ""` → `settings.set("MessageInputFile", "")`; never lower-case keys at the call site and never use a bare `HashMap` | `POP3Main.cs:259-261,394,405-406` |
 | .NET `[Flags]` enums `CommandBehavior`, `RegexOptions`, `NumberStyles`, `StringSplitOptions` [J-C5] | runtime `public final class X { public static final int A = …; }` with the .NET numeric values (§3); every parameter of such a type is `int`, so `a \| b` translates unchanged. Plain (non-flags) .NET enums (`SqlDbType`, `MailPriority`) stay Java `enum`s | `dbutil.cs:101,120` `behavior \| CommandBehavior.CloseConnection`; `print_bug.cs:22-34`; `util.cs:162` `NumberStyles.Float` |
-| `SortedDictionary<K,V>` [C20, C31] | `TreeMap<K,V>`; **string keys** → `new TreeMap<>(Strings.CULTURE_COMPARER)` (.NET `Comparer<string>.Default` is culture-sensitive, not ordinal); other keys → natural order | `tags.cs:108` `new SortedDictionary<string, List<int>>()` → `new TreeMap<String, List<Integer>>(Strings.CULTURE_COMPARER)` |
-| LINQ-to-objects (33/15) | `java.util.stream`: `Where`→`filter`, `Select`→`map`, `Any`→`anyMatch`, `All(p)`→`allMatch(p)` (empty → true, as .NET) [C4], `ToList`→`collect(toCollection(ArrayList::new))`, `First()`→`findFirst().orElseThrow()` (throws like C#), `FirstOrDefault()`→`findFirst().orElse(null)`, `OrderBy(k)`→`sorted(comparing(k))` stable; **string keys** use `btnet.runtime.Strings.CULTURE_COMPARER` (en-US collation; the single culture comparer — the earlier name `CURRENT_CULTURE` is withdrawn), never natural order | `query.cs:24` `Except` → filter preserving order, distinct; `BasePage.cs:30` `attributes.All(a => a.OnAuthorize(Page.User))` → `attributes.stream().allMatch(a -> a.OnAuthorize(Page.User))` |
+| `SortedDictionary<K,V>` [C20, C31] | `TreeMap<K,V>`; **string keys** → `new TreeMap<>(Strings.CULTURE_COMPARER)` (.NET `Comparer<string>.Default` is culture-sensitive, not ordinal; `CULTURE_COMPARER` is the Windows NLS emulation of §3, never `java.text.Collator` [S2-1]); other keys → natural order. The `Dictionary` indexer, `ContainsKey`, `TryGetValue` and `Add` rows apply unchanged (`Collections2` takes any `Map`): `dict[k] = 1` → `Collections2.set(dict, k, 1)`; a `null` key → `ArgumentNullException`; the comparator decides key equality [S2-10] | `tags.cs:108` `new SortedDictionary<string, List<int>>()` → `new TreeMap<String, List<Integer>>(Strings.CULTURE_COMPARER)`; `bug_list.cs:21-38` |
+| LINQ-to-objects (33/15) | `java.util.stream`: `Where`→`filter`, `Select`→`map`, `Any`→`anyMatch`, `All(p)`→`allMatch(p)` (empty → true, as .NET) [C4], `ToList`→`collect(toCollection(ArrayList::new))`, `First()`→`findFirst().orElseThrow()` (throws like C#), `FirstOrDefault()`→`findFirst().orElse(null)`, `OrderBy(k)`→`sorted(comparing(k))` stable; **string keys** use `btnet.runtime.Strings.CULTURE_COMPARER` (en-US Windows NLS ordering, §3 [S2-1]; the single culture comparer — the earlier name `CURRENT_CULTURE` is withdrawn), never natural order | `query.cs:24` `Except` → filter preserving order, distinct; `BasePage.cs:30` `attributes.All(a => a.OnAuthorize(Page.User))` → `attributes.stream().allMatch(a -> a.OnAuthorize(Page.User))` |
 
 **Strings**
 
 | Source construct | Canonical Java translation | Notes |
 |---|---|---|
 | `a == b`, `a != b` on strings (340/48) | `Objects.equals(a, b)` / `!Objects.equals(a, b)` (ordinal) | `Util.get_setting("LogSqlEnabled","1") == "1"` |
-| String concatenation `x + y` | every operand that is not a string literal, `char`, or an `int`/`long` expression is wrapped in `Strings.cs(o)` = C# concat semantics (null/DBNull → `""`, else `Convert.ToString(o)`). This includes `String`-typed variables and method results (a `null` string prints `""` in C#, `"null"` in Java); an inventory row describing a call as "unchanged" never exempts its concatenations [S1-46] | Java prints `null`/`true`/`2020-01-02T03:04:05`; C# prints ``/`True`/culture date; `util.cs:1117` |
+| String concatenation `x + y` | every operand that is not a string literal, `char`, or an `int`/`long` expression is wrapped in `Strings.cs(o)` = C# concat semantics (null/DBNull → `""`, else `Convert.ToString(o)`). This includes `String`-typed variables and method results (a `null` string prints `""` in C#, `"null"` in Java); an inventory row describing a call as "unchanged" never exempts its concatenations [S1-46]. Never-null operands (`Convert.ToString(…)`, `Strings.Format(…)`, `m.Value()`) are wrapped too — there is no never-null exemption, so two translators never differ [S2-18]. **`x += e` on a string [S2-17]:** the left side is the variable, not an operand to wrap: `x += <e wrapped as above>`. Only where `x` itself can hold `null` at that point (a `String` parameter, field, array or collection element, or a local not yet assigned a non-null value) — C# compiles `x += e` to `string.Concat(x, e)`, which drops a `null` `x` — write `x = Strings.cs(x) + <wrapped e>` | Java prints `null`/`true`/`2020-01-02T03:04:05`; C# prints ``/`True`/culture date; `util.cs:1117`; `version_control.cs:100` `args_without_password += " --non-interactive"` (a parameter) → `args_without_password = Strings.cs(args_without_password) + " --non-interactive"`; `:43` `stdout += p.StandardOutput.ReadToEnd()` (`stdout` assigned non-null at `:41`) → `stdout += Strings.cs(Processes.ReadToEnd(…))` |
 | `Convert.ToString(o)` (356/50); `o.ToString()` on non-String `o` whose receiver **cannot be null** (DataRow/DataRowView values — DBNull, never null —, literals, boxed primitives, `int`/`long` expressions) | `Convert.ToString(o)` (runtime): null→`""`... see Convert table | |
 | `o.ToString()` on any other non-String receiver (a `JObject`/`Map` lookup, a field, a method result) [J-C17] | `Strings.ToStringStrict(o)` — throws `NullPointerException` (≈ NullReferenceException) on `null`, else `Convert.ToString(o)`. Never turns the NRE into `""` (Error-recovery rule) | `BugSearch.cs:78,86,87` `bug["desc"].ToString()` → `Strings.ToStringStrict(bug.get("desc"))` (missing property → NRE → search 500, as .NET). `TODO(port)`: a JSON `null` value is `JValue(null)` in .NET (`ToString()` → `""`) but Java `null` here — no indexed field is ever null (`BugSearch.cs:126-131` uses `isnull`), so not reproduced |
 | `string.Format` (24/10), `StringBuilder.AppendFormat` | `Strings.Format(fmt, args...)` — .NET composite formatting (`{0}`, `{0:00}`, `{0:X2}`, `{{`/`}}`). `java.lang.String.format` BANNED | `BugQueryExecutor.cs:43`, `edit_task.aspx.cs:210` |
+| `sb.Append(x)`, `sb.AppendLine(x)`, `sb.AppendLine()` on `System.Text.StringBuilder` [S2-3] (172 sites/12 files; **not** `SQLString.Append`, an application method translated as a call) | `sb.append(x)` when `x` is a string literal, a `char`, or an `int`/`long` expression; otherwise `sb.append(Strings.cs(x))` — C# `Append((string)null)` appends nothing (Java appends `"null"`), `Append(bool)` gives `True`, `Append(double)` G15, exactly as S1-46 for `+`. `sb.AppendLine(x)` → `sb.append(Strings.cs(x)).append(Environment.NewLine)`; `sb.AppendLine()` → `sb.append(Environment.NewLine)`; `sb.AppendFormat` → the row above | `version_control.cs:867,884,901,921,929` `args.Append(repo)` → `args.append(Strings.cs(repo))` |
 | `string.IsNullOrEmpty` (40/18) | `Strings.IsNullOrEmpty(s)` | |
 | `s.Length`, `s[i]` | `s.length()`, `s.charAt(i)` | |
 | `s.Substring(a)` / `s.Substring(a, n)` (32/12) | `s.substring(a)` / `s.substring(a, a + n)` | length → end index |
+| `s.PadLeft(n)` / `s.PadLeft(n, c)` / `s.PadRight(n)` / `s.PadRight(n, c)` [S2-8] | `Strings.PadLeft(s, n)` / `Strings.PadLeft(s, n, c)` / `Strings.PadRight(s, n)` / `Strings.PadRight(s, n, c)` (§3; `c` defaults to `' '`; never truncates; `n < 0` → `ArgumentOutOfRangeException`). `String.format` stays BANNED | `version_control.cs:508-509` `Convert.ToString(lx + 1).PadLeft(digit_places, '0')` → `Strings.PadLeft(Convert.ToString(lx + 1), digit_places, '0')` (12 sites, all in that file) |
 | `s.Split(c)` / `s.Split(chars, RemoveEmptyEntries)` (16/9) | `Strings.Split(s, c...)` / `Strings.Split(s, StringSplitOptions.RemoveEmptyEntries, c...)` (keeps trailing empties; never regex) | `String.split` BANNED |
 | `s.Split(new string[] { a, b }, opts)` [S1-16] | `Strings.Split(s, opts, a, b)` — the `String...` overload of the same method (§3: ordinal; at each position the **first separator in argument order** that matches, never longest-first; empties kept for `StringSplitOptions.None`) | `util.cs:167` `val.Split(new string[] { sep }, StringSplitOptions.None)` → `Strings.Split(val, StringSplitOptions.None, sep)` |
 | `s.Replace(a, b)` (139/21) | `s.replace(a, b)` (literal) | |
 | `s.Trim()`/`TrimStart`/`TrimEnd` | `Strings.Trim(s)` etc. (.NET `Char.IsWhiteSpace` set, includes U+00A0) | `String.trim()` BANNED |
 | `ToLower()`/`ToUpper()` (also `ToLowerInvariant`/`ToUpperInvariant`) [S1-8, replaces `toLowerCase/toUpperCase(Locale.US)`] | `Strings.ToLower(s)` / `Strings.ToUpper(s)` — runtime, **length-preserving**: each UTF-16 unit mapped by `Character.toLowerCase(char)` / `toUpperCase(char)` (`ß` stays `ß`, never `SS`; `ﬁ` stays one char), as .NET's per-char mapping, so `IndexOf`/`Substring` offsets computed on the mapped string stay valid on the original. `String.toLowerCase/toUpperCase` are BANNED in translated code | `util.cs:443,448` (`rawSQL.ToUpper().IndexOf("WHERE")` offsets used on `rawSQL`), `:549`, `:1011` `Path.GetExtension(filename).ToLower()` → `Strings.ToLower(Path.GetExtension(filename))` |
-| `IndexOf(string)`/`StartsWith`/`EndsWith`/`Contains` | Java ordinal equivalents; `s.IndexOf(v, StringComparison.X)` → `Strings.IndexOf(s, v, StringComparison.X)` with runtime enum `btnet.runtime.StringComparison` (.NET names, §3) [S1-21] | .NET culture-sensitive variants differ only on ignorable chars — accepted; `POP3Main.cs:599,610,624,634,659` |
+| `IndexOf(string)`/`StartsWith`/`EndsWith`/`Contains` | Java ordinal equivalents; `s.IndexOf(v, StringComparison.X)` → `Strings.IndexOf(s, v, StringComparison.X)` with runtime enum `btnet.runtime.StringComparison` (.NET names, §3) [S1-21] | .NET culture-sensitive variants differ only on ignorable characters and canonically equivalent sequences (precomposed vs combining forms) — accepted [S2-11]; `POP3Main.cs:599,610,624,634,659` |
 | `s.IndexOf(v, start)` (string or char `v`) [C27] | `Strings.IndexOf(s, v, start)` — throws `ArgumentOutOfRangeException` when `start < 0` or `start > s.length()` (.NET); otherwise = `s.indexOf(v, start)`. Bare `indexOf(v, start)` is BANNED (Java clamps) | `version_control.cs:470` `line.IndexOf(" ", pos1)` → `Strings.IndexOf(line, " ", pos1)` (pos1 = -1 must throw) |
 | `string.Join(sep, xs)` [C3] | `Strings.join(sep, xs)` — accepts `String[]`, `Object[]`, `Iterable<?>`; each element → `Convert.ToString` semantics with **`null` → `""`** (.NET), never `"null"`. One form for every element type: `java.lang.String.join` is not used (it prints `"null"`), and non-string elements need no `map(String::valueOf)` | `Controls/BugList.ascx:128`, `Mime.cs:90,96`: `string.Join(", ", cols.Select(c => string.Format("'{0}'", c)).ToArray())` → `Strings.join(", ", cols.stream().map(c -> Strings.Format("'{0}'", c)).toList())` |
-| `@"verbatim"` (238/57) [C24] | **always** an ordinary string literal: newlines → `\n` (or `\r\n` where the source file has CRLF line ends inside the literal — copy the bytes), tabs → `\t`, `\` → `\\`, `""` → `\"`; long literals may be split by `+` at line ends. **Java text blocks `"""` are BANNED** (they strip common indentation and trailing spaces, so SQL is not byte-identical). **SQL text must be byte-identical** (except §0.1) | `edit_user.aspx.cs:35` `@"select pu_project` + tab-indented lines → `"select pu_project\n\t\t\t\tfrom ..."`; `bug.cs:1178-1183` |
+| `@"verbatim"` (238/57) [C24] | **always** an ordinary string literal: newlines → `\n` (or `\r\n` where the source file has CRLF line ends inside the literal — copy the bytes), tabs → `\t`, `\` → `\\`, `""` → `\"`; long literals may be split by `+` at line ends. **Java text blocks `"""` are BANNED** (they strip common indentation and trailing spaces, so SQL is not byte-identical). **SQL text must be byte-identical** (except §0.1) | `edit_user.aspx.cs:35` `@"select pu_project` + tab-indented lines → `"select pu_project\n\t\t\tfrom ..."` (three tabs, as the source; LF line ends) [S2-32]; `bug.cs:1178-1183` |
 | `Environment.NewLine` | `Environment.NewLine` (runtime constant `"\r\n"`) | |
 | `Encoding.UTF8.GetBytes/GetString` | `Encoding.UTF8.GetBytes/GetString` (runtime; lossy decode like .NET, §3) | `util.cs:496-498` |
 | `enc.GetPreamble()` [S1-21] | `enc.GetPreamble()` (runtime: `UTF8` → `{0xEF,0xBB,0xBF}`, `Default` → empty) | `util.cs:1170-1173` |
@@ -237,7 +251,10 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   in Java's floor representation (`util.cs:683-739` uses positive spans
   only).
 - `new Random()` / `r.Next(a, b)` [C20] → `new java.util.Random()` /
-  `a + r.nextInt(b - a)`. The sequence differs from .NET and is **never
+  `a + r.nextInt(b - a)`; `r.Next()` → `r.nextInt(Integer.MAX_VALUE)` (.NET
+  range `[0, Int32.MaxValue)`), `r.Next(max)` → `r.nextInt(max)` (every
+  site passes a positive constant: `view_report.aspx:527`; `edit_user.aspx.cs:588`
+  uses `Next()`) [S2-14]. The sequence differs from .NET and is **never
   compared** (judge must not pin random output).
 - `dt.ToString(fmt[, culture])`, `n.ToString("00")`, `{0:...}` →
   `DotNetFormat.Format(value, fmt, culture)` implementing .NET standard
@@ -269,6 +286,18 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   → `new DotNetRegex(p, RegexOptions.IgnorePatternWhitespace)` (`print_bug.cs:28`).
 - `regex.Matches(s)` [C26] → `List<Match>` (iterate with `for (Match m : …)`);
   `m.ToString()` → `m.Value()` (runtime property convention, §2A).
+- `m.Groups[i]` / `m.Groups["name"]` [S2-6] → `m.Groups().get(i)` /
+  `m.Groups().get("name")` (runtime `GroupCollection` of `Group`, §3);
+  `g.Value` and `g.ToString()` → `g.Value()` (C26 extended; never
+  `Strings.ToStringStrict`), `g.Success` → `g.Success()`. Numbering is
+  **.NET's**: group 0 is the match, then unnamed groups left to right, then
+  named groups; a non-participating, out-of-range or unknown group is an
+  unsuccessful `Group` whose `Value()` is `""`, never `null`.
+  `print_bug.cs:995` `m.Groups[1].ToString()` → `m.Groups().get(1).Value()`
+  (with a configured `BugLinkMarker` such as `(?<n>bug)#`, group 1 is still
+  the digits, as in .NET).
+- `Regex.Split` / `regex.Split(s)` return `String[]` (.NET `string[]`)
+  [S2-16].
 - **Sanctioned pattern rewrite (the only one)** [C25]: `<(.|\n)*?>`
   (`util.cs:216`) → `<[^>]*>` — equivalent (lazy any-char to the first `>`),
   and avoids `StackOverflowError` from java.util.regex's recursive
@@ -283,6 +312,9 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   (unchecked, message = server message text, like .NET `SqlException.Message`).
   `Exceptions.wrap(InterruptedException)` first re-sets the current thread's
   interrupt flag (so the C19 `isInterrupted()` checks still see it) [S1-22].
+  `Exceptions.wrap` has exactly one overload, `RuntimeException
+  wrap(Throwable e)`, always used as `throw Exceptions.wrap(e);` — its
+  mapping is fixed in §3 [S2-15].
 - .NET exception types used in `catch`/`throw` map to runtime classes of the
   same name in `btnet.runtime` (`FormatException`, `OverflowException`,
   `InvalidCastException extends ClassCastException`, `ArgumentException`,
@@ -290,7 +322,8 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `IndexOutOfRangeException` [C14], `KeyNotFoundException`, `HttpException`,
   `ConfigurationErrorsException`, `SecurityException` [C26],
   `InvalidOperationException`, `UriFormatException`,
-  `TaskCanceledException` [S1-3, S1-5], `NullReferenceException` → use
+  `TaskCanceledException` [S1-3, S1-5], `Win32Exception` [S2-4],
+  `NotSupportedException` [S2-19], `NullReferenceException` → use
   `NullPointerException`); all extend `RuntimeException` (via
   `DotNetException` where they have no JDK parent).
 - **`System.Exception` [C11] (replaces "`catch (Exception e)` stays").**
@@ -438,7 +471,8 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   |---|---|
   | `ds.Tables[0]` | `ds.Tables().get(0)` |
   | `dt.Rows.Count`, `dt.Rows[i]` | `dt.Rows().Count()`, `dt.Rows().get(i)` |
-  | `dr["col"]`, `dr[i]`, `dr["col"] = v` | `dr.get("col")`, `dr.get(i)`, `dr.set("col", v)` |
+  | `dr["col"]`, `dr[i]`, `dr["col"] = v`, `dr[i] = v` [S2-37] | `dr.get("col")`, `dr.get(i)`, `dr.set("col", v)`, `dr.set(i, v)` |
+  | `dt.Columns.Count` [S2-37] | `dt.Columns().Count()` |
   | `dt.Columns[i].ColumnName`, `.DataType` | `dt.Columns().get(i).ColumnName()`, `.DataType()` (a `Class<?>`) |
   | `new DataView(dt)`, `dt.DefaultView`, `dv.Count`, `dv[i]`, `dv.Table`, `dv.Sort`, `dv.RowFilter`, `dv.Find(k)` | `new DataView(dt)`, `dt.DefaultView()`, `dv.Count()`, `dv.get(i)`, `dv.Table()`, `dv.Sort(s)`, `dv.RowFilter(s)`, `dv.Find(k)` |
   | `dt.NewRow()`, `dt.Rows.Add(dr)`, `dt.Columns.Add(new DataColumn("file", typeof(String)))` | `dt.NewRow()`, `dt.Rows().Add(dr)`, `dt.Columns().Add(new DataColumn("file", String.class))` |
@@ -477,8 +511,12 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `DataView.Find` without a `Sort` → `ArgumentException` (inherited quirk at
   `edit_user.aspx.cs:233`). `dv.Sort(s)` naming an unknown column →
   `IndexOutOfRangeException("Cannot find column <x>.")` (.NET
-  `DataTable.ParseSortString`); a malformed sort direction →
-  `FormatException` [C14]. `RowFilter` supports only the expression forms
+  `DataTable.ParseSortString`); an entry whose last word is not `ASC`/`DESC`
+  is read **whole** as a column name, so a malformed direction also fails
+  with `IndexOutOfRangeException("Cannot find column <entry>.")`; an
+  unbalanced `[` → `ArgumentException("<entry> isn't a valid Sort string
+  entry.")` [C14, S2-33 — replaces "malformed direction →
+  `FormatException`"]. `RowFilter` supports only the expression forms
   found in source; anything else → runtime throws
   `UnsupportedOperationException("TODO(port) RowFilter")`.
 - `typeof(T)` → a `Class<?>` token [S1-7, S1-38: boxed tokens for primitives]; `Util.is_numeric_datatype(Type)`
@@ -555,7 +593,7 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 |---|---|
 | `HttpContext.Current` (38/13) | `HttpContext.Current()` — ThreadLocal set by the request filter; `null` on background threads (as in .NET); bound to the startup pseudo-context for the duration of `Application_OnStart` (B6), so `Util.set_context(HttpContext.Current)` (`Global.asax.cs:46`) gets a non-null context whose `Request()` throws `HttpException` (caught at `util.cs:54-61`) [J-U13] |
 | `new UrlHelper(Request.RequestContext)` + `urlHelper.IsLocalUrl(url)` (`util.cs:1103-1105`) [N2] | `new UrlHelper(Request.RequestContext())` (runtime `btnet.runtime.web.UrlHelper`, opaque runtime `RequestContext`) + `urlHelper.IsLocalUrl(url)` — exact MVC 5.2.3 semantics (§3). A relative `url` (`edit_bug.aspx`) is **not** local and goes to `bugs.aspx`/`mbugs.aspx`; preserved, marked `// BUG(port): relative returnUrl rejected by IsLocalUrl — repro: default.aspx?url=edit_bug.aspx` |
-| Request state read inside a **static core method** [C34] (e.g. 11 rows in `btnet/bug_list.cs`) | through the method's own `HttpContext`/`Page`/`HttpRequest` parameter if it has one (`page.Session.get("k")`), else `HttpContext.Current().Session().get("k")`. A bare `Session`/`Request`/`Response` identifier exists only in page/control classes (inherited fields) — never in core statics |
+| Request state read inside a **static core method** [C34] (e.g. 11 rows in `btnet/bug_list.cs`) | through the method's own `HttpContext`/`Page`/`HttpRequest` parameter if it has one (`page.Session.get("k")`), else `HttpContext.Current().Session().get("k")`. A bare `Session`/`Request`/`Response` identifier exists only in page/control classes (inherited fields) — never in core statics. `HttpContext.Current.Server.HtmlEncode(x)` / `.UrlEncode(x)` in core code → `HttpUtility.HtmlEncode(x)` / `HttpUtility.UrlEncode(x)`, with no `Current()` call (same .NET result; every site runs on a request thread: `bug_list.cs:813,859`) [S2-13] |
 | `Util.context` (static `HttpContext`, set at `Global.asax.cs:46`) [C32] | field kept (`public static HttpContext context`, assigned the startup pseudo-context). `Util.context.Application[k]` (`MainMenu.ascx:4,15`, `util.cs:918,964`) → `ApplicationState.get().get(k)` — the `HttpApplicationState` singleton, available from startup, independent of any request; `Util.context.Server.MapPath(p)` → `AppPaths.MapPath(p)` (same result as `Server.MapPath`) |
 | `HttpResponse Response` parameter (`print_bug.cs:38,305`, `bug_list.cs:427`, `util.cs:119,1163,1343`) | keep the parameter, type `btnet.runtime.web.HttpResponse`. `new HttpResponse(stringWriter)` (`bug.cs:1159`, `send_email.aspx.cs:484`) is supported by the runtime — **do not** change signatures to `Writer` |
 | `HttpRequest Request` parameter | `btnet.runtime.web.HttpRequest` |
@@ -585,7 +623,8 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `port/web/src/main/resources/btnet-settings.properties` (UTF-8).
 - That file is **generated once by the runtime author** from the
   *uncommented* `<add key value>` entries of `src/BugTracker.Web/Web.config`
-  `<appSettings>` (lines 97-975, 156 entries) by runtime tool
+  `<appSettings>` (lines 97-975: **85** active entries; the earlier "156"
+  counted the commented-out `<add>` lines too [S2-35]) by runtime tool
   `btnet.runtime.config.WebConfigToProperties`; it is not hand-edited.
   Override: Spring property `btnet.setting.<Key>` (e.g. env
   `BTNET_SETTING_SearchServerURI`) wins over the file. `system.net/mailSettings`
@@ -606,7 +645,7 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 | `SmtpClient`/`MailMessage`/`Attachment` (14/3) | runtime `btnet.runtime.mail.SmtpClient/MailMessage/Attachment/MailAddress` (same members) over Jakarta Mail; `deliveryMethod=specifiedPickupDirectory` writes `<dir>/<uuid>.eml` (active setting, `Web.config:52-56`). `ServicePointManager.ServerCertificateValidationCallback = …true` (`email.cs:242`) → runtime **static** `SmtpClient.TrustAllCertificates(true)`: process-wide and sticky for every later `SmtpClient`, like the `ServicePointManager` callback [C5] |
 | OpenPop `Message`, `MessagePart`, `Pop3Client` (`Mime.cs`, `POP3Main.cs`) | runtime `btnet.runtime.mail.pop.Message/MessagePart/Pop3Client` (OpenPop member names) over Jakarta Mail `MimeMessage` / POP3 store. Contract pinned in §3 [S1-48]: `GetMessageUids()` returns the server's UIDL strings **verbatim**; `GetMessage(int n)` is `RETR n` by message **number**; `Headers().From()` is `null` when the header is absent and `Headers().Subject()` is `null` when absent. So `POP3Main.cs:566` `Convert.ToInt32(messages[i])` → `GetMessage` reproduces the source defect (UID used as a message number) — mark `// BUG(port): UIDL value used as POP3 message number — repro: server whose UIDs are not 1..n` — and `:589` `mimeMessage.Headers.From.Address` on a message without `From` throws `NullPointerException` (→ S1-2) |
 | NEST `ElasticClient` (`Search/*`) | `BugSearchFactory` builds runtime `ElasticClient(uri, "btnet")`; search call [C29] `SearchResponse Search(String index, String jsonBody)` with `SearchResponse.Hits` = `List<Hit>`, `Hit { String Id; double Score; Map<String,Object> Source; Map<String,Highlight> Highlights; }` and `Highlight { String DocumentId; String Field; List<String> Highlights; }` — **top-level** classes in `btnet.runtime.search` (never `SearchResponse.Hit`), every member a public field, `Highlights` empty (never null) when the hit has no highlight [N1]. `:79-84` → `if (!hit.Highlights.isEmpty()) { var highlight = hit.Highlights.entrySet().iterator().next(); resultRow.set(ResultColumns.Source, highlight.getValue().Field); resultRow.set(ResultColumns.Text, highlight.getValue().Highlights.isEmpty() ? null : highlight.getValue().Highlights.get(0)); }` (`Any()`/`First()`/`FirstOrDefault()`; `null` → DBNull by `DataRow.set`, J-C11). Body built by `BugSearch` as below (`BugSearch.cs:55`); `BugSearch` issues: index [J-C10] `_client.Index(bugJson, i => i.Type("bug").Id(Convert.ToInt64(bugRow["bg_id"])))` (`:164`) → `_client.Index(bugJson, "bug", Convert.ToInt64(bugRow.get("bg_id")));` = `PUT {uri}/btnet/bug/{id}` with the same document fields; search `POST {uri}/btnet/bug/_search` `{"size":500,"query":{"query_string":{"query":…}},"highlight":{"pre_tags":["<span class='highlighted'>"],"post_tags":["</span>"],"fields":{"*":{}}}}`. `TODO(port): verify NEST 1.0.2 wire format`. Keep `IndexBug`'s try/catch: connection failures are logged, never thrown. The body always sends `query_string` (NEST 1.x would omit a conditionless query for null/empty `Query`): accepted [S1-13, D-006], unreachable today (`search_text.aspx.cs:24` rejects empty input first). Failure semantics of `Search`/`Index` are runtime-owned (§3 `ElasticClient`) |
-| `System.Diagnostics.Process` + `ProcessStartInfo` (`version_control.cs:30-70`) [C20] | `ProcessStartInfo` fields map onto one `ProcessBuilder`: `FileName` + `Arguments` → `new ProcessBuilder(Processes.command(FileName, Arguments))` (args split by `Processes.SplitArgs`, Windows `CommandLineToArgvW` rules); `WorkingDirectory = dir` → `if (!Strings.IsNullOrEmpty(dir)) { pb.directory(new java.io.File(dir)); }` (.NET treats null/empty as the current directory; `new File(null)` throws) [J-C13]; `RedirectStandardOutput/Error = true` → pipes (default); `UseShellExecute=false`/`CreateNoWindow` → nothing; read stdout then stderr fully as UTF-8, `waitFor()`. `configure_startinfo(ProcessStartInfo startInfo)` (`version_control.cs:20-26`) keeps its name and takes `ProcessBuilder startInfo`; its body is one comment per source assignment (`// WindowStyle = Hidden: dropped`, `// UseShellExecute = false: dropped`, `// RedirectStandardOutput/Error = true: pipes are the default`, `// StandardOutputEncoding = UTF8: stdout read as UTF-8`) [J-C13]. `Process.GetCurrentProcess().MainModule.FileName` → `AppPaths.executable()` [C18] |
+| `System.Diagnostics.Process` + `ProcessStartInfo` (`version_control.cs:30-70`) [C20] | `ProcessStartInfo` fields map onto one `ProcessBuilder`: `FileName` + `Arguments` → `new ProcessBuilder(Processes.command(FileName, Arguments))` (args split by `Processes.SplitArgs`, Windows `CommandLineToArgvW` rules); `WorkingDirectory = dir` → `if (!Strings.IsNullOrEmpty(dir)) { pb.directory(new java.io.File(dir)); }` (.NET treats null/empty as the current directory; `new File(null)` throws) [J-C13]; `RedirectStandardOutput/Error = true` → pipes (default); `UseShellExecute=false`/`CreateNoWindow` → nothing. **[S2-4, replaces "read stdout then stderr fully as UTF-8"; V2 native-right adopted]** `p.Start()` → `Process proc = Processes.start(pb);` (runtime, §3: redirects the child's stdin from the OS null device — the source does not redirect stdin, so the child inherits the IIS worker's absent stdin and reads EOF at once — then starts it; a start failure is the .NET `Win32Exception`, never a wrapped `IOException`). `p.StandardOutput.ReadToEnd()` → `Processes.ReadToEnd(proc.getInputStream(), Encoding.UTF8)` and `p.StandardError.ReadToEnd()` → `Processes.ReadToEnd(proc.getErrorStream(), Encoding.OEM)` — .NET `StreamReader` semantics with byte-order-mark detection (a leading UTF-8 BOM is stripped, a UTF-16/32 BOM switches the decoding); stdout uses `StandardOutputEncoding` (UTF-8, `version_control.cs:27`), stderr the console OEM code page 437 because `StandardErrorEncoding` is unset (.NET falls back to `Console.OutputEncoding`). Every read keeps the source's position and order (stdout fully, `waitFor()`, the second stdout read, then stderr), so the stderr pipe-buffer deadlock is reproduced and marked `// BUG(port): stdout is drained fully before stderr, so a child writing more stderr than the OS pipe buffer holds deadlocks, as in .NET (threshold OS-dependent) — repro: git command writing large stderr`. `p.WaitForExit()` → `proc.waitFor()` (`InterruptedException` → `Exceptions.wrap`). `configure_startinfo(ProcessStartInfo startInfo)` (`version_control.cs:20-26`) keeps its name and takes `ProcessBuilder startInfo`; its body is one comment per source assignment (`// WindowStyle = Hidden: dropped`, `// UseShellExecute = false: dropped`, `// RedirectStandardOutput/Error = true: pipes are the default`, `// StandardOutputEncoding = UTF8: stdout decoded by Processes.ReadToEnd(…, Encoding.UTF8)`) [J-C13, S2-4]. `Process.GetCurrentProcess().MainModule.FileName` → `AppPaths.executable()` [C18] |
 | `Stopwatch` | runtime `Stopwatch` (`Start/Stop/ElapsedMilliseconds()`) |
 | `LdapConnection.Bind` (`Authenticate.cs:176-207`) | JNDI `InitialLdapContext` per DN; `LdapAuthType=Basic` → `simple`; other values → `TODO(port)`; failure → exception → caught as in source |
 | `TranslationService` (wsdl SOAP client, `btnet/TranslationService.cs`) | same class and members; every remote call throws `UnsupportedOperationException("TODO(port): SOAP translation service")`. `translate.aspx` keeps its error path |
@@ -646,8 +685,11 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
   `StatusCode(HttpStatusCode.Forbidden)` → 403 empty; unhandled exception →
   500. Anonymous objects → `LinkedHashMap` built in declared order
   (`BugQueryController.cs:20-25`: `recordsTotal`, `recordsFiltered`, `data`).
-- Jackson config (`JsonConfig`): field visibility ANY, getter auto-detection
-  NONE (public fields = C# auto-properties, names as declared, PascalCase);
+- Jackson config (`JsonConfig`): field visibility **PUBLIC_ONLY** (Newtonsoft
+  serializes public members only) [S2-34, replaces "ANY"], getter/setter
+  auto-detection NONE (public fields = C# auto-properties, names as
+  declared, PascalCase), properties in **declaration order**
+  (`SORT_PROPERTIES_ALPHABETICALLY` off, as Newtonsoft) [S2-34];
   computed properties that Newtonsoft would emit get `@JsonProperty("Name")`;
   case-insensitive property binding; `byte[]` as base64; `LocalDateTime`
   as above. Response `application/json; charset=utf-8` regardless of
@@ -655,7 +697,11 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 
 **The BUG rule:** when the source's behavior is itself defective (and not in
 §0.1), reproduce it and mark `// BUG(port): <what> — repro: <input>`. Fixes
-ship only after parity, via prompt 06.
+ship only after parity, via prompt 06. A defect that is unreachable today
+(blocked by a guard such as `PageAuthorize`) or unobservable (a write-only
+field, a `NOT NULL` column) is still reproduced and marked, with `<what>`
+starting `latent:` and the repro naming the blocking guard or `none today`:
+`// BUG(port): latent: non-admin branch — repro: none today (PageAuthorize(Admin))` [S2-28].
 
 **The UNKNOWN rule:** when neither this file nor `migration/inventory.tsv`
 decides a case, translate to the most conservative representation, mark
@@ -705,7 +751,7 @@ public class delete_priority extends BasePage {
 - Controls: every `runat="server"` element / `asp:*` control / user control
   instance becomes a `public final` field named by its `ID`, created with
   `control(new <Type>("<ID>"))`. Type from the designer file; for inline-script
-  pages, from the tag: `span/div/p/td/tr/table/li/…`→`HtmlGenericControl`,
+  pages, from the tag: `td`/`th`→`HtmlTableCell`, `tr`→`HtmlTableRow`, `table`→`HtmlTable` (as the ASP.NET parser maps them; designer files declare the same types: 81 `HtmlTableCell` + 14 `HtmlTableRow` fields in 15 files) [S2-19], `span/div/p/li/…`→`HtmlGenericControl`,
   `a`→`HtmlAnchor`, `input type=text|password|hidden|checkbox|radio|submit|button|file`
   →`HtmlInputText|HtmlInputPassword|HtmlInputHidden|HtmlInputCheckBox|HtmlInputRadioButton|HtmlInputSubmit|HtmlInputButton|HtmlInputFile`,
   `select`→`HtmlSelect`, `textarea`→`HtmlTextArea`, `img`→`HtmlImage`,
@@ -719,6 +765,22 @@ public class delete_priority extends BasePage {
   `edit_attachment.aspx:26`) [J-U10]. Declarative attributes that
   code reads (`Text=`, `GroupName=`, `SelectionMode=`, `<asp:ListItem>`s) are
   set in the field initializer: `control(new CheckBox("x")).Text("Admin")`.
+  **Every** declared property of an `asp:*` control, read by code or not
+  (`Rows=`, `SelectionMode=`, `CssClass=`, `BorderColor=`, `CellPadding=`,
+  `AutoGenerateColumns=`, nested `<HeaderStyle>`/`<ItemStyle>`/`<Columns>`),
+  is set the same way with its fluent setter (§3), and the template never
+  repeats it: `bt:control` renders it as ASP.NET does, so no element gets a
+  duplicate attribute [S2-20, S2-21]. `<asp:ListBox ID="x" SelectionMode="Multiple"
+  Rows="4">` → `control(new ListBox("x")).SelectionMode(ListSelectionMode.Multiple).Rows(4)`
+  (`edit_user.aspx:256`, `search.aspx`); `<asp:DataGrid … BorderColor="black"
+  CssClass="datat" CellPadding="3" AutoGenerateColumns="false">` →
+  `control(new DataGrid("MyDataGrid")).BorderColor("black").CssClass("datat").CellPadding(3).AutoGenerateColumns(false)`
+  plus an instance initializer block right after the field, in markup order:
+  `{ MyDataGrid.HeaderStyle().CssClass("datah"); MyDataGrid.ItemStyle().CssClass("datad");
+  MyDataGrid.Columns().Add(new BoundColumn("Project", "pj_name"));
+  MyDataGrid.Columns().Add(new BoundColumn("Project", "pj_id").Visible(false)); … }`
+  (`HyperLinkColumn`, `ButtonColumn`, `TemplateColumn` likewise; 3 files:
+  `edit_user.aspx:376-417`, `backup_db.aspx`, `manage_logs.aspx`).
 - **Fluent setters [S1-27]:** every runtime control property setter returns
   `this` typed as the **concrete** control (self-bounded generics, §3), so
   chains such as `control(new HtmlInputSubmit("submit_button")).Value("Update")`
@@ -791,7 +853,7 @@ public class delete_priority extends BasePage {
 | WebForms | Port |
 |---|---|
 | `Page_Load` with `if (!IsPostBack) {A} else {B}` | **kept verbatim** in `Page_Load`; the single `handle` mapping takes GET and POST. Do not split into `@GetMapping`/`@PostMapping` |
-| `Response.Write(x)` in code (399 sites/37 `.cs`) | `Response.Write(x)` on the runtime buffer (`Object` overload applies `Strings.cs`) |
+| `Response.Write(x)` in code (399 sites/37 `.cs`) | `Response.Write(x)` on the runtime buffer (`Object` overload applies `Strings.cs`). `Write(String s)` with `s == null` writes **nothing**, never `"null"` (.NET `HttpWriter.Write(string)`): `bug_list.cs:436` `Response.Write(HttpUtility.HtmlEncode(Request["tags"]))` on a GET without `tags` [S2-2] |
 | `Response.End()` (57/35) | `Response.End()` (throws `ResponseEndException`) |
 | `Response.Redirect(url)` (20/16) | `Response.Redirect(url)` → 302, `Location` = url resolved against the request directory to an absolute path (`edit_bug.aspx?id=3` → `/edit_bug.aspx?id=3`), then ends. `Redirect(url, false)` does not end |
 | `Server.Transfer("x.aspx")` (19/18) | `Server.Transfer("x.aspx")` → `RequestDispatcher.forward("/x.aspx")`; the target runs with `IsPostBack=false`, sees the same form/query values and appends to the same Response buffer |
@@ -844,24 +906,26 @@ server form via the runtime fragment `~{runtime/form :: hidden}`.
 | Markup | Template |
 |---|---|
 | Literal HTML | copied unchanged (including `class`, `style`, inline JS) |
-| `<form runat="server" …>` | `<form method="post" th:action="${page.FormAction()}" id="aspnetForm" name="aspnetForm" …>` + `<th:block th:replace="~{runtime/form :: hidden}"/>`. `method` = the declared `method`, lower-cased, default `post` (`mbugs.aspx:102` → `method="get"`) [J-U5]. `FormAction()` = current path **plus query string** (judge S8:41). On master pages `name="aspnetForm"` always (`EditBug.js:30,37` selects `form[name=aspnetForm]`); `id` = the declared `ID` when the content placeholder has `ClientIDMode="Static"` (`bugs.aspx:11` → `id="frm"`), else `aspnetForm` [J-U7]. Pages without a master: `id`/`name` = the form's declared `id`, else `ctl00` (`Util.get_form_name()`, `Web.config:853`). Declared `action`/`target`/`enctype`/`onsubmit` kept |
+| `<form runat="server" …>` | `<form method="post" th:action="${page.FormAction()}" id="aspnetForm" name="aspnetForm" …>` + `<th:block th:replace="~{runtime/form :: hidden}"/>`. `method` = the declared `method`, lower-cased, default `post` (`mbugs.aspx:102` → `method="get"`) [J-U5]. `FormAction()` = current path **plus query string** (judge S8:41). On master pages `name="aspnetForm"` always (`EditBug.js:30,37` selects `form[name=aspnetForm]`); `id` = the declared `ID` when the content placeholder has `ClientIDMode="Static"` (`bugs.aspx:11` → `id="frm"`), else `aspnetForm` [J-U7]. Pages without a master: `id`/`name` = the form's declared `id`, else `ctl00` (`Util.get_form_name()`, `Web.config:853`). A declared `action` **replaces** `th:action` (ASP.NET 4.5 `HtmlForm` renders the declared action) — `action="<declared>"` literal, no `th:action`; without one, `th:action="${page.FormAction()}"` [S2-24]. Declared `target`/`enctype`/`onsubmit` kept |
 | Server control `<span runat="server" id="msg" class="err">` | `<span id="msg" class="err" bt:control="${page.msg}"></span>` — the runtime dialect processor applies `Visible` (false → element removed), `InnerText`/`InnerHtml`, `Value`, `Checked`, `Disabled`, `Attributes`, select options, and [J-U8] `Text` (Button `value`, Label inner HTML, CheckBox/RadioButton label text), `Enabled=false` → `disabled="disabled"`, `Style` → `style` (`search.aspx.cs:63-71` `Style["display"]`; `admin.aspx.cs:44-45` `reindexLink.Enabled`/`.Text`). Markup values of these properties are the field initializer's (B1), code changes persist (B4) |
 | `name` of a form control | **logical name only** = the control `ID` (judge contract 2): `name="short_desc"`. A declared `name` on a server `input`/`select`/`textarea` other than a radio is **dropped** (ASP.NET renders the `UniqueID`): `edit_bug.aspx:113,239` `name="submit"` → `name="submit_button2"`/`name="submit_button"` (a field named `submit` would shadow `form.submit()`, `EditBug.js:37`) [J-U12]. Radio: `asp:RadioButton` → `name` = `GroupName`, `value` = the declared `value` attribute if present, else `ID` (.NET `RadioButton.ValueAttribute`) [J-U1]; `HtmlInputRadioButton` → declared `name`. Checkbox value `on`. **Inside a DataGrid item** [J-U1]: `name="<GridID>$ctl<NN>$<GroupName or ID>"`, NN = ASP.NET item numbering, two digits, header `ctl01`, first item `ctl02` — the logical name after the last `$` stays `permissions`, and each row is its own radio group (judge `Form` keeps one value list per real name; `S6.savingReporterUserDowngradesReporterPermission` reads the first row's `permissions` = `"3"`). `CheckBoxList` item `i` → `name="x$<i>"` (logical name `<i>`, as the original's `ctl00$body$lstAttachments$<i>`) [J-U10] |
 | `id` of any element | exactly the source `ID`/`id` (no `ctl00_body_` prefix, judge N4). Inside a DataGrid item: `id="<GridID>_ctl<NN>_<ID>"` [J-U1]; list items: `x_<i>` |
+| `asp:ListBox ID=x` [S2-20] | `<select id="x" name="x" bt:control="${page.x}"></select>` — `bt:control` renders `size="<Rows>"` (always; default 4) and `multiple="multiple"` iff `SelectionMode` is `Multiple` (.NET `ListBox`); the template never contains a literal `size`/`multiple` |
 | `asp:DropDownList` / `asp:ListBox` / any list control with `AutoPostBack` [J-U8, replaces the DropDownList-only literal row] | `<select id="x" name="x" bt:control="${page.x}">` — **no literal `onchange` and no literal `__doPostBack` in the template**; the declared `onchange` is a field-initializer attribute and `bt:control` renders `onchange` from the current `AutoPostBack` property: declared script first, then `__doPostBack('x','')` (`<declared>;__doPostBack('x','')`, or `__doPostBack('x','')` alone). `search.aspx:246-247` + `search.aspx.cs:86` (`project.AutoPostBack = false` on GET, persisted, read at `:144`) |
 | `asp:RadioButtonList ID=x` [J-U10] | per item `i`: `<input type="radio" id="x_<i>" name="x" value="<item value>">` + `<label for="x_<i>">text</label>`, rendered by `bt:control` (layout per `RepeatDirection`); posted value → `SelectedValue` |
 | `asp:CheckBoxList ID=x` [J-U10] | per item `i`: `<input type="checkbox" id="x_<i>" name="x$<i>">` + label, rendered by `bt:control`; checked = name present (`send_email.aspx:160`) |
 | `asp:Label ID=x` [J-U10] | `<span id="x" bt:control="${page.x}"></span>`; `Text` → inner HTML (`translate.aspx:165`) |
-| `asp:CheckBox ID=x Text=T` | `<input type="checkbox" id="x" name="x" bt:control="${page.x}"><label for="x" th:text="${page.x.Text()}">T</label>` |
+| `asp:CheckBox ID=x Text=T` | `<input type="checkbox" id="x" name="x" bt:control="${page.x}"><label for="x" th:text="${page.x.Text()}">T</label>`. Declared attributes that are no `CheckBox` property (`class="cb"`, `edit_user.aspx:127,134,148,155,229,247,264,271,278,336`) go, as ASP.NET renders `Attributes`, on a wrapping literal `<span class="cb">…</span>` around the input and label — never on the `<input>` [S2-29] |
 | `asp:Button ID=b Text=T OnClick=…` | `<input type="submit" id="b" name="b" bt:control="${page.b}" value="T">` |
-| `asp:DataGrid` (6 sites/3 files) | `<table id="…" bt:control="${page.MyDataGrid}"></table>`; runtime `DataGrid` renders BoundColumn/HyperLinkColumn/ButtonColumn/**TemplateColumn** and posts commands via `__doPostBack` |
+| `asp:DataGrid` (6 sites/3 files) | `<table id="…" bt:control="${page.MyDataGrid}"></table>`; runtime `DataGrid` renders BoundColumn/HyperLinkColumn/ButtonColumn/**TemplateColumn** and posts commands via `__doPostBack`. All declared properties, styles and columns are in the field initializer (B1 [S2-21]); the template carries only `id` and `bt:control` |
 | `asp:TemplateColumn` `<ItemTemplate>` (`edit_user.aspx:386-401`, `edit_user_permissions2.aspx:163-178`) [J-U1] | runtime `TemplateColumn` (§3) built in the field initializer with an **item factory** lambda that creates the template's controls for one row (`item -> { var none = new RadioButton("none"); none.GroupName("permissions"); none.Text("none"); none.Attributes().set("value", "0"); … item.Add(none); … }`); each `<%# expr %>` property binding becomes a binding lambda over the row's `DataRowView`, run at `DataBind`: `Checked='<%# ((int)((DataRowView)Container.DataItem)["pu_permission_level"] == 0) %>'` → `(item, drv) -> ((RadioButton) item.FindControl("none")).Checked((int) drv.get("pu_permission_level") == 0)`. These `<%# %>` are **not** template expressions; nothing of the ItemTemplate appears in the Thymeleaf file |
 | `<%= expr %>` / `<% Response.Write(expr); %>` where expr is a `String` field or no-arg method of the page, **in element content** (not inside `<script>`/`<style>`, a start tag or an attribute value — those follow the non-element row below) [J-U2] | `<th:block th:utext="${page.expr}"/>` |
 | `<%: expr %>` or `<% Response.Write(HttpUtility.HtmlEncode(expr)); %>`, same condition | `th:text` (decoded text is identical; markup bytes are not judged) |
 | `<%= expr %>` / `<%: expr %>` in element content where `expr` is **not** a `String` field or no-arg page method (`edit_bug.aspx:82,195` `btnet.Util.get_setting(...)`) [S1-35] | a region of its own: `public String __renderN()` writing `Response.Write(Strings.cs(expr))` for `<%=`, `Response.Write(HttpUtility.HtmlEncode(Strings.cs(expr)))` for `<%:`, returning `""` (the "any other code region" row; C8) |
 | Any other code region (`<% … %>` span from an opening `<%` to its brace-balanced end, incl. the literal markup between its blocks) **without** runat=server elements inside | one method `public String __renderN()` (N = 1-based order of the region in the source file) that writes the literal markup and `Response.Write` output **directly to the page's `Response` buffer** (no local `StringWriter`) and returns `""` [C8, replaces the local-writer rule]; template `<th:block th:utext="${page.__renderN()}"/>`. A `Response.End()` inside the region therefore keeps everything written so far (B2 step 8). `<%= e %>` inside → raw write; `<%: e %>` → `HttpUtility.HtmlEncode`. Example: `<% foreach (var r in rows) { %><tr>…</tr><% } %>` → `public String __render3() { for (…) { Response.Write("<tr>…</tr>"); } return ""; }`. Applies to element-content regions only [J-U2] |
 | A top-level code region in a **non-element position** [J-U2] (45 regions/22 files today, inventory tag `TEXT_REGION`): 33 inside `<script>` content (`search.aspx:19-366`, `bugs.aspx:66-67`, `BugList.ascx:128-129`, `MainMenu.ascx:123`, `default.aspx:81`, …), 12 inside a start tag or attribute value (`edit_bug.aspx:19-22,27,50`, `edit_dashboard.aspx:71`, …) | the region becomes `public String __textN()` that **returns** the text it would write — literal text, `Strings.cs(x)` for `<%= x %>`/`Response.Write(x)`, `HttpUtility.HtmlEncode(x)` for `<%: x %>`, built in a local `StringBuilder` — with **no** Response writes (C8's direct write does not apply: Thymeleaf is still evaluating the tag/text node). Placement: (a) inside `<script>`/`<style>`: the **whole element body** (literal JS plus every region, in order) is one method `public String __scriptN()` and the template is `<script …declared attrs… th:utext="${page.__scriptN()}"></script>` (no `th:inline` — it would also rewrite literal `[[`/`[(` in the JS); (b) inside an attribute value: `th:attr="<name>=${page.__textN()}"`, the method returning the **complete** attribute value (literal parts included): `class="custom-collapse <%=id > 0 ? "…" : "" %>"` → `th:attr="class=${page.__textN()}"`. Because `th:attr` HTML-escapes what it is given, a method used in (b)/(c) returns the **unescaped** value: `<%: x %>` and `<%= x %>` both contribute `Strings.cs(x)` and literal parts are copied with their entities decoded (the decoded attribute value equals the original's; only escaping bytes differ, which are not judged); (c) a start-tag region that emits a whole attribute (`edit_bug.aspx:22` `<%: … ? "data-use-fck-editor=''" : "" %>`) → one `th:attr` entry per attribute it can emit, the method returning the value or `null` (= attribute absent). **The value is the one the browser sees [S1-33]:** apply the region's own encoding to the emitted text (`HtmlEncode` for `<%:`), then HTML attribute parsing and entity decoding — `edit_bug.aspx:22` emits `data-use-fck-editor=&#39;&#39;`, so the method returns `"''"` (two apostrophes), not `""`; where that differs from the source's evident intent, add `// BUG(port): <%: encodes the attribute quotes — repro: <input>`. A `Response.End()` in such a region → `TODO(port)` (none today) Scope [J-U2a]: only **top-level** non-element regions get `__textN`/`__scriptN`; a non-element region nested inside an enclosing `foreach`/`if` region is part of that enclosing `__renderN()` and is written directly by it (C8) — 19 such sites today, e.g. `tasks.aspx:161` (inventory rows say which) |
-| A code region whose blocks enclose runat=server elements (`edit_bug.aspx:101-115`) | `th:if="${page.__condN()}"` / `th:each="item : ${page.__itemsN()}"` on the enclosing element; `__condN()` returns the C# condition |
+| A code region whose blocks enclose runat=server elements (`edit_bug.aspx:101-115`) | `th:if="${page.__condN()}"` / `th:each="item : ${page.__itemsN()}"` on the enclosing element; `__condN()` returns the C# condition. **Unbalanced or implicitly closed source markup [S2-26]** (`search.aspx:202-206` `<tr><td><tr>`, `:265-279` one `</td>` closing either cell across `<% if (show_udf) %>`; `edit_user.aspx:215,348-357`): the markup is copied **literally** (no tags added, removed or moved), and the `th:if`/`th:each` goes on the **minimal enclosing element** that lies wholly inside the region — or on a `<th:block>` wrapping exactly the region's markup when no single element does. Thymeleaf/AttoParser auto-balancing of such markup is accepted and not judged; no per-page `TODO` |
+| Control `ID` that is a SpEL operator word (`and`, `or`, `not`, `eq`, `ne`, `lt`, `gt`, `le`, `ge`, `div`, `mod`, `instanceof`, `matches`, `between`, `new`, `true`, `false`, `null`, `T`) [S2-27] | bound with the indexer form `${page['<ID>']}` everywhere (`bt:control`, `th:*`): `search.aspx` `${page['and']}`, `${page['or']}`; every other ID keeps `${page.<ID>}` |
 | `<%# Eval("x") %>` (8 sites/2 files) outside a DataGrid `TemplateColumn` (inside one: the TemplateColumn row) | `th:text`/`th:utext` over the bound row inside `th:each` |
 
 **Host class and numbering of region methods** [J-U3]: `__renderN`, `__textN`,
@@ -870,7 +934,11 @@ server form via the runtime fragment `~{runtime/form :: hidden}`.
 all kinds, the 1-based order of top-level regions in that file (`__scriptN`
 takes the N of the first region in its `<script>`; the later regions of the
 same `<script>` still consume their numbers, so the next top-level region
-continues the count [S1-31]). **Regions nested in a `__condN`/`__itemsN`
+continues the count [S1-31]). **A brace-balanced span inside
+`<script>`/`<style>` content** (`<% … { %> … <%= … %> … <% } %>`,
+`search.aspx:23-138`, with `<%= %>` at :129-135) is **one** region for numbering: the `<%= %>` and
+`<% %>` blocks nested in it consume no top-level number, and `__scriptN`
+writes them inline in order [S2-23]. **Regions nested in a `__condN`/`__itemsN`
 region [S1-31]** (`edit_bug.aspx:195` inside region 12, `:191-203`): each
 becomes `__render<N>_<k>()` (or `__text<N>_<k>()`/`__script<N>_<k>()` for a
 non-element position), N = the enclosing region's number, k = 1-based order
@@ -1010,13 +1078,13 @@ batches those between Step 3 batches. Contents (exhaustive):
 
 | Package | Classes |
 |---|---|
-| `btnet.runtime` | `Convert`, `Int32`, `Decimal`, `DateTimes` (`Parse`, `ticks`), `Strings` (`cs`, `Format`, `IsNullOrEmpty`, `Split`, `Trim*`, `IndexOf`, `join`, `CULTURE_COMPARER`, `ToStringStrict` [J-C17], `ToUpper`, `ToLower` [S1-8]), `StringSplitOptions` (int constants, J-C5), `StringComparison` (enum) [S1-21], `DotNetFormat`, `CultureInfo` (`EN_US`, `InvariantCulture`, `NumberFormat()`), `NumberFormatInfo` [S1-15], `NumberStyles` (int constants, J-C5), `DotNetRegex` (+`RegexOptions` (int constants, J-C5), `Match`, `MatchEvaluator`), `Ref<T>`, `Nulls` (`coalesce` ×2, J-C7), `DBNull`, `ClrTypes` (`Byte`, `SByte`, `UInt16`, `UInt32`, `UInt64`) [S1-7], `Environment`, `Encoding` (`UTF8`, `Default` = windows-1252, J-C2; `GetPreamble` [S1-21]), `Console` [S1-20], `Threads` (`Sleep`, `create`, `start`, `startTask`, `runAsync` [S1-2]), `Timers` (`Interval`, `task`) [S1-14], `Stopwatch`, `Collections2` (`indexer`, `set`, `ContainsKey`, `Add` [S1-28, S1-29]), `NameValueCollection`, `StringDictionary` [J-C4], `Processes` (`SplitArgs`, `command`), `Exceptions` (`wrap`, `Message` [S1-10], `StackTrace`, `baseOf`, `dotNetToString`, `rethrowIfEnd`), `AppPaths` (`executable`, `MapPath`, `ConfigurationFile` [S1-17]), `EventArgs`, `ElapsedEventArgs` [S1-20], `DotNetException`, exception classes (`FormatException`, `OverflowException`, `InvalidCastException`, `ArgumentException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `IndexOutOfRangeException`, `KeyNotFoundException`, `ConfigurationErrorsException`, `SecurityException`, `FileNotFoundException`, `DirectoryNotFoundException` [N7], `IOException` [J-C6], `InvalidOperationException`, `UriFormatException`, `TaskCanceledException` [S1-3, S1-5]) |
+| `btnet.runtime` | `Convert`, `Int32`, `Decimal`, `DateTimes` (`Parse`, `ticks`), `Strings` (`cs`, `Format`, `IsNullOrEmpty`, `Split`, `Trim*`, `IndexOf`, `join`, `CULTURE_COMPARER`, `ToStringStrict` [J-C17], `ToUpper`, `ToLower` [S1-8], `PadLeft`, `PadRight` [S2-8]), `NlsComparer` [S2-1], `StringSplitOptions` (int constants, J-C5), `StringComparison` (enum) [S1-21], `DotNetFormat`, `CultureInfo` (`EN_US`, `InvariantCulture`, `NumberFormat()`), `NumberFormatInfo` [S1-15], `NumberStyles` (int constants, J-C5), `DotNetRegex` (+`RegexOptions` (int constants, J-C5), `Match`, `MatchEvaluator`, `Group`, `GroupCollection` [S2-6]), `Ref<T>`, `Nulls` (`coalesce` ×2, J-C7), `DBNull`, `ClrTypes` (`Byte`, `SByte`, `UInt16`, `UInt32`, `UInt64`) [S1-7], `Environment`, `Encoding` (`UTF8`, `Default` = windows-1252, J-C2; `GetPreamble` [S1-21]; `OEM` = code page 437 [S2-4]), `Console` [S1-20], `Threads` (`Sleep`, `create`, `start`, `startTask`, `runAsync` [S1-2]), `Timers` (`Interval`, `task`) [S1-14], `Stopwatch`, `Collections2` (`indexer`, `set`, `ContainsKey`, `Add` [S1-28, S1-29]), `NameValueCollection`, `StringDictionary` [J-C4], `Processes` (`SplitArgs`, `command`, `start`, `ReadToEnd` [S2-4]), `Exceptions` (`wrap`, `Message` [S1-10], `StackTrace`, `baseOf`, `dotNetToString`, `rethrowIfEnd`), `AppPaths` (`executable`, `MapPath`, `ConfigurationFile` [S1-17]), `EventArgs`, `ElapsedEventArgs` [S1-20], `DotNetException`, exception classes (`FormatException`, `OverflowException`, `InvalidCastException`, `ArgumentException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `IndexOutOfRangeException`, `KeyNotFoundException`, `ConfigurationErrorsException`, `SecurityException`, `FileNotFoundException`, `DirectoryNotFoundException` [N7], `IOException` [J-C6], `InvalidOperationException`, `UriFormatException`, `TaskCanceledException` [S1-3, S1-5], `Win32Exception` [S2-4], `NotSupportedException` [S2-19]) |
 | `btnet.runtime.data` | `DataSet`, `DataTable`, `DataTableCollection`, `DataColumn`, `DataColumnCollection`, `DataRow`, `DataRowCollection`, `DataView`, `DataRowView`, `DataTableSerializer`, `DuplicateNameException` [S1-19], `SqlConnection`, `SqlCommand`, `SqlParameter`, `SqlParameterCollection`, `SqlDataAdapter`, `SqlDataReader`, `SqlDbType`, `CommandBehavior`, `SqlException`, `SqlBatch`, `DbContext`, `DbSet<T>`, `EntityTypeConfiguration<T>`, `DbModelBuilder` |
 | `btnet.runtime.config` | `ConfigurationManager`, `Settings`, `WebConfigToProperties` (one-time generator), `BtnetApplication` (Spring Boot main, MVC config: case-insensitive paths, resource resolver, dialect, filters), `JsonConfig` |
 | `btnet.runtime.io` | `File` (+`AppendText` [N7]), `Directory`, `Path`, `StreamReader`, `StreamWriter` [N7], `Stream`, `MemoryStream`, `FileStream`, `FileMode`, `FileAccess`, `FileShare` [J-C6], `XmlTextReader` (lazy; +`get(attr)` [J-C4]), `XmlNodeType` [J-C4] |
 | `btnet.runtime.net` [J-C2] | `FormUrlEncodedContent` (`encode(Map)`), `HttpResponses` (`EnsureSuccessStatusCode`), `HttpRequestException`, `HttpClients` (`newBuilder`), `HttpRequests` (`newBuilder`, `send`) [S1-3, S1-5], `ServicePointManager`, `ICertificatePolicy`, `ServicePoint`, `WebRequest` [S1-4], `Uri` [S1-21] |
 | `btnet.runtime.web` | `HttpContext` (`Current()`), `HttpRequest`, `HttpResponse`, `HttpServerUtility`, `HttpSessionState`, `HttpApplicationState`, `ApplicationState` (`get()`), `SelectListItem`, `UrlHelper`, `RequestContext` [N2], `HttpRuntime` (`Cache()`), `HttpCookie`, `HttpPostedFile`, `HttpUtility`, `HttpApplication`, `HttpException`, `HttpRequestValidationException`, `Page`, `MasterPage`, `UserControl`, `ValidateRequest` (annotation), `ResponseEndException`, `TransferException`, `RedirectException`, `ViewStateCodec`, `RequestContextFilter`, `LowercaseResourceResolver`, `Scripts`, `BundleCollection`, `ScriptBundle`, `ApiController`, `ApiBody`, `FromUri`, `Required` (annotation), `ModelStateDictionary` |
-| `btnet.runtime.web.ui` | `Control`, `HtmlControl`, `HtmlGenericControl`, `HtmlAnchor`, `HtmlForm`, `HtmlHead`, `HtmlImage`, `HtmlInputText`, `HtmlInputPassword`, `HtmlInputHidden`, `HtmlInputCheckBox`, `HtmlInputRadioButton`, `HtmlInputSubmit`, `HtmlInputButton`, `HtmlInputFile`, `HtmlSelect`, `HtmlTextArea`, `DropDownList`, `ListBox`, `CheckBox`, `CheckBoxList`, `RadioButton`, `Button`, `Label`, `Panel`, `HyperLink`, `LinkButton`, `RadioButtonList` [J-U10], `DataGrid` (+ columns incl. `TemplateColumn` [J-U1], `DataGridItem`, `DataGridCommandEventArgs`), `ListControl` (base of the list controls, J-U18), `ListItem`, `ListItemCollection`, `AttributeCollection`, `CssStyleCollection`, `BtnetDialect` (`bt:control`); templates `templates/runtime/form.html` |
+| `btnet.runtime.web.ui` | `Control`, `HtmlControl`, `HtmlGenericControl`, `HtmlAnchor`, `HtmlForm`, `HtmlHead`, `HtmlImage`, `HtmlInputText`, `HtmlInputPassword`, `HtmlInputHidden`, `HtmlInputCheckBox`, `HtmlInputRadioButton`, `HtmlInputSubmit`, `HtmlInputButton`, `HtmlInputFile`, `HtmlSelect`, `HtmlTextArea`, `DropDownList`, `ListBox`, `CheckBox`, `CheckBoxList`, `RadioButton`, `Button`, `Label`, `Panel`, `HyperLink`, `LinkButton`, `RadioButtonList` [J-U10], `HtmlTableCell`, `HtmlTableRow`, `HtmlTable` [S2-19], `ListSelectionMode` [S2-20], `DataGrid` (+ columns `BoundColumn`, `HyperLinkColumn`, `ButtonColumn` (+`ButtonColumnType`), `TemplateColumn` [J-U1], `DataGridColumnCollection`, `TableItemStyle` [S2-21], `DataGridItem`, `DataGridCommandEventArgs`), `ListControl` (base of the list controls, J-U18), `ListItem`, `ListItemCollection`, `AttributeCollection`, `CssStyleCollection`, `BtnetDialect` (`bt:control`); templates `templates/runtime/form.html` |
 | `btnet.runtime.security` | `SecurityConfig`, `ClaimsIdentity`, `ClaimsPrincipal`, `Claim`, `ClaimTypes`, `IIdentity`, `IPrincipal`, `IOwinContext`, `AuthenticationManager`, `IAppBuilder`, `CookieAuthenticationOptions`, `PathString` [J-C14], `Rfc2898DeriveBytes` |
 | `btnet.runtime.mail` (+`.pop`) | `SmtpClient`, `MailMessage`, `MailAddress`, `Attachment`, `btnet.runtime.mail.MailPriority` (enum `Normal`, `Low`, `High`; always written fully qualified, §4 [J-C15]); `pop.Pop3Client`, `pop.Message`, `pop.MessagePart`, `pop.MessageHeader`, `pop.RfcMailAddress`, OpenPop exception classes [S1-48] |
 | `btnet.runtime.search` | `ElasticClient` (thin HTTP wrapper; `Search`, `Index` [J-C10]), `SearchResponse`, `Hit`, `Highlight` [N1] (all top-level) |
@@ -1031,11 +1099,12 @@ the runtime author implements exactly this, translators rely on it):
   start > s.length()` → `ArgumentOutOfRangeException("startIndex")`; else
   `s.indexOf(v, start)` (ordinal). Existing `IndexOf(s, v, StringComparison)`
   overload unchanged.
-- `Strings.CULTURE_COMPARER` [C20, C31]: `Comparator<String>` =
-  `java.text.Collator.getInstance(Locale.US)` at `TERTIARY` strength (case-
-  and accent-sensitive, lower-case before upper-case on otherwise-equal
-  strings, like .NET `StringComparer.CurrentCulture` en-US); `null` sorts
-  first. Replaces the name `CURRENT_CULTURE` (same object).
+- `Strings.CULTURE_COMPARER` [C20, C31]: the one culture `Comparator<String>`;
+  replaces the name `CURRENT_CULTURE` (same object). **Its definition is
+  `NlsComparer`, round-2 block below [S2-1]**; the earlier
+  `java.text.Collator(Locale.US)` definition is withdrawn (it ignores the
+  space, so `[inactive, info, in progress]` instead of .NET's
+  `[in progress, inactive, info]`).
 - `DateTimes.ticks(LocalDateTime dt)` [C20]: `long` = 100 ns intervals since
   0001-01-01T00:00:00 (= .NET `DateTime.Ticks`, `Kind` ignored).
   `DateTimes.Parse` failure → `FormatException("String was not recognized as a valid DateTime.")` [C14].
@@ -1501,6 +1570,148 @@ in brackets):
   declared **without** `throws`; `Context` inherits it, so `try (Context
   context = new Context())` compiles without a catch.
 
+**Exact semantics of the members added at stress-test round 2** (2026-11-04;
+`[S2-n]` ids; the runtime author implements exactly this):
+
+- `NlsComparer` / `Strings.CULTURE_COMPARER` [S2-1] — emulates Windows NLS
+  `CompareString` for en-US with no flags (.NET Framework 4.5
+  `StringComparer.CurrentCulture`, `Comparer<string>.Default`,
+  `String.Compare(a, b)`). `null` sorts before every string; two `null`s are
+  equal. Both strings are first canonically decomposed (NFD); characters of
+  category Cf (format, zero-width) are ignored at every level. Levels — a
+  later level is consulted only when every earlier level is equal over the
+  whole string:
+  1. *Primary.* Hyphen-minus U+002D, apostrophe U+0027 and soft hyphen
+     U+00AD are skipped ("word sort"). Every other character gets a weight
+     in three groups ordered **symbols < digits < letters**: symbols = white
+     space (the space U+0020 included — it is *not* ignorable), punctuation,
+     symbol and control characters; digits = decimal digits, by digit value
+     (character by character: `"10" < "9"`); letters = alphabetic by base
+     letter, case- and accent-insensitive (`a` = `A` = `á`), Latin `a`–`z`
+     first, other scripts after them in code-point order of the lower-case
+     base letter. Within symbols the space sorts first, then the Windows
+     default-table order (runtime-only `TODO(port)`: pin that table from the
+     Windows sort-weight data; until then by code point). Weights are
+     compared in sequence; a primary prefix sorts first.
+  2. *Secondary* (accents): the combining marks of each base character,
+     unaccented before accented.
+  3. *Tertiary* (case): at the first case difference, lower-case before
+     upper-case (`"apple" < "Apple"`).
+  4. *Word-sort tie-break:* the skipped characters of level 1 — at the first
+     difference, the string without a skipped character there sorts first
+     (`"ab" < "a-b"`).
+  Strings equal at all four levels compare `0` (a `TreeMap` merges them as
+  .NET `SortedDictionary` does). Acceptance vectors (runtime unit tests;
+  verify on the original when D-001 lifts): `"in progress" < "inactive" <
+  "info"`, `"New York" < "Newark"`, `"New Jersey" < "New York" < "Newark" <
+  "Newton"`, `"a-z" > "ab"`, `"ab" < "a-b"`, `"apple" < "Apple"`, `"9" >
+  "10"`, `"résumé" > "resume"`, `"é"` (U+00E9) `== "e\u0301"`.
+  `java.text.Collator` is BANNED in translated code and in the runtime.
+  `DataView` string sorting uses the same comparer without level 3
+  (`DataTable.CaseSensitive` defaults to false).
+- `HttpResponse` writes [S2-2]: `Write(String s)` — `s == null` writes
+  nothing (.NET `HttpWriter.Write(string)`); `Write(Object o)` =
+  `Write(Strings.cs(o))` (so `null`/`DBNull` write nothing); `Write(char
+  c)` writes the char. The same holds for a writer-backed `new
+  HttpResponse(Writer)`.
+- `HttpResponse.WriteFile(String path)` [S2-7]: on the request response it
+  appends the file's bytes unchanged; on a writer-backed `new
+  HttpResponse(Writer)` it decodes the whole file with `Encoding.Default`
+  (windows-1252, no BOM detection) and writes the chars (.NET
+  `WriteStreamAsText`; runtime-only `TODO(port)`: confirm the BOM handling
+  in the reference source). Missing file → `FileNotFoundException("Could
+  not find file '<path>'.")`.
+- `Processes` [S2-4]: `Process start(ProcessBuilder pb)` — sets
+  `pb.redirectInput` from the OS null device (`NUL` on Windows, `/dev/null`
+  elsewhere), then `pb.start()`; an `IOException` from `start()` →
+  `Win32Exception` with .NET's text: `"The system cannot find the file
+  specified"` (`NativeErrorCode()` 2) for a missing executable, `"The
+  directory name is invalid"` (267) for a bad working directory, else the
+  JDK message (runtime-only `TODO(port)`: other error codes). `String
+  ReadToEnd(InputStream in, Encoding e)` — reads to EOF and decodes like a
+  .NET `StreamReader(in, e, detectEncodingFromByteOrderMarks: true)`: at the
+  start of the stream `EF BB BF` → UTF-8, `FE FF` → UTF-16BE, `FF FE` →
+  UTF-16LE (`FF FE 00 00` → UTF-32LE), `00 00 FE FF` → UTF-32BE; the BOM
+  (and the preamble of `e`) is stripped; otherwise decoded with `e`
+  (malformed input → U+FFFD); an exhausted stream → `""`. `IOException` →
+  `Exceptions.wrap`. `Encoding.OEM` = IBM437 (every byte maps to one char).
+  `Win32Exception extends DotNetException` (.NET name
+  `System.ComponentModel.Win32Exception`, `int NativeErrorCode()`).
+- `DataView` iteration [S2-5]: `DataView implements Iterable<DataRowView>`;
+  `iterator()` works on a copy of the view's row list taken when it is
+  created, so `DataRow.set` during the loop never changes which rows the
+  loop visits or their order. `dv.Count()`, `dv.get(i)` and the sort index
+  stay live (re-evaluated after a row change).
+- `Group`, `GroupCollection` (`btnet.runtime`) [S2-6]: `Match extends
+  Group` (as .NET); `Group`: `String Value()`, `boolean Success()`, `int
+  Index()`, `int Length()`, `toString()` = `Value()`. `Match.Groups()`
+  returns a `GroupCollection` with `Group get(int n)`, `Group get(String
+  name)`, `int Count()`, `Iterable<Group>`; group 0 = the match; numbering
+  as .NET (unnamed groups by position of their opening parenthesis, then
+  named groups in order of first appearance; a name that is a number is
+  that number). A group that did not participate, or an index/name that
+  does not exist → an unsuccessful `Group` with `Value()` `""`, `Index()`
+  and `Length()` 0 — never `null`.
+- `DotNetRegex.Split` [S2-16]: instance and static overloads return
+  `String[]`.
+- `Strings.PadLeft(String s, int totalWidth[, char c])` /
+  `Strings.PadRight(…)` [S2-8]: `s == null` → `NullPointerException`;
+  `totalWidth < 0` → `ArgumentOutOfRangeException("Non-negative number
+  required.\r\nParameter name: totalWidth")`; `s.length() >= totalWidth` →
+  `s`; else `s` padded on the left (right) with `c` (default `' '`) to
+  `totalWidth` UTF-16 units.
+- `Exceptions.wrap(Throwable e)` [S2-15] — the only overload, returns
+  `RuntimeException` for `throw Exceptions.wrap(e);`: a `RuntimeException`
+  → itself; an `Error` → rethrown; `InterruptedException` → re-sets the
+  interrupt flag (S1-22), then `DotNetException("Thread was interrupted
+  from a waiting state.", e)`; `java.sql.SQLException` → `SqlException`;
+  `java.io.FileNotFoundException`/`NoSuchFileException` → runtime
+  `FileNotFoundException`; `UncheckedIOException` → `wrap` of its cause;
+  any other `java.io.IOException` → runtime `IOException`; anything else →
+  `DotNetException(message, e)`.
+- `HtmlTableCell`, `HtmlTableRow`, `HtmlTable` (`btnet.runtime.web.ui`)
+  [S2-19]: constructors `(String id)`; all three have `Visible`,
+  `Attributes()`, `Style()` (as `HtmlGenericControl`); `HtmlTableCell`
+  also has `InnerText`/`InnerHtml` (it is an `HtmlContainerControl`).
+  `HtmlTableRow`/`HtmlTable` provide no `InnerText`/`InnerHtml` (.NET throws
+  `NotSupportedException`; no site uses them — `*_tr` fields only set
+  `Visible`). `bt:control` renders them like `HtmlGenericControl` (removed
+  when invisible; the template's children are the content).
+  `NotSupportedException extends DotNetException`.
+- `ListBox`, `ListSelectionMode` [S2-20]: `ListBox Rows(int)` / `int
+  Rows()` (default 4), `ListBox SelectionMode(ListSelectionMode)` /
+  `SelectionMode()` (default `Single`); `enum ListSelectionMode { Single,
+  Multiple }`. Rendering: `size="<Rows>"` always, `multiple="multiple"`
+  iff `Multiple`; posted values select every matching item for `Multiple`,
+  the first for `Single`.
+- `DataGrid` declarative members [S2-21]: fluent `BorderColor(String)`,
+  `CssClass(String)`, `CellPadding(int)`, `AutoGenerateColumns(boolean)`;
+  `TableItemStyle HeaderStyle()`, `TableItemStyle ItemStyle()` (`CssClass(String)`);
+  `DataGridColumnCollection Columns()` (`Add(DataGridColumn<?>)`, column
+  order = `Add` order). Columns: `BoundColumn(String headerText, String
+  dataField)`; `HyperLinkColumn` (`HeaderText`, `Text`,
+  `DataNavigateUrlField`, `Target`); `ButtonColumn` (`HeaderText`,
+  `ButtonType(ButtonColumnType)`, `Text`, `CommandName`); every column has
+  `Visible(boolean)` and `HeaderText(String)`; setters return the column.
+  Rendered as .NET 4.5 renders a `DataGrid` (`<table class="datat"
+  cellspacing="0" cellpadding="3" rules="all" border="1" id="…"
+  style="border-color:Black;border-collapse:collapse;">`, header row with
+  the `HeaderStyle` class, item rows with the `ItemStyle` class; markup
+  bytes are not judged). `AutoGenerateColumns(true)` → runtime-only
+  `TODO(port)` (no site uses it).
+- `DropDownList` selection [S2-22]: `SelectedItem()` returns the
+  lowest-index selected item; rendering a `DropDownList` with more than one
+  selected item throws `HttpException("Cannot have multiple items selected
+  in a DropDownList.")` (.NET, `edit_user.aspx.cs:71-73`). Translators do
+  nothing.
+- `SqlParameterCollection.Add`/`AddRange` [S2-36]: a `SqlParameter` already
+  in another command's collection → `ArgumentException("The SqlParameter is
+  already contained by another SqlParameterCollection.")` (SqlClient); a
+  `null` → `ArgumentException("The SqlParameterCollection only accepts
+  non-null SqlParameter type objects.")`.
+- DataSet family [S2-37]: `DataColumnCollection.Count()`; `DataRow.set(int
+  index, Object v)` (same coercion as `set(String, …)`, J-C11).
+
 Every escape-hatch use in translated code is visible: a runtime call, or one
 of the markers below. Marker formats (load-bearing, one each):
 
@@ -1587,6 +1798,17 @@ is a finding for the human.
   `Exceptions.Message(e)` (S1-10), and `BUG(port)` rows were added for
   `POP3Main.cs` L278 (D38), L566 (D41), L718; each is tagged `[S1-n]` in
   its evidence.
+- Round 2 corrections [S2-38]: `version_control.cs` L32, L94 rewritten to
+  the §2A Process row (`Processes.command`, `Processes.start`,
+  `Processes.ReadToEnd`, OS-dependent deadlock text; S2-4);
+  `print_bug.cs` L948 (S1-46 wrapping), L986/L1004 and L19/L28
+  (`private`, S2-12); `Controls/BugList.ascx` L128 (`__scriptN` evidence,
+  `Strings.cs` contribution); `private` added to the default-private member
+  rows of `bug_list.cs` L66, `util.cs` L37/L41, `version_control.cs` L175,
+  `whatsnew.cs` L17, `POP3Main.cs` L33/L65 (S2-12). Rows added for
+  `print_bug.cs` L575 (`Debug.Assert`, S2-9) and L995 (`m.Groups[1]`, S2-6).
+  Any other inventory row that shows a default-private C# member without
+  `private` is superseded by S2-12 (rule rows win).
 
 ## 6. Per-file obligations
 
@@ -1594,7 +1816,10 @@ is a finding for the human.
    `// Source: <source path>` — the repo-relative path of the source file,
    `src/BugTracker.Web/<path>` or `src/btnet_service/<file>` [S1-41] (all source files merged into it,
    e.g. `edit_bug.aspx + edit_bug.aspx.cs + edit_bug.aspx.designer.cs`).
-   Templates: `<!-- Source: src/BugTracker.Web/<path>.aspx -->` after the doctype.
+   Templates: `<!-- Source: src/BugTracker.Web/<path>.aspx -->` after the doctype;
+   in a template without a doctype, as the first node inside the first
+   `th:ref` block (content page) or inside the `th:fragment` element
+   (`.ascx` fragment) [S2-25].
 2. **Completeness:** every type, field, property, method, constructor and
    constant of the source unit is translated, including private and unused
    ones (dead code stays). SQL text byte-identical except §0.1. Every literal
@@ -1603,7 +1828,9 @@ is a finding for the human.
    `//TODO: This can probably be handled …` (`util.cs:81`) →
    `// (source TODO) This can probably be handled …` — and `FIXME`/`HACK`
    likewise as `(source FIXME)`/`(source HACK)`; the rest of the text is
-   unchanged, and these never count in `todos=N` [S1-25].
+   unchanged, and these never count in `todos=N` [S1-25]. The
+   `<auto-generated>` header and the `<summary>`/`<remarks>` boilerplate of
+   `*.designer.cs` files are not copied [S2-31].
 3. **Markers** only in the §3 formats; no other TODO/FIXME styles (copied
    source comments: item 2) [S1-25].
 4. **Scope:** write only the manifest target and its template(s). Never edit
@@ -1636,3 +1863,4 @@ is a finding for the human.
 | D-005 | 2026-11-03 | Rulebook amendments C1–C35 (`migration/inventory/rulebook-conflicts.md`) applied by the orchestrator at the 02 gate under the human's standing mandate, instead of by the human (standing rule 1: amendments are applied between batches by the human). Applied by a rulebook agent on the rulebook-tier model; C13/C23 are duplicates (C7/C21), C17 applied as corrected | Human, standing mandate (`PROGRESS.md`) |
 
 - **D-007 (2026-11-04, under the standing mandate):** the [S1-2] crash rule also applies to `port/web` background threads (`new Thread`/`Threads.start`), as .NET terminates `w3wp.exe` on an unhandled thread exception. IIS restarts the worker process automatically; Spring Boot does not, so **deployment must run `port/web` under a restarting supervisor** (systemd `Restart=always`, a container restart policy, …). Recorded as an operational requirement in the handoff (prompt 06).
+- **D-008 (2026-11-04, under the standing mandate):** Prompt 03 stop condition met at section level only (§3, §2A General/Strings/Processes got additions, no [S1-n] rule re-indicted); under the standing mandate the orchestrator closed the stress test after round 2 and proceeded to the fan-out.

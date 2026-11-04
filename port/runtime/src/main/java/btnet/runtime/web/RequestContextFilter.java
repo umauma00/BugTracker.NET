@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.BufferedReader;
@@ -34,10 +36,25 @@ import java.util.Map;
  * 50 MB {@code maxRequestLength}) so that {@code Request.Form} can be parsed exactly as
  * ASP.NET does and {@code Request.InputStream} replays it; downstream code sees a wrapper
  * whose {@code getInputStream()} replays the body and whose {@code getParameter*} merges the
- * query string and the url-encoded form. It also runs {@link HttpApplication#ensureStarted()}
- * before the first request.
+ * query string and the url-encoded form. {@code Application_OnStart} runs at
+ * {@code ApplicationReadyEvent} (and, as a fallback, before the first request).
  */
-public class RequestContextFilter extends OncePerRequestFilter {
+public class RequestContextFilter extends OncePerRequestFilter implements ApplicationListener<ApplicationReadyEvent> {
+
+    public RequestContextFilter() {
+    }
+
+    /**
+     * B6: at {@code ApplicationReadyEvent} (delivered because {@code BtnetApplication} registers this
+     * filter as a bean) take the webroot from the Spring property {@code btnet.webroot} if set, then run
+     * {@code Global.Application_OnStart} once ({@link HttpApplication#startUp()}).
+     */
+    @Override
+    public void onApplicationEvent(ApplicationReadyEvent event) {
+        String root = event.getApplicationContext().getEnvironment().getProperty("btnet.webroot");
+        if (root != null && !root.isEmpty()) HttpServerUtility.setWebRoot(root);
+        HttpApplication.startUp();
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

@@ -1,13 +1,13 @@
 package btnet.runtime.web;
 
+import btnet.runtime.AppPaths;
+
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +15,8 @@ import java.util.List;
  * .NET {@code System.Web.HttpServerUtility} ({@code Server}, RULEBOOK §2A/§2B B3).
  *
  * <ul>
- * <li>{@link #MapPath(String)}: virtual → physical path under the webroot (system
- * property / Spring property {@code btnet.webroot}, env {@code BTNET_WEBROOT}, default
+ * <li>{@link #MapPath(String)}: virtual → physical path under the webroot
+ * ({@code AppPaths.WebRoot()}: {@code btnet.webroot}, env {@code BTNET_WEBROOT}, default
  * {@code port/web/webroot}); {@code ~/x} and {@code /x} are app-rooted, other paths are
  * relative to the current request directory; {@code \} → {@code /}; {@code MapPath(null)}
  * → the webroot (no trailing separator); a {@code ..} above the root →
@@ -45,34 +45,16 @@ public class HttpServerUtility {
 
     // ------------------------------------------------------------------ paths
 
-    private static volatile String webRoot;
-
-    /** The physical application root (absolute, {@code /}-separated, no trailing slash). */
+    /** The physical application root (= {@code AppPaths.WebRoot()}: absolute, {@code /}-separated). */
     public static String WebRoot() {
-        String w = webRoot;
-        if (w == null) {
-            String p = System.getProperty("btnet.webroot");
-            if (p == null || p.isEmpty()) p = System.getenv("BTNET_WEBROOT");
-            if (p == null || p.isEmpty()) {
-                String dir = System.getProperty("user.dir");
-                File local = new File(dir, "webroot");
-                p = local.isDirectory() ? local.getPath() : new File(dir, "port/web/webroot").getPath();
-            }
-            w = Paths.get(p.replace('\\', '/')).toAbsolutePath().normalize().toString().replace('\\', '/');
-            if (w.length() > 1 && w.endsWith("/")) w = w.substring(0, w.length() - 1);
-            webRoot = w;
-        }
+        String w = AppPaths.WebRoot().replace('\\', '/');
+        while (w.length() > 1 && w.endsWith("/")) w = w.substring(0, w.length() - 1);
         return w;
     }
 
-    /** Runtime: sets the webroot (e.g. from the Spring property {@code btnet.webroot}). */
+    /** Sets the webroot (Spring property {@code btnet.webroot}); delegates to {@code AppPaths.SetWebRoot}. */
     public static void setWebRoot(String path) {
-        webRoot = null;
-        if (path != null && !path.isEmpty()) {
-            String w = Paths.get(path.replace('\\', '/')).toAbsolutePath().normalize().toString().replace('\\', '/');
-            if (w.length() > 1 && w.endsWith("/")) w = w.substring(0, w.length() - 1);
-            webRoot = w;
-        }
+        if (path != null && !path.isEmpty()) AppPaths.SetWebRoot(path);
     }
 
     /**

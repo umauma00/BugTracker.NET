@@ -193,7 +193,7 @@ public class HttpResponse {
     public Stream OutputStream() {
         if (outputStream == null) {
             flushPendingSurrogate();
-            outputStream = new MemoryStream(new byte[0]);
+            outputStream = new MemoryStream();
             drained = 0;
         }
         return outputStream;

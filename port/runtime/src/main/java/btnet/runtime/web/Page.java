@@ -5,6 +5,7 @@ import btnet.runtime.Exceptions;
 import btnet.runtime.NameValueCollection;
 import btnet.runtime.security.IPrincipal;
 import btnet.runtime.web.ui.Control;
+import btnet.runtime.web.ui.HtmlForm;
 import btnet.runtime.web.ui.HtmlHead;
 
 import jakarta.servlet.ServletContext;
@@ -26,7 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,24 +51,22 @@ import java.util.Map;
  * {@code IsPostBack} = it holds {@code __VIEWSTATE} or {@code __EVENTTARGET} and this is
  * not a {@code Server.Transfer} target.</li>
  * <li>{@link #OnPreInit(EventArgs)} (BasePage authorization).</li>
- * <li>{@code Page_Init} of user controls (inner first), the master, then the page;
- * {@link IStateManager#TrackViewState()}; on postback: decode {@code __VIEWSTATE}
- * ({@link ViewStateCodec}, MAC with {@code ViewStateUserKey}),
- * {@link IStateManager#LoadViewState(Object)}, then
- * {@link IPostBackDataHandler#LoadPostData(String, NameValueCollection)}.</li>
+ * <li>{@code Page_Init} of user controls (inner first, the master among them), then the page;
+ * on postback: decode {@code __VIEWSTATE} ({@link ViewStateCodec}, MAC with
+ * {@code ViewStateUserKey}), {@code Control.LoadViewStateTree}, then
+ * {@code Control.LoadPostDataTree} (the web.ui contract, see {@code Control}).</li>
  * <li>{@code Page_Load} of the page, the master, then user controls in markup order.</li>
- * <li>Postback: {@link IPostBackDataHandler#RaisePostDataChangedEvent()}, then one
- * {@link IPostBackEventHandler} (see its Javadoc).</li>
- * <li>Save view state ({@link #ViewStateValue()}), render the template with model
- * {@code page} and {@code master} <b>into the Response buffer</b> (after whatever code
- * wrote), and send the buffer.</li>
+ * <li>Postback: {@code Control.RaisePostBackEventTree} (the posted submit button, else the
+ * {@code __EVENTTARGET} control).</li>
+ * <li>{@code Control.SaveViewStateTree} → {@link ViewStateCodec} ({@link #ViewStateValue()},
+ * model variable {@code viewState} for {@code templates/runtime/form.html}); render the
+ * template with model {@code page}, {@code master}, {@code viewState} <b>into the Response
+ * buffer</b> (after whatever code wrote), and send the buffer.</li>
  * <li>{@link ResponseEndException} (End / Redirect / Transfer, also from inside the template)
  * → the buffer is sent as it stands; any other exception → {@code Application_Error}
  * ({@code Server.GetLastError()}) and HTTP 500.</li>
  * </ol>
- * Registered controls are addressed by registration order in view state, so the field
- * declaration order of a page class must not change between the GET and the postback
- * (it cannot: it is one class).
+ * Controls are keyed in view state by {@code Control.ViewStateKey()} (their UniqueID).
  */
 public class Page implements ApplicationContextAware {
     private static final Logger log = LoggerFactory.getLogger(Page.class);
@@ -146,7 +144,7 @@ public class Page implements ApplicationContextAware {
     /** The {@code <title>} text: {@code Header.Title} if code set one, else the markup default. */
     public String TitleOr(String markupTitle) {
         String t = Header.Title();
-        return t == null ? markupTitle : t;
+        return t == null || t.isEmpty() ? markupTitle : t;
     }
 
     /** {@code th:action} of a server form: the executing page's path plus the request's query string (B5). */
@@ -270,62 +268,58 @@ public class Page implements ApplicationContextAware {
         NameValueCollection postData = post ? Request.Form() : Request.QueryString();
         IsPostBack = !transferTarget
             && (postData.GetValues("__VIEWSTATE") != null || postData.GetValues("__EVENTTARGET") != null);
-        List<UserControl> userControls = userControls();
-        for (UserControl uc : userControls) uc.bindTo(this);
+        List<Control<?>> roots = roots();
+        List<Control<?>> all = Control.Descendants(roots);
+        for (Control<?> c : all) {
+            if (c instanceof UserControl uc) uc.bindTo(this);
+            if (c instanceof HtmlForm f) {
+                String id = ServerFormClientID(f);
+                if (id != null) f.ClientID(id);
+            }
+        }
 
         // 3. PreInit
         OnPreInit(EventArgs.Empty);
 
-        // 4. Init, view state, posted values
-        for (Control<?> c : pageControls) {
-            if (c instanceof UserControl uc) uc.runInit();
-        }
-        if (pageMaster != null) pageMaster.runInit();
-        Page_Init(this, EventArgs.Empty);
-        List<Control<?>> all = allControls();
+        // 4. Init (inner user controls first, then the master, then the page), view state, posted values
+        List<UserControl> ucs = new ArrayList<>();
         for (Control<?> c : all) {
-            if (c instanceof IStateManager sm) sm.TrackViewState();
+            if (c instanceof UserControl uc) ucs.add(uc);
         }
-        List<IPostBackDataHandler> changed = new ArrayList<>();
+        for (int i = ucs.size() - 1; i >= 0; i--) ucs.get(i).runInit();
+        Page_Init(this, EventArgs.Empty);
+        Control<?> raise = null;
         if (IsPostBack) {
             Object state = ViewStateCodec.Deserialize(postData.get("__VIEWSTATE"), ViewStateUserKey);
-            if (state instanceof Map<?, ?> m) {
-                for (int i = 0; i < all.size(); i++) {
-                    Control<?> c = all.get(i);
-                    Object s = m.get(String.valueOf(i));
-                    if (s != null && c instanceof IStateManager sm) sm.LoadViewState(s);
-                }
-            }
-            for (Control<?> c : all) {
-                if (c instanceof IPostBackDataHandler h) {
-                    if (h.LoadPostData(c.ClientID(), postData)) changed.add(h);
-                }
-            }
+            @SuppressWarnings("unchecked")
+            Map<String, ?> saved = state instanceof Map<?, ?> m ? (Map<String, ?>) m : null;
+            Control.LoadViewStateTree(roots, saved);
+            raise = Control.LoadPostDataTree(roots, postData, saved);
         }
 
-        // 5. Load: page, master, user controls
+        // 5. Load: page, master, then user controls in markup order
         Page_Load(this, EventArgs.Empty);
         if (pageMaster != null) pageMaster.runLoad();
-        for (Control<?> c : pageControls) {
-            if (c instanceof UserControl uc) uc.runLoad();
+        for (UserControl uc : ucs) {
+            if (uc != pageMaster) uc.runLoad();
         }
 
-        // 6. postback events
-        if (IsPostBack) {
-            for (IPostBackDataHandler h : changed) h.RaisePostDataChangedEvent();
-            raisePostBackEvent(all, postData);
-        }
+        // 6. postback event
+        if (IsPostBack) Control.RaisePostBackEventTree(roots, postData, raise);
 
         // 7. save view state, render
-        Map<String, Object> saved = new LinkedHashMap<>();
-        for (int i = 0; i < all.size(); i++) {
-            if (all.get(i) instanceof IStateManager sm) {
-                Object s = sm.SaveViewState();
-                if (s != null) saved.put(String.valueOf(i), s);
-            }
-        }
-        viewStateValue = ViewStateCodec.Serialize(saved, ViewStateUserKey);
+        viewStateValue = ViewStateCodec.Serialize(Control.SaveViewStateTree(roots), ViewStateUserKey);
         if (templateName != null) render(ctx, templateName);
+    }
+
+    /**
+     * The id/name the server form renders (B5 [J-U7]), set as {@code HtmlForm.ClientID(String)} before
+     * {@code OnPreInit}: {@code aspnetForm} on a master page, else {@code null} (the form's declared
+     * {@code ID}, or {@code ctl00}). A page whose content placeholder has {@code ClientIDMode="Static"}
+     * ({@code bugs.aspx:11} → {@code frm}) overrides this to return {@code form.ID()}.
+     */
+    protected String ServerFormClientID(HtmlForm form) {
+        return pageMaster != null ? "aspnetForm" : null;
     }
 
     private boolean validatesRequest() {
@@ -336,58 +330,12 @@ public class Page implements ApplicationContextAware {
         return true;
     }
 
-    private void raisePostBackEvent(List<Control<?>> all, NameValueCollection postData) {
-        for (Control<?> c : all) {
-            if (c instanceof IPostBackEventHandler h && !(c instanceof IPostBackDataHandler)) {
-                String id = c.ClientID();
-                if (id != null && postData.GetValues(id) != null) {
-                    h.RaisePostBackEvent(id, null);
-                    return;
-                }
-            }
-        }
-        String target = postData.get("__EVENTTARGET");
-        if (target == null || target.isEmpty()) return;
-        String argument = postData.get("__EVENTARGUMENT");
-        Control<?> best = null;
-        for (Control<?> c : all) {
-            String id = c.ClientID();
-            if (id == null) continue;
-            if (id.equals(target)) {
-                best = c;
-                break;
-            }
-            if (target.startsWith(id + "$") && (best == null || best.ClientID().length() < id.length())) best = c;
-        }
-        if (best instanceof IPostBackEventHandler h) h.RaisePostBackEvent(target, argument);
-    }
-
-    /** User controls in Load/markup order: the master's, then the page's (recursively, outer first). */
-    private List<UserControl> userControls() {
-        List<UserControl> out = new ArrayList<>();
-        if (pageMaster != null) out.add(pageMaster);
-        for (Control<?> c : pageControls) {
-            if (c instanceof UserControl uc) out.add(uc);
-        }
-        return out;
-    }
-
-    /** Every registered control, depth-first (a user control precedes its own controls); the master's tree last. */
-    private List<Control<?>> allControls() {
+    /** The control-tree roots: the master (its children hang below it, first in markup order), then the page's {@code control(...)} fields. */
+    private List<Control<?>> roots() {
         List<Control<?>> out = new ArrayList<>();
-        addTree(pageControls, out);
-        if (pageMaster != null) {
-            out.add(pageMaster);
-            addTree(pageMaster.registeredControls(), out);
-        }
+        if (pageMaster != null) out.add(pageMaster);
+        out.addAll(pageControls);
         return out;
-    }
-
-    private static void addTree(List<Control<?>> list, List<Control<?>> out) {
-        for (Control<?> c : list) {
-            out.add(c);
-            if (c instanceof UserControl uc) addTree(uc.registeredControls(), out);
-        }
     }
 
     private void render(HttpContext ctx, String templateName) {
@@ -397,6 +345,7 @@ public class Page implements ApplicationContextAware {
         Map<String, Object> vars = new HashMap<>();
         vars.put("page", this);
         vars.put("master", pageMaster);
+        vars.put("viewState", viewStateValue);
         WebContext wc = new WebContext(webApplication(sc).buildExchange(req, res), Locale.US, vars);
         // TODO(port): Thymeleaf writes template text straight to the given Writer (no own buffering) — verify on 3.1 so render regions interleave (B2 step 8)
         engine(sc).process(templateName, wc, Response.Output());

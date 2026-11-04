@@ -21,9 +21,7 @@ public class IHttpActionResult extends ResponseEntity<Object> {
 
     /** An empty body with {@code status}. */
     public static IHttpActionResult empty(int status) {
-        HttpHeaders h = new HttpHeaders();
-        h.setContentLength(0);
-        return new IHttpActionResult(new byte[0], h, status);
+        return new IHttpActionResult(null, new HttpHeaders(), status);
     }
 
     /** {@code value} serialized as JSON with {@code status}. */
