@@ -280,8 +280,23 @@ public final class Strings {
     /**
      * .NET {@code s.Split(string[] separator, options)} [S1-16]: ordinal; at each index the first non-empty
      * separator in argument order that matches ends a field; all separators null/empty → white space.
+     *
+     * <p>The varargs form takes at least one separator so that {@code Split(s, ',')} (the §2A
+     * {@code s.Split(c)} form; {@code char} widens to {@code int}) resolves to {@link #Split(String, char...)}
+     * instead of being ambiguous with an empty {@code String...}. A {@code String[]} variable uses
+     * {@link #Split(String, int, String[])}.
      */
-    public static String[] Split(String s, int options, String... separators) {
+    public static String[] Split(String s, int options, String separator, String... moreSeparators) {
+        String[] all = new String[1 + (moreSeparators == null ? 0 : moreSeparators.length)];
+        all[0] = separator;
+        if (moreSeparators != null) {
+            System.arraycopy(moreSeparators, 0, all, 1, moreSeparators.length);
+        }
+        return Split(s, options, all);
+    }
+
+    /** .NET {@code s.Split(string[] separator, options)} with the separators already in an array [S1-16]. */
+    public static String[] Split(String s, int options, String[] separators) {
         if (s == null) {
             throw new NullPointerException();
         }
