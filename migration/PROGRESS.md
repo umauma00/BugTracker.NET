@@ -26,8 +26,8 @@ only for things it cannot do itself (environment settings, credentials).
 | 00b judge | done (validation deferred) | `judge/`, `migration/judge-report.md` |
 | 01 dependency map | done | `migration/depmap/`, `migration/manifest.tsv` |
 | 02 gap inventory + rulebook | done | `migration/RULEBOOK.md`, `migration/inventory*.tsv` |
-| 03 stress test | in progress | |
-| 04 translation | — | |
+| 03 stress test | done (2 rounds, D-008) | `migration/stress-test/` |
+| 04 translation | in progress | |
 | 05 survey build | — | |
 | 05b smoke / 05c parity | — | |
 | 06 post-parity | — | |
