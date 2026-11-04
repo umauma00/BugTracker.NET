@@ -1,6 +1,10 @@
 package btnet.runtime.data;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import btnet.runtime.InvalidOperationException;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -57,5 +61,35 @@ class DbSetModelTest {
             assertEquals(new DbSet.EntityModel(Query.class, new QueryMap()).columns,
                     new DbSet.EntityModel(Query.class, new QueryMap()).columns);
         }
+    }
+
+    static final class TypoMap extends EntityTypeConfiguration<Query> {
+        TypoMap() {
+            HasKey("Id");
+            Property("Id").HasColumnName("qu_id");
+            Property("Nmae").HasColumnName("qu_desc");     // no such field
+        }
+    }
+
+    static final class CaseMap extends EntityTypeConfiguration<Query> {
+        CaseMap() {
+            Property("name").HasColumnName("qu_desc");     // field is "Name": exact match required
+        }
+    }
+
+    static final class NavigationMap extends EntityTypeConfiguration<Query> {
+        NavigationMap() {
+            Property("Navigation");                        // not a primitive property
+        }
+    }
+
+    @Test
+    void propertyNamingAMissingFieldFailsAtModelBuild() {
+        InvalidOperationException e = assertThrows(InvalidOperationException.class,
+                () -> new DbSet.EntityModel(Query.class, new TypoMap()));
+        assertTrue(e.getMessage().startsWith("The property 'Nmae' is not a declared property on type 'Query'."),
+                e.getMessage());
+        assertThrows(InvalidOperationException.class, () -> new DbSet.EntityModel(Query.class, new CaseMap()));
+        assertThrows(InvalidOperationException.class, () -> new DbSet.EntityModel(Query.class, new NavigationMap()));
     }
 }

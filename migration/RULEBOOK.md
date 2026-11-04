@@ -127,7 +127,7 @@ users with NULL salt → `isnull(us_salt,0)` → salt `"00"` → exception → 5
 
 | Source construct | Canonical Java translation | Notes / evidence |
 |---|---|---|
-| Type/member names | Identical to C# (`get_setting`, `AttemptLogin`, `us_id`). No camelCase renaming. If the name is a Java keyword, append `_` (`default` → `default_`) | §4 |
+| Type/member names | Identical to C# (`get_setting`, `AttemptLogin`, `us_id`). No camelCase renaming. If the name is a Java keyword, append `_` (`default` → `default_`) — matching is exact and case-sensitive: `Default`, `Class`, `New`, `Int` are NOT keywords and are kept unchanged [F-A18] | §4 |
 | Namespace `btnet.X` | package `btnet.X` (same case: `btnet.Security`, `btnet.Models.Mapping`) | manifest |
 | `static class C` (5) | `public final class C { private C() {} }` with static members | `ClaimsIdentityExtensions`, `WebApiConfig` |
 | `partial class` (148, pages+designer, `Startup`) | one Java class; `Startup.cs` + `App_Start/Startup.Auth.cs` → one `btnet/Startup.java`, one batch. Both methods are kept over the runtime OWIN types (§3 security) [J-C14]: `public void Configuration(IAppBuilder app) { ConfigureAuth(app); }`, `public void ConfigureAuth(IAppBuilder app)` with the options built per C6 (`var o = new CookieAuthenticationOptions(); o.AuthenticationType = "ApplicationCookie"; o.LoginPath = new PathString("/default.aspx"); app.UseCookieAuthentication(o);`). `[assembly: OwinStartup(typeof(btnet.Startup))]` → the comment `// [assembly: OwinStartup] → invoked by SecurityConfig` | depmap cycle 2 |

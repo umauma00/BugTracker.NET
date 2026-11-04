@@ -91,53 +91,139 @@ public final class Processes {
 
     /**
      * .NET {@code p.Start()} [S2-4]: redirects the child's stdin from the OS null device (the IIS worker has no
-     * stdin, so the child reads EOF at once), then {@code pb.start()}. A start failure → {@link Win32Exception}:
-     * {@code "The directory name is invalid"} (267) for a working directory that is not a directory,
-     * {@code "The system cannot find the file specified"} (2) for a missing executable, else the JDK message
-     * (runtime-only {@code TODO(port): map other Win32 error codes}).
+     * stdin, so the child reads EOF at once), then {@code pb.start()}. A start failure → {@link Win32Exception}
+     * whose {@code NativeErrorCode()} is the Win32 code .NET reports, with .NET's message text:
+     * 267 {@code "The directory name is invalid"} (working directory not a directory), 2 {@code "The system cannot
+     * find the file specified"} (missing executable), 3 {@code "The system cannot find the path specified"},
+     * 5 {@code "Access is denied"}, 193 {@code "The specified executable is not a valid application for this OS
+     * platform."}; any other code keeps the JDK message (runtime-only {@code TODO(port): map other Win32 error
+     * codes}). The executable is checked before starting (independent of the JDK's message format); otherwise
+     * the {@code error=N} / {@code error: N} code of the JDK message is used — a Win32 code on Windows, an errno
+     * elsewhere (mapped: ENOENT → 2, ENOTDIR → 3, EACCES/EPERM → 5, ENOEXEC → 193).
      */
     public static Process start(ProcessBuilder pb) {
         if (pb == null) {
             throw new ArgumentNullException("startInfo");
         }
-        boolean windows = System.getProperty("os.name", "").toLowerCase(java.util.Locale.ROOT).startsWith("windows");
-        pb.redirectInput(ProcessBuilder.Redirect.from(new java.io.File(windows ? "NUL" : "/dev/null")));
+        pb.redirectInput(ProcessBuilder.Redirect.from(new java.io.File(isWindows() ? "NUL" : "/dev/null")));
         java.io.File dir = pb.directory();
         if (dir != null && !dir.isDirectory()) {
-            throw new Win32Exception(267, "The directory name is invalid");
+            throw win32(267, null);
+        }
+        List<String> cmd = pb.command();
+        if (!cmd.isEmpty()) {
+            int pre = checkExecutable(cmd.get(0), dir);
+            if (pre != 0) {
+                throw win32(pre, null);
+            }
         }
         try {
             return pb.start();
         } catch (java.io.IOException e) {
             int code = errorCode(e.getMessage());
-            if (code == 267) {
-                throw new Win32Exception(267, "The directory name is invalid", e);
+            if (code != 0 && !isWindows()) {
+                code = errnoToWin32(code);
             }
-            if (code == 2 || code == 3) {
-                throw new Win32Exception(2, "The system cannot find the file specified", e);
-            }
-            throw new Win32Exception(code, e.getMessage(), e);
+            throw win32(code, e);
         }
     }
 
-    /** The {@code error=N} code in a JDK process-start message, 0 if none. */
-    private static int errorCode(String msg) {
+    private static boolean isWindows() {
+        return System.getProperty("os.name", "").toLowerCase(java.util.Locale.ROOT).startsWith("windows");
+    }
+
+    /** The {@link Win32Exception} for a Win32 code, with .NET's text where known. */
+    static Win32Exception win32(int code, java.io.IOException cause) {
+        String text = switch (code) {
+            case 2 -> "The system cannot find the file specified";
+            case 3 -> "The system cannot find the path specified";
+            case 5 -> "Access is denied";
+            case 193 -> "The specified executable is not a valid application for this OS platform.";
+            case 267 -> "The directory name is invalid";
+            default -> cause != null && cause.getMessage() != null ? cause.getMessage() : "Unknown error (0x" + Integer.toHexString(code) + ")";
+        };
+        return cause == null ? new Win32Exception(code, text) : new Win32Exception(code, text, cause);
+    }
+
+    /** POSIX errno → the Win32 code CreateProcess reports for the same condition. */
+    static int errnoToWin32(int errno) {
+        switch (errno) {
+            case 2: return 2;      // ENOENT
+            case 20: return 3;     // ENOTDIR
+            case 1:                // EPERM
+            case 13: return 5;     // EACCES
+            case 8: return 193;    // ENOEXEC
+            default: return errno;
+        }
+    }
+
+    /**
+     * 0 if {@code exe} can be started as far as can be told beforehand, else the Win32 code: a path that does not
+     * exist → 2, a directory or (off Windows) a non-executable file → 5;
+     * a bare name not found on {@code PATH} → 2 (off Windows only; Windows also searches the application and
+     * current directories, so it is left to {@code start()}).
+     */
+    static int checkExecutable(String exe, java.io.File dir) {
+        if (exe == null || exe.isEmpty()) {
+            return 2;
+        }
+        boolean windows = isWindows();
+        boolean hasSep = exe.indexOf('/') >= 0 || (windows && exe.indexOf('\\') >= 0);
+        if (hasSep) {
+            java.io.File f = new java.io.File(exe);
+            if (!f.isAbsolute() && dir != null) {
+                f = new java.io.File(dir, exe);
+            }
+            if (!f.exists()) {
+                if (windows) {
+                    return 0;      // PATHEXT resolution ("x\\git" → git.exe): leave to CreateProcess
+                }
+                return 2;          // also for a missing directory component (CreateProcess: ERROR_FILE_NOT_FOUND)
+            }
+            if (f.isDirectory() || (!windows && !f.canExecute())) {
+                return 5;
+            }
+            return 0;
+        }
+        if (windows) {
+            return 0;
+        }
+        String path = System.getenv("PATH");
+        if (path == null) {
+            return 0;
+        }
+        for (String d : path.split(java.io.File.pathSeparator, -1)) {
+            java.io.File f = new java.io.File(d.isEmpty() ? "." : d, exe);
+            if (f.isFile() && f.canExecute()) {
+                return 0;
+            }
+        }
+        return 2;
+    }
+
+    /** The {@code error=N} or {@code error: N} code in a JDK process-start message, 0 if none. */
+    static int errorCode(String msg) {
         if (msg == null) {
             return 0;
         }
-        int i = msg.indexOf("error=");
-        if (i < 0) {
-            return 0;
+        for (String key : new String[] {"error=", "error: "}) {
+            int i = msg.indexOf(key);
+            if (i < 0) {
+                continue;
+            }
+            int j = i + key.length();
+            int v = 0;
+            boolean any = false;
+            while (j < msg.length() && Character.isDigit(msg.charAt(j)) && v < 100000) {
+                v = v * 10 + (msg.charAt(j) - '0');
+                any = true;
+                j++;
+            }
+            if (any) {
+                return v;
+            }
         }
-        int j = i + 6;
-        int v = 0;
-        boolean any = false;
-        while (j < msg.length() && Character.isDigit(msg.charAt(j)) && j - i < 16) {
-            v = v * 10 + (msg.charAt(j) - '0');
-            any = true;
-            j++;
-        }
-        return any ? v : 0;
+        return 0;
     }
 
     /**

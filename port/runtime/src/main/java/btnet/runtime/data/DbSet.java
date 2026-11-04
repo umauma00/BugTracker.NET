@@ -59,6 +59,18 @@ public class DbSet<T> {
                 fields.add(f);
                 columns.add(config != null ? config.columnFor(f.getName()) : f.getName());
             }
+            if (config != null) {
+                // Fail fast: EF6's Property(t => t.X) cannot name a missing property; a translated
+                // Property("X") that matches no mapped field is a mapping error, never a silent fallback.
+                for (String p : config.configuredProperties()) {
+                    if (indexOfField(p) < 0 && !config.isIgnored(p)) {
+                        throw new InvalidOperationException("The property '" + p + "' is not a declared property on type '"
+                                + type.getSimpleName() + "'. Verify that the property has not been explicitly excluded from the "
+                                + "model by using the Ignore method or NotMappedAttribute data annotation. Make sure that it is "
+                                + "a valid primitive property.");
+                    }
+                }
+            }
             List<String> keys = config != null ? config.keys() : List.of();
             if (keys.isEmpty()) {
                 // EF6 KeyDiscoveryConvention: "Id" first, then "<Type>Id" (independent of field order)

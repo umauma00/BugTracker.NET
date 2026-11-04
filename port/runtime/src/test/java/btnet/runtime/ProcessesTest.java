@@ -76,4 +76,39 @@ class ProcessesTest {
         assertEquals("The directory name is invalid", dir.getMessage());
         assertEquals("System.ComponentModel.Win32Exception", Exceptions.dotNetTypeName(dir));
     }
+
+    @Test
+    void nativeErrorCodesAreWin32() throws Exception {
+        org.junit.jupiter.api.Assumptions.assumeFalse(
+                System.getProperty("os.name", "").toLowerCase(java.util.Locale.ROOT).startsWith("windows"));
+        Win32Exception bare = assertThrows(Win32Exception.class,
+                () -> Processes.start(new ProcessBuilder("btnet-no-such-program-on-path")));
+        assertEquals(2, bare.NativeErrorCode());
+
+        java.nio.file.Path tmp = java.nio.file.Files.createTempFile("btnet-noexec", ".sh");
+        try {
+            tmp.toFile().setExecutable(false, false);
+            Win32Exception denied = assertThrows(Win32Exception.class,
+                    () -> Processes.start(new ProcessBuilder(tmp.toString())));
+            assertEquals(5, denied.NativeErrorCode());
+            assertEquals("Access is denied", denied.getMessage());
+        } finally {
+            java.nio.file.Files.deleteIfExists(tmp);
+        }
+        Win32Exception isDir = assertThrows(Win32Exception.class,
+                () -> Processes.start(new ProcessBuilder(System.getProperty("java.io.tmpdir") + "/")));
+        assertEquals(5, isDir.NativeErrorCode());
+    }
+
+    @Test
+    void jdkStartMessagesAreParsed() {
+        assertEquals(2, Processes.errorCode("Cannot run program \"x\": error=2, No such file or directory"));
+        assertEquals(2, Processes.errorCode("Cannot run program \"x\": Exec failed, error: 2 (No such file or directory)"));
+        assertEquals(267, Processes.errorCode("Cannot run program \"x\" (in directory \"d\"): CreateProcess error=267, The directory name is invalid"));
+        assertEquals(0, Processes.errorCode("something else"));
+        assertEquals(5, Processes.errnoToWin32(13));
+        assertEquals(193, Processes.errnoToWin32(8));
+        assertEquals("The specified executable is not a valid application for this OS platform.",
+                Processes.win32(193, null).getMessage());
+    }
 }
