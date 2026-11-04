@@ -57,4 +57,29 @@ class DotNetRegexTest {
         assertEquals("http://x/a#b", re.Match("go http://x/a#b now").Value());
         assertTrue(new DotNetRegex("a b", RegexOptions.IgnorePatternWhitespace).IsMatch("ab"));
     }
+
+    // [S2-6] .NET numbering: unnamed groups first, then named groups; unknown/non-participating → unsuccessful ""
+    @Test
+    void groupNumberingIsDotNet() {
+        Match m = new DotNetRegex("(?<n>bug)#(\\d+)(x)?").Match("see bug#12");
+        assertTrue(m.Success());
+        GroupCollection g = m.Groups();
+        assertEquals(4, g.Count());
+        assertEquals("bug#12", g.get(0).Value());
+        assertEquals("12", g.get(1).Value());
+        assertEquals(8, g.get(1).Index());
+        assertFalse(g.get(2).Success());
+        assertEquals("", g.get(2).Value());
+        assertEquals("bug", g.get(3).Value());
+        assertEquals("bug", g.get("n").Value());
+        assertEquals("12", g.get("1").Value());
+        assertFalse(g.get("nope").Success());
+        assertEquals("", g.get(99).Value());
+        assertEquals(0, g.get(99).Length());
+        Group whole = m;                                   // Match extends Group
+        assertEquals("bug#12", whole.toString());
+        assertEquals("12/bug", DotNetRegex.Replace("bug#12", "(?<n>bug)#(\\d+)", "$1/$2"));
+        assertEquals("bug", DotNetRegex.Replace("bug#12", "(?<n>bug)#(\\d+)", "${n}"));
+        assertArrayEquals(new String[] {"a", "-", "x", "b"}, DotNetRegex.Split("ax-b", "(?<n>x)(-)")); // group 1 = (-) first
+    }
 }

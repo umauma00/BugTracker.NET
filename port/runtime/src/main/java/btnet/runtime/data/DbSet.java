@@ -33,7 +33,7 @@ import java.util.UUID;
  * a value whose .NET type differs from the property type (e.g. smallint into {@code int}),
  * throws {@code InvalidOperationException("The 'P' property on 'E' could not be set to …")}.
  * Mapped properties = public instance fields of a scalar type (navigation properties are
- * never loaded).
+ * never loaded), in the deterministic order of {@link EntityModel#orderedFields}.
  */
 public class DbSet<T> {
 
@@ -53,7 +53,7 @@ public class DbSet<T> {
             String t = config != null ? config.tableName() : null;
             // TODO(port): EF6 convention table name (pluralized) when a map has no ToTable — none in source
             this.table = t != null ? t : type.getSimpleName();
-            for (Field f : type.getFields()) {
+            for (Field f : orderedFields(type, config)) {
                 if (Modifier.isStatic(f.getModifiers()) || !isScalar(f.getType())) continue;
                 if (config != null && config.isIgnored(f.getName())) continue;
                 fields.add(f);
@@ -61,10 +61,12 @@ public class DbSet<T> {
             }
             List<String> keys = config != null ? config.keys() : List.of();
             if (keys.isEmpty()) {
-                for (Field f : fields) {
-                    if (f.getName().equalsIgnoreCase("Id") || f.getName().equalsIgnoreCase(type.getSimpleName() + "Id")) {
-                        keys = List.of(f.getName());
-                        break;
+                // EF6 KeyDiscoveryConvention: "Id" first, then "<Type>Id" (independent of field order)
+                for (String candidate : List.of("Id", type.getSimpleName() + "Id")) {
+                    for (Field f : fields) {
+                        if (keys.isEmpty() && f.getName().equalsIgnoreCase(candidate)) {
+                            keys = List.of(f.getName());
+                        }
                     }
                 }
             }
@@ -77,6 +79,33 @@ public class DbSet<T> {
                 keyFields.add(fields.get(i));
                 keyColumns.add(columns.get(i));
             }
+        }
+
+        /**
+         * The public fields of {@code type} in a deterministic order, independent of the JVM's unspecified
+         * {@code Class.getFields()} order: first the properties the configuration names with {@code Property(...)}
+         * (in registration order, i.e. the source map's statement order), then every other field ordered by name
+         * (ordinal; a field shadowed by a subclass field of the same name keeps the subclass one). The order fixes
+         * the SELECT column list and which strict-materialization error surfaces first.
+         * TODO(port): EF6 uses CLR declaration order, which Java reflection cannot recover.
+         */
+        static List<Field> orderedFields(Class<?> type, EntityTypeConfiguration<?> config) {
+            java.util.Map<String, Field> byName = new java.util.TreeMap<>();
+            for (Field f : type.getFields()) {
+                Field prev = byName.get(f.getName());
+                if (prev == null || prev.getDeclaringClass().isAssignableFrom(f.getDeclaringClass())) {
+                    byName.put(f.getName(), f);
+                }
+            }
+            List<Field> out = new ArrayList<>();
+            if (config != null) {
+                for (String p : config.configuredProperties()) {
+                    Field f = byName.remove(p);
+                    if (f != null) out.add(f);
+                }
+            }
+            out.addAll(byName.values());
+            return out;
         }
 
         int indexOfField(String name) {

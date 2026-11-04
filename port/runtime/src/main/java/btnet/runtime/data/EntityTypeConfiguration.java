@@ -147,7 +147,12 @@ public abstract class EntityTypeConfiguration<T> {
         return ignored.contains(propertyName);
     }
 
-    String columnFor(String propertyName) {
+    /** The properties named by {@code Property(...)}, in first-registration order (DbSet column order). */
+    List<String> configuredProperties() {
+        return new ArrayList<>(properties.keySet());
+    }
+
+        String columnFor(String propertyName) {
         PropertyConfiguration pc = properties.get(propertyName);
         return pc == null ? propertyName : pc.ColumnName();
     }

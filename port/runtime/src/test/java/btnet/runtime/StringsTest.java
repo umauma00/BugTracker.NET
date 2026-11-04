@@ -40,6 +40,10 @@ class StringsTest {
         assertArrayEquals(new String[] {"x", "y"}, Strings.Split("xaby", StringSplitOptions.None, "ab", "a"));
         assertArrayEquals(new String[] {"x", "by"}, Strings.Split("xaby", StringSplitOptions.None, "a", "ab"));
         assertArrayEquals(new String[] {"a", "b"}, Strings.Split("a b", new char[0])); // no separators → white space
+        String[] seps = {"::"};
+        assertArrayEquals(new String[] {"a", "b"}, Strings.Split("a::b", StringSplitOptions.None, seps));
+        assertArrayEquals(new String[] {"a", "b", "c"}, Strings.Split("a,b c", ',', ' '));
+        assertArrayEquals(new String[] {"a", "b"}, Strings.Split("a b", (char[]) null));
     }
 
     @Test
@@ -81,5 +85,16 @@ class StringsTest {
         assertEquals(true, Strings.CULTURE_COMPARER.compare("a", "A") < 0);
         assertEquals(true, Strings.CULTURE_COMPARER.compare("A", "b") < 0);
         assertEquals(true, Strings.CULTURE_COMPARER.compare(null, "a") < 0);
+        assertEquals(true, Strings.CULTURE_COMPARER.compare("in progress", "inactive") < 0); // S2-1
+    }
+
+    @Test
+    void padLeftAndRight() {
+        assertEquals("007", Strings.PadLeft("7", 3, '0'));
+        assertEquals("ab  ", Strings.PadRight("ab", 4));
+        assertEquals("abc", Strings.PadLeft("abc", 2));
+        ArgumentOutOfRangeException e = assertThrows(ArgumentOutOfRangeException.class, () -> Strings.PadLeft("a", -1));
+        assertEquals("Non-negative number required.\r\nParameter name: totalWidth", e.getMessage());
+        assertThrows(NullPointerException.class, () -> Strings.PadRight(null, 1));
     }
 }

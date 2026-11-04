@@ -16,3 +16,6 @@ Collected from reviewer "Rulebook gaps" sections; applied between batches (D-005
 - A12 — WebApiConfig adjudicator — /api/<controller>/<segment> and trailing slash: map like Web API route (optional {id}); anonymous object → LinkedHashMap as a general rule.
 - A13 — BugFromEmail R2 — C# using directives are not translated (imports derive from used types); §2A row for model validation attributes ([Required] → @Required).
 - A14 — BugFromEmail R1 — // inventory: comment goes on the line just before the declaration/statement the row decides.
+- A15 — BasePage R2 — B7 (RULEBOOK ~:1029) wording: [PageAllowAnonymous] is READ in BasePage.cs:23 and APPLIED on default.aspx.cs / forgot.aspx.cs (never on BasePage).
+- A16 — BugRelationShip R1 — entity fields keep source order; runtime DbSet must not rely on Class.getFields() order (DbSet.java:56) — RUNTIME FIX.
+- A17 — BugPost R1/R2 — Nullable<T> rule count (7) wrong: entity-field Nullable<T> sites (26 in Models/*.cs) need no inventory row (state it); non-nullable DateTime entity fields default: leave null (never read before load) — state as accepted.
