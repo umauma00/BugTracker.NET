@@ -4,17 +4,14 @@ import btnet.runtime.EventArgs;
 import btnet.runtime.security.IPrincipal;
 import btnet.runtime.web.ui.Control;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * .NET {@code System.Web.UI.UserControl}, base of the translated {@code .ascx} classes in
  * {@code btnet.Controls} and (via {@link MasterPage}) of the masters (RULEBOOK §2B B6 [S1-26]).
  *
  * <p>{@code UserControl(String id)} is the only constructor; the host creates it like any
- * control, {@code control(new MainMenu("MainMenu"))}. Its own controls are registered with
- * {@link #control(Control)} in its field initializers. The intrinsics ({@code Request},
+ * control, {@code control(new MainMenu("MainMenu"))}. Its own controls are created with the
+ * inherited {@code Control.control(c)} in its field initializers (they become its
+ * {@code Controls()}; a user control is not a naming container, names stay flat). The intrinsics ({@code Request},
  * {@code Response}, {@code Server}, {@code Session}, {@code Application}, {@code Context},
  * {@code Cache}, {@code User}, {@code IsPostBack}, {@code Page}) are fields bound by the
  * hosting {@link Page} before {@code OnPreInit}; {@code Page_Init}/{@code Page_Load} are
@@ -32,24 +29,11 @@ public class UserControl extends Control<UserControl> {
     public boolean IsPostBack;
     public Page Page;
 
-    private final List<Control<?>> ownControls = new ArrayList<>();
-
     public UserControl(String id) {
         super(id);
     }
 
-    /** Registers a child control (field initializer form {@code control(new X("id"))}); returns it. */
-    protected <C extends Control<?>> C control(C c) {
-        ownControls.add(c);
-        return c;
-    }
-
-    /** The controls registered with {@link #control(Control)}, in registration order. */
-    public List<Control<?>> registeredControls() {
-        return Collections.unmodifiableList(ownControls);
-    }
-
-    /** Binds the intrinsics of {@code page} into this control and its nested user controls. */
+    /** Binds the intrinsics of {@code page} into this control (the page visits every user control). */
     void bindTo(Page page) {
         this.Page = page;
         this.Request = page.Request;
@@ -61,9 +45,6 @@ public class UserControl extends Control<UserControl> {
         this.Cache = page.Cache;
         this.User = page.User;
         this.IsPostBack = page.IsPostBack;
-        for (Control<?> c : ownControls) {
-            if (c instanceof UserControl uc) uc.bindTo(page);
-        }
     }
 
     /** AutoEventWireup {@code Page_Init}; overridden by translated code. */
@@ -75,17 +56,11 @@ public class UserControl extends Control<UserControl> {
     }
 
     void runInit() {
-        for (Control<?> c : ownControls) {
-            if (c instanceof UserControl uc) uc.runInit();
-        }
         Page_Init(this, EventArgs.Empty);
     }
 
     void runLoad() {
         Page_Load(this, EventArgs.Empty);
-        for (Control<?> c : ownControls) {
-            if (c instanceof UserControl uc) uc.runLoad();
-        }
     }
 
     /** {@code ResolveUrl("~/x")} → {@code "/x"}. */
