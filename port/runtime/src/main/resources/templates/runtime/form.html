@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  Runtime fragment ~{runtime/form :: hidden} (RULEBOOK B4/B5): placed inside every server form.
+  Emits the WebForms plumbing fields __EVENTTARGET, __EVENTARGUMENT, __VIEWSTATE and the __doPostBack
+  script (ASP.NET ClientScriptManager output). __VIEWSTATE is the model variable `viewState`
+  (the page's encoded, signed state, Page.ProcessRequest B2 step 7); empty when absent.
+  theForm is the form this fragment sits in (server forms are named aspnetForm / ctl00 / their id, B5).
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form>
+<th:block th:fragment="hidden">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" th:value="${viewState} ?: ''" value="" />
+</div>
+<script type="text/javascript">
+//<![CDATA[
+var theForm = (document.currentScript && document.currentScript.parentNode && document.currentScript.parentNode.closest)
+    ? document.currentScript.parentNode.closest('form') : null;
+if (!theForm) {
+    theForm = document.forms['aspnetForm'] || document.forms[0];
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+</th:block>
+</form>
+</body>
+</html>
