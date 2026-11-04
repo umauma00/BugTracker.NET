@@ -20,3 +20,6 @@ Collected from reviewer "Rulebook gaps" sections; applied between batches (D-005
 - A16 — BugRelationShip R1 — entity fields keep source order; runtime DbSet must not rely on Class.getFields() order (DbSet.java:56) — RUNTIME FIX.
 - A17 — BugPost R1/R2 — Nullable<T> rule count (7) wrong: entity-field Nullable<T> sites (26 in Models/*.cs) need no inventory row (state it); non-nullable DateTime entity fields default: leave null (never read before load) — state as accepted.
 - A18 — category R1/R2 (HIGH) — keyword suffix rule is case-sensitive (applied to RULEBOOK §2A immediately); runtime fail-fast on unknown Property(X) (sent to runtime author).
+
+## A19 — LoggingConfig scope (from LoggingConfig.confirmed G1–G8)
+Decision under mandate (recommended option): NLog `"*"` rule maps to the `btnet` Logback logger only (additivity off); root logger and Spring Boot console logging are untouched. Build the appender fully, then attach as the last statements (mirrors `LogManager.Configuration = config`). Archive pattern `btnet_log.%d{yyyyMMdd}.txt`. Fixer applies C1–C4 on this basis.
