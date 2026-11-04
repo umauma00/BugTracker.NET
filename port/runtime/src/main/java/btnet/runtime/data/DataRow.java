@@ -102,6 +102,11 @@ public class DataRow {
         store(i, DataColumn.coerce(column, value));
     }
 
+    /** Stores a value already of the column's type (used by {@code Fill}). */
+    void setRaw(DataColumn column, Object value) {
+        store(ordinal(column), value);
+    }
+
     public boolean IsNull(String columnName) {
         return get(columnName) == DBNull.Value;
     }

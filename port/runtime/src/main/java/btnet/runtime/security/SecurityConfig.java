@@ -174,9 +174,13 @@ public class SecurityConfig {
         }
         for (String pair : query.split("&")) {
             int eq = pair.indexOf('=');
-            String k = java.net.URLDecoder.decode(eq < 0 ? pair : pair.substring(0, eq), StandardCharsets.UTF_8);
-            if (k.equalsIgnoreCase(name)) {
-                return eq < 0 ? "" : java.net.URLDecoder.decode(pair.substring(eq + 1), StandardCharsets.UTF_8);
+            try {
+                String k = java.net.URLDecoder.decode(eq < 0 ? pair : pair.substring(0, eq), StandardCharsets.UTF_8);
+                if (k.equalsIgnoreCase(name)) {
+                    return eq < 0 ? "" : java.net.URLDecoder.decode(pair.substring(eq + 1), StandardCharsets.UTF_8);
+                }
+            } catch (IllegalArgumentException malformed) {
+                // Katana keeps malformed escapes literally; such a pair cannot be the AJAX marker
             }
         }
         return null;
