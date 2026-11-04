@@ -150,8 +150,11 @@ public class HttpResponse {
     }
 
     /**
-     * .NET {@code WriteFile(filename)}: appends the file's bytes; a non-rooted name is
-     * mapped with {@code Request.MapPath}; {@code \} → {@code /}.
+     * .NET {@code WriteFile(filename)} [S2-7]: on the request response appends the file's bytes unchanged; on a
+     * writer-backed {@code new HttpResponse(Writer)} decodes the whole file with {@code Encoding.Default}
+     * (windows-1252, no BOM detection) and writes the chars (.NET {@code WriteStreamAsText}; runtime-only
+     * {@code TODO(port): confirm the BOM handling in the reference source}). A non-rooted name is mapped with
+     * {@code Request.MapPath}; {@code \} → {@code /}. Missing file → {@code FileNotFoundException}.
      */
     public void WriteFile(String filename) {
         String p = normalize(filename);
@@ -162,6 +165,13 @@ public class HttpResponse {
             throw new FileNotFoundException("Could not find file '" + filename + "'.");
         } catch (IOException e) {
             throw new HttpException(e.getMessage(), e);
+        }
+        if (externalWriter != null) {
+            String text = btnet.runtime.Encoding.Default.GetString(bytes);
+            if (!text.isEmpty()) {
+                writeText(text);
+            }
+            return;
         }
         BinaryWrite(bytes);
     }

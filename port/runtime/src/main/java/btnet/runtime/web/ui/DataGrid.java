@@ -29,7 +29,7 @@ import java.util.function.BiConsumer;
  * rows (class of {@code ItemStyle}); an unbound grid renders nothing.
  */
 public class DataGrid extends WebControl<DataGrid> {
-    private final List<DataGridColumn<?>> columns = new ArrayList<>();
+    private final DataGridColumnCollection columns = new DataGridColumnCollection();
     private Object dataSource;
     private BiConsumer<Object, DataGridCommandEventArgs> itemCommand;
     private DataGridItem header;
@@ -37,15 +37,6 @@ public class DataGrid extends WebControl<DataGrid> {
     private final TableItemStyle headerStyle = new TableItemStyle();
     private final TableItemStyle itemStyle = new TableItemStyle();
     private final TableItemStyle alternatingItemStyle = new TableItemStyle();
-
-    /** {@code TableItemStyle} of {@code <HeaderStyle>}/{@code <ItemStyle>}: only {@code CssClass} is used by the source. */
-    public static final class TableItemStyle {
-        private String cssClass = "";
-
-        public String CssClass() { return cssClass; }
-
-        public TableItemStyle CssClass(String v) { this.cssClass = v == null ? "" : v; return this; }
-    }
 
     public DataGrid(String id) {
         super(id);
@@ -56,8 +47,8 @@ public class DataGrid extends WebControl<DataGrid> {
 
     // ---- configuration ----
 
-    /** {@code Columns}. */
-    public List<DataGridColumn<?>> Columns() { return columns; }
+    /** {@code Columns} [S2-21]: {@code MyDataGrid.Columns().Add(new BoundColumn(…))}, in markup order. */
+    public DataGridColumnCollection Columns() { return columns; }
 
     /** Fluent {@code Columns.Add(c)}. */
     public DataGrid Column(DataGridColumn<?> c) { columns.add(c); return this; }
