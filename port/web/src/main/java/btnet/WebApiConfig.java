@@ -1,16 +1,20 @@
 // Source: src/BugTracker.Web/App_Start/WebApiConfig.cs
 package btnet;
 
+import btnet.runtime.web.HttpConfiguration;
+import btnet.runtime.web.RouteParameter;
+import java.util.LinkedHashMap;
+
 public final class WebApiConfig {
     private WebApiConfig() {}
 
-    // TODO(port): runtime (RULEBOOK §3) specifies no HttpConfiguration type; parameter kept as Object. Routing is expressed by @RequestMapping on each @RestController (RULEBOOK §2A JSON / Web API), so this body is intentionally empty and nothing calls Register.
-    public static void Register(Object config) {
-        // config.MapHttpAttributeRoutes(); → attribute routes are the Spring @RequestMapping/@GetMapping/@PostMapping annotations on the controllers.
+    public static void Register(HttpConfiguration config) {
+        config.MapHttpAttributeRoutes();
 
-        // config.Routes.MapHttpRoute(name: "DefaultApi", routeTemplate: "api/{controller}/{id}", defaults: new { id = RouteParameter.Optional });
-        // → each controller carries @RequestMapping("/api/<Name minus Controller>") (RULEBOOK §2A, WebApiConfig.cs:14-18); {id} is bound by name from the query string.
+        LinkedHashMap<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("id", RouteParameter.Optional);
+        config.Routes().MapHttpRoute("DefaultApi", "api/{controller}/{id}", defaults);
     }
 }
 
-// PORT STATUS: confidence=medium todos=1
+// PORT STATUS: confidence=high todos=0

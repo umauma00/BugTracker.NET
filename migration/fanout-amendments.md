@@ -14,3 +14,5 @@ Collected from reviewer "Rulebook gaps" sections; applied between batches (D-005
 - A10 — IBugSearch R1/R2 — §6.2: C# XML doc comments (///) → Javadoc (/** */ with @param/@return), text copied verbatim.
 - A11 — MailPriority R1/R2 — app enums: (int)e → ordinal() when no explicit values, else an int value field; (E)n, ToString(), Enum.Parse mapping; unassigned enum field = first member.
 - A12 — WebApiConfig adjudicator — /api/<controller>/<segment> and trailing slash: map like Web API route (optional {id}); anonymous object → LinkedHashMap as a general rule.
+- A13 — BugFromEmail R2 — C# using directives are not translated (imports derive from used types); §2A row for model validation attributes ([Required] → @Required).
+- A14 — BugFromEmail R1 — // inventory: comment goes on the line just before the declaration/statement the row decides.
