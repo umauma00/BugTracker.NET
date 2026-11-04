@@ -33,6 +33,8 @@ public final class Exceptions {
             Map.entry("btnet.runtime.InvalidOperationException", "System.InvalidOperationException"),
             Map.entry("btnet.runtime.UriFormatException", "System.UriFormatException"),
             Map.entry("btnet.runtime.TaskCanceledException", "System.Threading.Tasks.TaskCanceledException"),
+            Map.entry("btnet.runtime.Win32Exception", "System.ComponentModel.Win32Exception"),
+            Map.entry("btnet.runtime.NotSupportedException", "System.NotSupportedException"),
             Map.entry("java.lang.NullPointerException", "System.NullReferenceException"),
             Map.entry("java.lang.ArithmeticException", "System.DivideByZeroException"),
             Map.entry("java.lang.UnsupportedOperationException", "System.NotSupportedException"),

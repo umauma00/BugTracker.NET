@@ -7,16 +7,15 @@ import btnet.runtime.DBNull;
 import btnet.runtime.DateTimes;
 import btnet.runtime.DotNetException;
 import btnet.runtime.IndexOutOfRangeException;
+import btnet.runtime.NlsComparer;
 
 import java.math.BigDecimal;
-import java.text.Collator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -258,12 +257,8 @@ public class DataView implements Iterable<DataRowView> {
 
     // ------------------------------------------------------------------ comparison
 
-    private static final Collator COLLATOR;
-
-    static {
-        COLLATOR = Collator.getInstance(Locale.US);
-        COLLATOR.setStrength(Collator.SECONDARY);   // case-insensitive, accent-sensitive
-    }
+    /** [S2-1] the NLS culture comparer without the case level (accent-sensitive, case-insensitive). */
+    private static final Comparator<String> COLLATOR = NlsComparer.IGNORE_CASE;
 
     private static String trimEndSpaces(String s) {
         int n = s.length();

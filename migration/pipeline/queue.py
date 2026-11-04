@@ -89,6 +89,13 @@ def main():
         return
     if cmd == "next":
         n = int(sys.argv[2])
+        # auto-land: an in-flight mark whose stage is no longer the unit's current stage is stale
+        for m, s in stages:
+            u = uid(m)
+            for st in ("implement", "review", "adjudicate", "fix"):
+                f = MIG / "prompts" / f"{u}.{st}.inflight"
+                if f.exists() and st != s:
+                    f.unlink()
         out = []
         for m, s in stages:
             if s == "done":

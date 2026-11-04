@@ -19,6 +19,10 @@ public final class DotNetRegex {
     private final Pattern pattern;
     private final String source;
     private final int options;
+    /** .NET group number → Java group index (S2-6: unnamed groups first, then named ones). */
+    private final int[] netToJava;
+    /** Group name → .NET group number. */
+    private final Map<String, Integer> netNames;
 
     public DotNetRegex(String pattern) {
         this(pattern, RegexOptions.None);
@@ -53,6 +57,31 @@ public final class DotNetRegex {
         } catch (PatternSyntaxException e) {
             throw new ArgumentException("parsing \"" + pattern + "\" - " + e.getDescription());
         }
+        Map<String, Integer> javaNames = this.pattern.namedGroups();
+        java.util.TreeMap<Integer, String> namedByJava = new java.util.TreeMap<>();
+        for (Map.Entry<String, Integer> e : javaNames.entrySet()) {
+            namedByJava.put(e.getValue(), e.getKey());
+        }
+        int count = this.pattern.matcher("").groupCount();
+        int[] map = new int[count + 1];
+        int k = 1;
+        for (int j = 1; j <= count; j++) {
+            if (!namedByJava.containsKey(j)) {
+                map[k++] = j;
+            }
+        }
+        Map<String, Integer> names = new java.util.HashMap<>();
+        for (Map.Entry<Integer, String> e : namedByJava.entrySet()) {
+            names.put(e.getValue(), k);
+            map[k++] = e.getKey();
+        }
+        this.netToJava = map;
+        this.netNames = java.util.Collections.unmodifiableMap(names);
+    }
+
+    /** The value of .NET group {@code g} in {@code m}, or {@code null} if it did not participate. */
+    private String group(Matcher m, int g) {
+        return m.group(netToJava[g]);
     }
 
     /** Inside {@code [...]}, rewrite {@code #} and white space as {@code \xHH} (literal in .NET there). */
@@ -113,16 +142,14 @@ public final class DotNetRegex {
     // ------------------------------------------------------------------ matching
 
     private Match toMatch(Matcher m, String input) {
-        Map<String, Integer> names = pattern.namedGroups();
-        Match.GroupCollection groups = new Match.GroupCollection(names);
-        for (int g = 0; g <= m.groupCount(); g++) {
-            String v = m.group(g);
-            groups.add(new Match(v != null, v == null ? "" : v, v == null ? 0 : m.start(g),
-                    new Match.GroupCollection(null), null, null, 0));
-        }
+        GroupCollection groups = new GroupCollection(netNames);
         int next = m.end() == m.start() ? m.end() + 1 : m.end();
         Match whole = new Match(true, m.group(), m.start(), groups, this, input, next);
-        groups.set(0, whole);
+        groups.add(whole);
+        for (int g = 1; g < netToJava.length; g++) {
+            String v = group(m, g);
+            groups.add(v == null ? Group.unsuccessful() : new Group(true, v, m.start(netToJava[g])));
+        }
         return whole;
     }
 
@@ -263,9 +290,9 @@ public final class DotNetRegex {
                 sb.append(input);
                 i++;
             } else if (d == '+') {
-                int g = m.groupCount();
-                if (g > 0 && m.group(g) != null) {
-                    sb.append(m.group(g));
+                int g = netToJava.length - 1;
+                if (g > 0 && group(m, g) != null) {
+                    sb.append(group(m, g));
                 }
                 i++;
             } else if (d >= '0' && d <= '9') {
@@ -279,8 +306,8 @@ public final class DotNetRegex {
                 } catch (NumberFormatException e) {
                     g = -1;
                 }
-                if (g >= 0 && g <= m.groupCount()) {
-                    String v = m.group(g);
+                if (g >= 0 && g < netToJava.length) {
+                    String v = group(m, g);
                     if (v != null) {
                         sb.append(v);
                     }
@@ -299,20 +326,20 @@ public final class DotNetRegex {
                 if (!name.isEmpty() && name.chars().allMatch(ch -> ch >= '0' && ch <= '9')) {
                     try {
                         int k = Integer.parseInt(name);
-                        if (k <= m.groupCount()) {
+                        if (k < netToJava.length) {
                             g = k;
                         }
                     } catch (NumberFormatException e) {
                         g = null;
                     }
                 } else {
-                    g = pattern.namedGroups().get(name);
+                    g = netNames.get(name);
                 }
                 if (g == null) {
                     sb.append('$');
                     continue;
                 }
-                String v = m.group(g);
+                String v = group(m, g);
                 if (v != null) {
                     sb.append(v);
                 }
@@ -336,9 +363,9 @@ public final class DotNetRegex {
             any = true;
             out.add(input.substring(prev, m.start()));
             prev = m.end();
-            for (int g = 1; g <= m.groupCount(); g++) {
-                if (m.group(g) != null) {
-                    out.add(m.group(g));
+            for (int g = 1; g < netToJava.length; g++) {
+                if (group(m, g) != null) {
+                    out.add(group(m, g));        // .NET order: by group number
                 }
             }
         }

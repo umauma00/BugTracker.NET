@@ -1,10 +1,8 @@
 package btnet.runtime;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Stands for .NET {@code System.String} members whose Java equivalents differ (RULEBOOK §2A Strings, §3):
@@ -16,31 +14,11 @@ public final class Strings {
     }
 
     /**
-     * .NET {@code StringComparer.CurrentCulture} for en-US [C20, C31]: {@code Collator(Locale.US)} at TERTIARY
-     * strength (lower-case before upper-case on otherwise equal strings); {@code null} sorts first.
+     * .NET {@code StringComparer.CurrentCulture} for en-US [C20, C31, S2-1]: the Windows NLS emulation
+     * {@link NlsComparer} ({@code "in progress" < "inactive" < "info"}; the space is not ignorable);
+     * {@code null} sorts first.
      */
-    public static final Comparator<String> CULTURE_COMPARER = new Comparator<String>() {
-        private final Collator collator = newCollator();
-
-        private Collator newCollator() {
-            Collator c = Collator.getInstance(Locale.US);
-            c.setStrength(Collator.TERTIARY);
-            return c;
-        }
-
-        @Override
-        public int compare(String a, String b) {
-            if (a == null) {
-                return b == null ? 0 : -1;
-            }
-            if (b == null) {
-                return 1;
-            }
-            synchronized (collator) {
-                return collator.compare(a, b);
-            }
-        }
-    };
+    public static final Comparator<String> CULTURE_COMPARER = NlsComparer.INSTANCE;
 
     /** .NET {@code string.Empty}. */
     public static final String Empty = "";
