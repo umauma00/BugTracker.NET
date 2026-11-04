@@ -38,3 +38,7 @@ Fresh files (not used in round 1), chosen from the score ranking (selection tabl
 - bakeoff + pilot: `btnet/print_bug.cs` (DataSet, formatting, regex, Response writer), `btnet/bug_list.cs` (DataView sort/filter, Session, conversions), `btnet/version_control.cs` (Process, IndexOf, strings)
 - pilot only (UI, D-004): `search.aspx` (script/text regions, Session — §2B B5), `edit_user.aspx` (DataGrid template radios J-U1, B6)
 Pilot workspace round 1 (`st-pilot`) deleted 2026-11-04 (confirmed). Round-2 workspaces: `st-A2` (worktree, branch stress-A2-throwaway), `st-B2`, `st-pilot2`.
+
+## Round 2 closed (2026-11-04)
+- Workspaces `st-A2` (worktree + branch `stress-A2-throwaway`), `st-B2`, `st-pilot2` deleted — confirmed (0 `st-*` directories remain). Pilot review files kept in the scratchpad for the amendment pass only.
+- Stop condition (prompt 03: "stop early if the same section gets re-amended twice"): the inspector reports it met **at section level** (§3, §2A General, §2A Strings, §2A Processes got new defects) but **not at rule level** (no [S1-n] rule was wrong; the new items are additions). Decision under the standing mandate (recommended): **no third round**; apply the round-2 amendments as additions and proceed to the fan-out, with the runtime author and the per-file reviewers as the backstop. Recorded as D-008.

@@ -24,10 +24,10 @@ Date: 2026-11-04. Inspector: diff inspector (read-only; this file is the only ou
 | rulebook right | 13 |
 | native right | 1 (V2) |
 | both defensible | 12 (6 of them expose a rulebook gap that must be pinned) |
-| **both wrong** | **3** (L3, V1, V9) |
+| **both wrong** | **3** (L3, V1, V7) |
 | **Total substantive rows** | **29** (+ 9 posture-only items, not counted) |
 
-> **STOP CONDITION: human decision required.** At section level, sections amended in round 1 are indicted again: §3 and §2A General conventions (L3), §2A Strings (V9), and the §2A Logging/processes table (V1, V2).
+> **STOP CONDITION: human decision required.** At section level, sections amended in round 1 are indicted again: §3 and §2A General conventions (L3), §2A Strings (V7), and the §2A Logging/processes table (V1, V2).
 > - At rule level, none of the round-1 `[S1-n]` rules produced a defect. Every exercised S1 rule held (see the delta).
 > - The new both-wrong rows come from rules that round 1 did not touch: `Strings.CULTURE_COMPARER` [C20, C31] and the Process row [C20, J-C13]. The third comes from a construct no rule covers (`StringBuilder.Append`).
 > - The human decides whether rule-level convergence is enough to apply this queue and continue. The alternative is to stop the stress test.
@@ -41,9 +41,9 @@ Date: 2026-11-04. Inspector: diff inspector (read-only; this file is the only ou
    - .NET reads stdout through a `StreamReader` with BOM detection. A leading UTF-8 BOM is stripped, and a UTF-16/32 BOM switches the decoding.
    - Both ports decode the raw bytes as UTF-8 and keep U+FEFF. `git show <commit>:<file>` of any Visual Studio–saved `.cs` file (UTF-8 BOM) differs.
    - B also closes the child's stdin. A leaves it as an open pipe that is never closed, so a child that reads stdin hangs, where .NET's child sees EOF (V2, native right).
-3. **Null handling of `StringBuilder.Append` and `Response.Write(String)` is unpinned (V9, L7).**
+3. **Null handling of `StringBuilder.Append` and `Response.Write(String)` is unpinned (V7, L7).**
    - C# `Append((string)null)` and `Response.Write((string)null)` write nothing.
-   - V9: A's raw `sb.append(repo)` and B's concatenation write `"null"`. This is latent here because `svnrev_repository` is NOT NULL.
+   - V7: A's raw `sb.append(repo)` and B's concatenation write `"null"`. This is latent here because `svnrev_repository` is NOT NULL.
    - L7: `display_buglist_tags_line` writes `HttpUtility.HtmlEncode(Request["tags"])`, which is null on every `bugs.aspx` GET without tags. A's output depends on an unpinned runtime overload.
 4. **DataView enumeration semantics are unpinned (L5).**
    - .NET `DataView.GetEnumerator()` iterates a snapshot (it copies the rows to an array).
@@ -63,7 +63,7 @@ Date: 2026-11-04. Inspector: diff inspector (read-only; this file is the only ou
 | R04 | `format_email_from` | A:913 `from.indexOf("<")` | B:695 `from.indexOf('<')` | same row | **both defensible.** cs:903; `<` is not ignorable. |
 | R05 | `Debug.Assert(false)` | A:584 dropped, `RULEBOOK-SILENT` + TODO | B:475 dropped | gap (F1 below) | **both defensible.** `[Conditional("DEBUG")]`; the Release build defines `TRACE` only (`BugTracker.Web.csproj:42`). In a Debug build the w3wp `DefaultTraceListener` shows no UI. |
 | R06 | `m.Groups[1]` | A:1006 `m.Groups().get(1).Value()` (SILENT) | B:743 `m.group(1)` | gap (F2) | **both defensible for the default `BugLinkMarker` `bugid#`.** `BugLinkMarker` is a configurable regex fragment (cs:973-974). If it contains a group, .NET numbers unnamed groups first and then named ones. jshell gives `(?<n>bug)#([0-9]+)` group 1 = `bug`, where .NET `Groups[1]` is the digits. A non-participating group is `""` in .NET but `null` in Java, which B concatenates as `"null"`. |
-| R07 | e-mail CSS `Response.WriteFile` | A:62,68,73 `Response.WriteFile(css_for_email_file)` (runtime, encoding unpinned) | B:266 `new String(Files.readAllBytes(file), UTF_8)` | gap: §2B/§3 `HttpResponse` [S1-21] silent on `WriteFile` | **both defensible (latent).** `include_style` is used only with `new HttpResponse(StringWriter)` (bug.cs:1158-1173). There .NET's `WriteFile` → `WriteStreamAsText` decodes with `Encoding.Default` (windows-1252). The shipped `btnet_base.css` and `custom/btnet_custom.css` are pure ASCII without a BOM (checked), so the output is identical today. A non-ASCII CSS would differ in B and possibly in A (F-amendment 7). |
+| R07 | e-mail CSS `Response.WriteFile` | A:62,68,73 `Response.WriteFile(css_for_email_file)` (runtime, encoding unpinned) | B:266 `new String(Files.readAllBytes(file), UTF_8)` | gap: §2B/§3 `HttpResponse` [S1-21] silent on `WriteFile` | **both defensible (latent).** `include_style` is used only with `new HttpResponse(StringWriter)` (bug.cs:1158-1173). There .NET's `WriteFile` → `WriteStreamAsText` decodes with `Encoding.Default` (windows-1252). The shipped `btnet_base.css` and `custom/btnet_custom.css` are pure ASCII without a BOM (checked), so the output is identical today. A non-ASCII CSS would differ in B and possibly in A (amendment 7). |
 | R08 | CSS error log | A:80-83 `Util.write_to_log(… + Strings.cs(Exceptions.Message(e)))` | B:261 `log.error("…\"{}\":{}", file, e.getMessage())` | §2A Exceptions [S1-10] | **rulebook right (minor).** cs:74-77 writes to the btnet log with the .NET message ("Could not find file '…'."). B prints the `NoSuchFileException` text (the path only) to SLF4J. |
 | R09 | `CommentSortOrder` | A:1083 `sql.Append(Util.get_setting("CommentSortOrder", "desc"))` | B:798-802 whitelist `asc`/`desc`, else `desc` | §0 (no fixes) | **rulebook right.** cs:1070 concatenates the setting verbatim. B's whitelist is an unsanctioned fix that changes any other configured value. |
 | R10 | `write_tasks` identity | A:248 `HttpContext.Current().User().Identity()` | B:273 caller's `identity` | §2A Web intrinsics | **both defensible.** For notifications the caller passes the *recipient* identity (bug.cs:1164), not the request user. However, `get_all_tasks` ignores `identity` when `bugid != 0` (util.cs:1323-1330), and `print_bug` always runs on a request thread. |
@@ -96,8 +96,6 @@ Date: 2026-11-04. Inspector: diff inspector (read-only; this file is the only ou
 | V6 | `PadLeft` | A:508-509 `Strings.PadLeft(Convert.ToString(lx + 1), digit_places, '0')` (SILENT, 12 sites) | B:361-363 `String.format("%0" + width + "d", n)` | gap (F4) | **both defensible.** Same output with an English default locale. B's `String.format` is banned (§2A Strings) and uses the default locale's digits (jshell: `ar-EG` → non-ASCII digits). |
 | V7 | `StringBuilder.Append(null)` | A:899,916,933,953,961 `args.append(repo)` | B:581 `repo + filePath.replace(" ", "%20")` | gap: no `StringBuilder.Append` rule (S1-46 covers `+` only) | **BOTH WRONG (latent).** cs:867,884,901,921,929: `Append((string)null)` appends nothing, while Java appends `"null"`. It is unreachable here (`svnrev_repository nvarchar(400) not null`, setup.sql:505; svn_log.aspx:49 casts it). The construct has 172 `.Append(` sites (excluding `sql.Append`) in 12 `StringBuilder` files. `Append(bool)` → `True` and `Append(double)` → G15 differ the same way (amendment 3). |
 | V8 | credentials split | A:127 `Util.rePipes.Split(…)` | B:148 `Util.RE_PIPES.split(…)` (drops trailing empties) | §2A Regex `Split` | **both defensible.** cs:115-124 reads only `parts[0]`/`parts[1]` and requires both to be non-empty, so the outcome is equal. |
-
-Note: V7 is the row referred to as V9 in the summary and headline (numbering kept stable for the queue). The both-wrong rows are **L3, V1, V7 (=V9)**.
 
 ### Posture-only differences (not counted)
 
