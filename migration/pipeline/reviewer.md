@@ -4,7 +4,7 @@ Unit sources: {UNIT_SOURCES}
 Translated target(s): {TARGETS} under {OUT}/ (plus any templates/fragments RULEBOOK §4 places for this unit)
 Your report: {OUT}/migration/reviews/{UID}.{REVIEWER}.md
 
-Assume the translation is wrong. Read `/home/user/BugTracker.NET/migration/RULEBOOK.md`, the inventory rows for the unit (`grep` the source paths in `/home/user/BugTracker.NET/migration/inventory.tsv`), the original source, and the translation side by side. For a page/control, also `/home/user/BugTracker.NET/judge/README.md` (Judge contract) and the judge specs that cover the page.
+Assume the translation is wrong. Read `/home/user/BugTracker.NET/migration/RULEBOOK.md` (~1,900 lines: read it in chunks with offset/limit until the end; §3.1 lists the runtime classes that exist), the inventory rows for the unit (`grep` the source paths in `/home/user/BugTracker.NET/migration/inventory.tsv`), the original source, and the translation side by side. For a page/control, also `/home/user/BugTracker.NET/judge/README.md` (Judge contract) and the judge specs that cover the page.
 
 Report every defect as a numbered finding:
 `F<n> | severity HIGH/MEDIUM/LOW | target file:line | source file:line | rule § or inventory key | what is wrong | the correct translation`

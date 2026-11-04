@@ -11,3 +11,6 @@ Collected from reviewer "Rulebook gaps" sections; applied between batches (D-005
 - A7 — ClaimsIdentityExtensions R1/R2 — `x is T` + `(T)x` → Java pattern `x instanceof T t`; Convert.ToInt32/ToBoolean(string) map to the same runtime calls (culture en-US).
 - A8 — WebApiConfig R1/R2 — §3 table omitted HttpConfiguration/GlobalConfiguration/RouteParameter → fixed by §3.1 index (D-009); add §2A row for WebApiConfig.Register and Global.asax GlobalConfiguration.Configure; /api/<controller>/<id> path handling TODO.
 - A9 — BtnetRoles R1 — outputs are UTF-8 without BOM; a source BOM is never copied.
+- A10 — IBugSearch R1/R2 — §6.2: C# XML doc comments (///) → Javadoc (/** */ with @param/@return), text copied verbatim.
+- A11 — MailPriority R1/R2 — app enums: (int)e → ordinal() when no explicit values, else an int value field; (E)n, ToString(), Enum.Parse mapping; unassigned enum field = first member.
+- A12 — WebApiConfig adjudicator — /api/<controller>/<segment> and trailing slash: map like Web API route (optional {id}); anonymous object → LinkedHashMap as a general rule.

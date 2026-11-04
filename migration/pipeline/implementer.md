@@ -4,7 +4,7 @@ Unit sources: {UNIT_SOURCES}
 Target(s) per manifest: {TARGETS}
 Output root: {OUT}  (write each target at {OUT}/<target path>; for UI units also the Thymeleaf template/fragments at the paths RULEBOOK §4 dictates, under {OUT}/)
 
-1. Read `/home/user/BugTracker.NET/migration/RULEBOOK.md` in full. It is the specification; it overrides your own taste. Read `/home/user/BugTracker.NET/judge/README.md` "Judge contract" if the unit is a page/control/master.
+1. Read `/home/user/BugTracker.NET/migration/RULEBOOK.md` in full — it is ~1,900 lines, so read it in chunks with the Read tool's offset/limit (e.g. 400 lines at a time) until the end; §3.1 lists every runtime class that exists. It is the specification; it overrides your own taste. Read `/home/user/BugTracker.NET/judge/README.md` "Judge contract" if the unit is a page/control/master.
 2. `grep` `/home/user/BugTracker.NET/migration/inventory.tsv` for every source path of the unit and apply each row's `target_translation` at its site. A site the rulebook and inventory don't decide: translate to the most conservative Java, add `// TODO(port): <question>`, keep going (RULEBOOK §5 / UNKNOWN rule).
 3. Translate the whole unit: every type, member, SQL string (verbatim), and markup region. Structure-preserving for core units (same names, same order of members); UI units follow §2B.
 4. Use only the `btnet.runtime.*` API exactly as RULEBOOK §3 specifies it (the runtime is hand-written separately; do not write runtime classes yourself). Other in-repo types: refer to them by the names RULEBOOK §4 gives their targets, even if not translated yet.
