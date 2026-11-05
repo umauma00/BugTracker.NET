@@ -33,6 +33,7 @@ public class WhatsNew
 		{
 
 			long seconds = DateTimes.ticks(LocalDateTime.now()) / ten_million;
+			// BUG(port): dedupe only compares with the previous value, so a third add_news in the same second yields seconds S, S+1, S (duplicate, non-monotonic; whatsnew.aspx:77 'seconds > since' then skips the later item) — repro: EnableWhatsNewPage=1, three add_news calls within one second on one thread
 			if (seconds == prev_seconds)
 			{
 				seconds++; // prevent dupes, even if we have to lie.

@@ -21,22 +21,23 @@ public final class LoggingConfig {
     public static void Configure() {
         // NLog LoggingConfiguration -> programmatic Logback (RULEBOOK §2A Logging row)
         LoggerContext config = (LoggerContext) LoggerFactory.getILoggerFactory();
-        config.reset();
 
         // NLog FileTarget -> Logback RollingFileAppender (daily, date-numbered archives)
         RollingFileAppender<ch.qos.logback.classic.spi.ILoggingEvent> fileTarget = new RollingFileAppender<>();
         fileTarget.setContext(config);
         fileTarget.setName("File");
 
-        String fileName = Path.Combine(Util.get_log_folder(), "btnet_log.txt");
+        String logFolder = Util.get_log_folder();
+        String fileName = Path.Combine(logFolder, "btnet_log.txt");
         fileTarget.setFile(fileName);
 
         // ArchiveNumbering = Date, ArchiveEvery = Day
-        // TODO(port): archive naming per NLog ArchiveNumbering=Date (suffix format chosen as .yyyyMMdd)
+        // TODO(port): archive naming per NLog ArchiveNumbering=Date
+        // pinned to NLog 3.x default <name>.{#}.<ext> (ArchiveFileName unset); verify against NLog 3.1.0
         TimeBasedRollingPolicy<ch.qos.logback.classic.spi.ILoggingEvent> rollingPolicy = new TimeBasedRollingPolicy<>();
         rollingPolicy.setContext(config);
         rollingPolicy.setParent(fileTarget);
-        rollingPolicy.setFileNamePattern(fileName + ".%d{yyyyMMdd}");
+        rollingPolicy.setFileNamePattern(Path.Combine(logFolder, "btnet_log.%d{yyyyMMdd}.txt"));
         rollingPolicy.start();
         fileTarget.setRollingPolicy(rollingPolicy);
 
@@ -57,14 +58,17 @@ public final class LoggingConfig {
 
         //Turn logging on/off based on the LogEnabled setting
         var logLevel = Objects.equals(Util.get_setting("LogEnabled", "1"), "1") ? Level.TRACE : Level.OFF;
-        Logger root = config.getLogger(Logger.ROOT_LOGGER_NAME);
-        root.addAppender(fileTarget);
-        root.setLevel(logLevel);
 
         var emailLogLevel = Objects.equals(Util.get_setting("ErrorEmailEnabled", "1"), "1") ? Level.ERROR : Level.OFF;
+        // LogLevel.Fatal = Level.ERROR + marker MarkerFactory.getMarker("FATAL") (RULEBOOK §2A Fatal row); the FATAL mail appender must filter on that marker
         // mail rule ("*", emailLogLevel, mailTarget): no appender attached, see TODO(port) above
 
-        // LogManager.Configuration = config: the Logback context is configured in place
+        // LogManager.Configuration = config
+        Logger app = config.getLogger("btnet");
+        app.detachAndStopAllAppenders();
+        app.addAppender(fileTarget);
+        app.setLevel(logLevel);
+        app.setAdditive(false);
     }
 }
 // PORT STATUS: confidence=medium todos=3

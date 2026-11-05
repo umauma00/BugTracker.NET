@@ -23,3 +23,6 @@ Collected from reviewer "Rulebook gaps" sections; applied between batches (D-005
 
 ## A19 — LoggingConfig scope (from LoggingConfig.confirmed G1–G8)
 Decision under mandate (recommended option): NLog `"*"` rule maps to the `btnet` Logback logger only (additivity off); root logger and Spring Boot console logging are untouched. Build the appender fully, then attach as the last statements (mirrors `LogManager.Configuration = config`). Archive pattern `btnet_log.%d{yyyyMMdd}.txt`. Fixer applies C1–C4 on this basis.
+
+## A20 — copy_user @ORG_COLUMNS (from btnet/user.cs R1.F1/R2.F1)
+`user.cs:252,257,340` binds `@ORG_COLUMNS` as a parameter inside an INSERT column list → every `copy_user` call throws (self-registration, loginnt, Mime auto-register). Not in judge-report §5, so not covered by D-003 option (b). Default now: preserve + `BUG(port)` marker. Candidate for a sanctioned fix F6 at the 04 batch gate (recommendation: sanction it — same class as F1–F5, a defect that blocks a core flow); decide before 05c.
