@@ -27,7 +27,7 @@ only for things it cannot do itself (environment settings, credentials).
 | 01 dependency map | done | `migration/depmap/`, `migration/manifest.tsv` |
 | 02 gap inventory + rulebook | done | `migration/RULEBOOK.md`, `migration/inventory*.tsv` |
 | 03 stress test | done (2 rounds, D-008) | `migration/stress-test/` |
-| 04 translation | in progress | |
+| 04 translation | paused by user 2026-11-05 (in-flight agents stopped; resume with dispatch.sh) | |
 | 05 survey build | — | |
 | 05b smoke / 05c parity | — | |
 | 06 post-parity | — | |
