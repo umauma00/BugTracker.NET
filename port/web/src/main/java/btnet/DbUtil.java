@@ -218,7 +218,6 @@ public class DbUtil
         {
             StringBuilder sb = new StringBuilder();
             sb.append(Strings.cs("sql=\n" + Strings.cs(cmd.CommandText())));
-            // TODO(port): runtime SqlParameterCollection must implement Iterable<SqlParameter> (foreach over cmd.Parameters)
             for (SqlParameter param : cmd.Parameters())
             {
                 sb.append("\n  ");
@@ -246,4 +245,4 @@ public class DbUtil
 } // end DbUtil
 
 // end namespace
-// PORT STATUS: confidence=high todos=1
+// PORT STATUS: confidence=high todos=0

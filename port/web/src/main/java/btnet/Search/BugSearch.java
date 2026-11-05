@@ -106,7 +106,9 @@ public class BugSearch implements IBugSearch {
 
             // inventory: src/BugTracker.Web/Search/BugSearch.cs L86
             resultRow.set(ResultColumns.Date, Strings.ToStringStrict(bug.get("bg_reported_date")));
+            // inventory: src/BugTracker.Web/Search/BugSearch.cs L87
             resultRow.set(ResultColumns.Status, Strings.ToStringStrict(bug.get("status")));
+            // inventory: src/BugTracker.Web/Search/BugSearch.cs L88
             resultRow.set(ResultColumns.Score, Convert.ToDecimal(hit.Score));
 
             resultTable.Rows().Add(resultRow);

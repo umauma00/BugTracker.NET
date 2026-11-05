@@ -259,40 +259,40 @@ public class Util {
 	///////////////////////////////////////////////////////////////////////
 	public static String strip_dangerous_tags(String text_with_tags)
 	{
-		// inventory: src/BugTracker.Web/btnet/util.cs L228-L259 (literal patterns; the duplicate onmouseup line is dead code and stays)
+		// literal patterns; the duplicate onmouseup line is dead code and stays
 		String s = DotNetRegex.Replace(text_with_tags,
-		                     "<script", "<scrSAFEipt", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "</script", "</scrSAFEipt", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "<object", "<obSAFEject", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "</object", "</obSAFEject", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "<embed", "<emSAFEbed", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "</embed", "</emSAFEbed", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onabort", "onSAFEabort", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onblur", "onSAFEblur", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onchange", "onSAFEchange", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onclick", "onSAFEclick", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "ondblclick", "onSAFEdblclick", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onerror", "onSAFEerror", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onfocus", "onSAFEfocus", RegexOptions.IgnoreCase);
+		                     "<script", "<scrSAFEipt", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L228
+		s = DotNetRegex.Replace(s, "</script", "</scrSAFEipt", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L230
+		s = DotNetRegex.Replace(s, "<object", "<obSAFEject", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L231
+		s = DotNetRegex.Replace(s, "</object", "</obSAFEject", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L232
+		s = DotNetRegex.Replace(s, "<embed", "<emSAFEbed", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L233
+		s = DotNetRegex.Replace(s, "</embed", "</emSAFEbed", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L234
+		s = DotNetRegex.Replace(s, "onabort", "onSAFEabort", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L235
+		s = DotNetRegex.Replace(s, "onblur", "onSAFEblur", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L236
+		s = DotNetRegex.Replace(s, "onchange", "onSAFEchange", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L237
+		s = DotNetRegex.Replace(s, "onclick", "onSAFEclick", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L238
+		s = DotNetRegex.Replace(s, "ondblclick", "onSAFEdblclick", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L239
+		s = DotNetRegex.Replace(s, "onerror", "onSAFEerror", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L240
+		s = DotNetRegex.Replace(s, "onfocus", "onSAFEfocus", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L241
 
-		s = DotNetRegex.Replace(s, "onkeydown", "onSAFEkeydown", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onkeypress", "onSAFEkeypress", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onkeyup", "onSAFEkeyup", RegexOptions.IgnoreCase);
+		s = DotNetRegex.Replace(s, "onkeydown", "onSAFEkeydown", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L243
+		s = DotNetRegex.Replace(s, "onkeypress", "onSAFEkeypress", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L244
+		s = DotNetRegex.Replace(s, "onkeyup", "onSAFEkeyup", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L245
 
-		s = DotNetRegex.Replace(s, "onload", "onSAFEload", RegexOptions.IgnoreCase);
+		s = DotNetRegex.Replace(s, "onload", "onSAFEload", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L247
 
-		s = DotNetRegex.Replace(s, "onmousedown", "onSAFEmousedown", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onmousemove", "onSAFEmousemove", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onmouseout", "onSAFEmouseout", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase);
+		s = DotNetRegex.Replace(s, "onmousedown", "onSAFEmousedown", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L249
+		s = DotNetRegex.Replace(s, "onmousemove", "onSAFEmousemove", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L250
+		s = DotNetRegex.Replace(s, "onmouseout", "onSAFEmouseout", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L251
+		s = DotNetRegex.Replace(s, "onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L252
+		s = DotNetRegex.Replace(s, "onmouseup", "onSAFEmouseup", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L253
 
 		// BUG(port): replacement "onSAFEresetK" has a stray K — repro: strip_dangerous_tags("onreset")
-		s = DotNetRegex.Replace(s, "onreset", "onSAFEresetK", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onresize", "onSAFEresize", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onselect", "onSAFEselect", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onsubmit", "onSAFEsubmit", RegexOptions.IgnoreCase);
-		s = DotNetRegex.Replace(s, "onunload", "onSAFEunload", RegexOptions.IgnoreCase);
+		s = DotNetRegex.Replace(s, "onreset", "onSAFEresetK", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L255
+		s = DotNetRegex.Replace(s, "onresize", "onSAFEresize", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L256
+		s = DotNetRegex.Replace(s, "onselect", "onSAFEselect", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L257
+		s = DotNetRegex.Replace(s, "onsubmit", "onSAFEsubmit", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L258
+		s = DotNetRegex.Replace(s, "onunload", "onSAFEunload", RegexOptions.IgnoreCase); // inventory: src/BugTracker.Web/btnet/util.cs L259
 
 		return s;
 	}
@@ -361,7 +361,7 @@ public class Util {
 	///////////////////////////////////////////////////////////////////////
 	public static String format_db_value( BigDecimal val ) {
 
-		return DotNetFormat.Format(val, "G", get_culture_info( )); // inventory: src/BugTracker.Web/btnet/util.cs (RULEBOOK §2A decimal ToString(IFormatProvider), S1-15)
+		return DotNetFormat.Format(val, "G", get_culture_info( )); // RULEBOOK §2A decimal ToString(IFormatProvider) [S1-15]
 
 	}
 
@@ -411,7 +411,7 @@ public class Util {
 	{
 		BigDecimal x = Decimal.Parse(val, get_culture_info());
 
-		return DotNetFormat.Format(x, "G", CultureInfo.InvariantCulture); // inventory: src/BugTracker.Web/btnet/util.cs L377 (RULEBOOK §2A decimal ToString(IFormatProvider), S1-15)
+		return DotNetFormat.Format(x, "G", CultureInfo.InvariantCulture); // RULEBOOK §2A decimal ToString(IFormatProvider) [S1-15]
 	}
 
 	///////////////////////////////////////////////////////////////////////
